@@ -27,7 +27,7 @@ const Sidebar = () => {
             {/* === logo === */}
             <div className="relative">
                 <div className="pt-6 w-fit mx-auto relative">
-                    <Link href={"/"}>
+                    <Link href={"/"} onClick={close}>
                         <Logo size={120} />
                     </Link>
                 </div>
@@ -35,20 +35,22 @@ const Sidebar = () => {
             {/* === items === */}
             <div className="flex-1 pt-10 px-5 flex flex-col gap-2">
                 {/* Item */}
-                <div
-                    className="
+                <Link href={"/chat?type=greeting"} onClick={close}>
+                    <div
+                        className="
         w-full px-3 py-2.5 rounded-[14px] 
         flex items-center gap-3
         bg-[#37C390] text-white"
-                >
-                    <Image
-                        src={_Image.icon.icon_chat}
-                        alt="icon-chat"
-                        width={20}
-                        height={20}
-                    />
-                    <p className="text-sm font-semibold">Chat</p>
-                </div>
+                    >
+                        <Image
+                            src={_Image.icon.icon_chat}
+                            alt="icon-chat"
+                            width={20}
+                            height={20}
+                        />
+                        <p className="text-sm font-semibold">Chat</p>
+                    </div>
+                </Link>
                 <div
                     className="
         w-full px-3 py-2.5 rounded-[14px] 

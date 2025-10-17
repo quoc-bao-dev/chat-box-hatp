@@ -34,7 +34,7 @@ const ChatInput = ({
 
     return (
         <div className={`${className}`}>
-            <div className="bg-white p-2 rounded-full flex items-center">
+            <div className="bg-white p-2 rounded-full flex items-center border border-[#E2E8F0]">
                 <input
                     type="text"
                     className="flex-1 outline-none pl-5"

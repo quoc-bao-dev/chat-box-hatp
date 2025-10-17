@@ -298,12 +298,12 @@
 
 "@lordicon/helpers@^1.11.0":
   version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@lordicon/helpers/-/helpers-1.11.0.tgz#af9a8723069ae248f34ae85b7b6db35b02df5c9e"
+  resolved "https://registry.npmjs.org/@lordicon/helpers/-/helpers-1.11.0.tgz"
   integrity sha512-ambh76d15jAdGaKYXBCjR9AlTJUB6aGx4H8vlradyfT37GbLlwiG+HfC8MTq9RTM08pBHRKFPWnWOxa34NUIAw==
 
 "@lordicon/react@^1.11.0":
   version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@lordicon/react/-/react-1.11.0.tgz#08e5abaf5eebebcb5896e10ec54de6691ed21bb7"
+  resolved "https://registry.npmjs.org/@lordicon/react/-/react-1.11.0.tgz"
   integrity sha512-DAxjxr0aSHfdTWxCzeQMf5rnr/rpN0qjnLC9fAePgF0GXOXZpvsVDddi1wfgTYWTWM6iRFc5dDOC7twP24nf3g==
   dependencies:
     "@lordicon/helpers" "^1.11.0"
@@ -2135,6 +2135,11 @@ loose-envify@^1.4.0:
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
+
+lottie-web@^5.13.0:
+  version "5.13.0"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.13.0.tgz#441d3df217cc8ba302338c3f168e1a3af0f221d3"
+  integrity sha512-+gfBXl6sxXMPe8tKQm7qzLnUy5DUPJPKIyRHwtpCpyUEYjHYRJC/5gjUvdkuO2c3JllrPtHXH5UJJK8LRYl5yQ==
 
 magic-string@^0.30.19:
   version "0.30.19"

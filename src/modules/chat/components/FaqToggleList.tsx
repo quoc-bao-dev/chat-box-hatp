@@ -4,6 +4,7 @@ import { Icon } from "@/core/components/common";
 import { _Image } from "@/core/config/image";
 import { CardItem } from "@/modules/home/components";
 import { homeCards } from "@/modules/home/data/cards";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type FaqToggleListProps = {
@@ -14,6 +15,7 @@ type FaqToggleListProps = {
 const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
     const [isAnimatingOut, setIsAnimatingOut] = useState(false);
     const prevIsShowRef = useRef(isShow);
+    const router = useRouter();
 
     useEffect(() => {
         if (!isShow && prevIsShowRef.current) {
@@ -76,7 +78,10 @@ const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
                             iconSrc={c.iconSrc}
                             title={c.title}
                             description={c.description}
-                            onClick={onToggle}
+                            onClick={() => {
+                                onToggle();
+                                router.push(`/chat?type=${c.id}`);
+                            }}
                         />
                     ))}
                 </div>

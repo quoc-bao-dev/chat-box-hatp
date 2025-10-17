@@ -3,28 +3,45 @@ import Image from "next/image";
 import Message from "./Message";
 
 type AssistantMessageProps = {
+    avatar?: string;
     content: string;
+    name?: string;
 };
 
-const AssistantMessage = ({ content }: AssistantMessageProps) => {
+const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
+    const defaultAvatar = _Image.icon.bot_avatar;
+    const defaultName = "Chatbot HATP";
+
     return (
         <div>
-            <div className="flex items-center gap-2 pt-6">
+            <div className="flex items-end gap-2 pt-6">
                 {/* avatar */}
-                <div className="size-[40px] rounded-full overflow-hidden p-2.5 bg-[#37C39066]">
-                    <Image
-                        src={_Image.icon.bot_avatar}
-                        alt="bot-avatar"
-                        width={50}
-                        height={50}
-                        className="w-full h-full object-cover"
-                    />
-                </div>
+                {avatar ? (
+                    <div className="size-[40px] rounded-full overflow-hidden ">
+                        <Image
+                            src={avatar || defaultAvatar}
+                            alt="bot-avatar"
+                            width={50}
+                            height={50}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                ) : (
+                    <div className="size-[40px] rounded-full overflow-hidden p-2.5 bg-[#37C39066]">
+                        <Image
+                            src={avatar || defaultAvatar}
+                            alt="bot-avatar"
+                            width={50}
+                            height={50}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                )}
                 {/* content */}
                 <div className="relative">
                     {/* name */}
                     <div className="absolute -top-6 left-2 text-sm text-gray-500">
-                        Chatbot HATP
+                        {name || defaultName}
                     </div>
 
                     {/* message */}

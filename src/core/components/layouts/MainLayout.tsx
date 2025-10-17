@@ -1,7 +1,7 @@
 "use client";
 
+import { useDevice } from "@/core/hook/useDevice";
 import { cn } from "@/core/utils/cn";
-import { useSidebar } from "@/store/sidebarStore";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect, useState } from "react";
 import Header from "../common/Header";
@@ -10,39 +10,28 @@ import Sidebar from "./Sidebar";
 
 const MainLayout = ({ children }: PropsWithChildren) => {
     const [hasBackground, setHasBackground] = useState(true);
-    const { setMobile, isMobile } = useSidebar();
+    const { isMobile: isMobileDevice } = useDevice();
 
     const pathname = usePathname();
 
     useEffect(() => {
-        if (pathname === "/") {
+        if (isMobileDevice) {
             setHasBackground(true);
-        } else if (isMobile) {
-            setHasBackground(true);
-        } else {
-            setHasBackground(false);
+            return;
         }
-    }, [pathname]);
+        setHasBackground(pathname === "/");
+    }, [pathname, isMobileDevice]);
 
-    // Detect mobile/desktop and update sidebar store
-    useEffect(() => {
-        const checkIsMobile = () => {
-            setMobile(window.innerWidth < 1024);
-        };
-
-        checkIsMobile();
-        window.addEventListener("resize", checkIsMobile);
-
-        return () => window.removeEventListener("resize", checkIsMobile);
-    }, [setMobile]);
     return (
-        <div className="bg-background min-h-screen relative z-0">
+        <div className="bg-background min-h-[100svh] relative z-0">
             {/* === background === */}
             <div
                 className={cn(
                     "absolute inset-0",
                     hasBackground &&
-                        "bg-gradient-to-r from-[#D3FFF0] to-[#FFEDCF]"
+                        (isMobileDevice
+                            ? "bg-gradient-to-b from-[#D3FFF0] to-[#FFEDCF]"
+                            : "bg-gradient-to-r from-[#D3FFF0] to-[#FFEDCF]")
                 )}
             ></div>
 
@@ -57,7 +46,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
                 className={`relative z-10 w-full h-full flex flex-col gap-6 p-5 lg:flex-row`}
             >
                 {/* === sidebar === */}
-                <div className="hidden lg:block lg:w-1/6 h-[calc(100vh-40px)] ">
+                <div className="hidden lg:block lg:w-1/6 h-[calc(100svh-40px)] ">
                     <Sidebar />
                 </div>
 

@@ -26,6 +26,7 @@ export const _Image = {
         icon_arrow_left: "/image/icons/icon-arrow-left.png",
         icon_question: "/image/icons/icon-question.png",
         icon_hand: "/image/icons/hand.gif",
+        icon_hand_1: "/image/icons/icon-hand-1.png",
         emoji: {
             emoji_1: "/image/icons/emoji/emoji-1.png",
             emoji_1_at: "/image/icons/emoji/emoji-1-at.png",
@@ -34,5 +35,6 @@ export const _Image = {
             emoji_3: "/image/icons/emoji/emoji-3.png",
             emoji_3_at: "/image/icons/emoji/emoji-3-at.png",
         },
+        avt_user: "/image/icons/avt-user.png",
     },
 };

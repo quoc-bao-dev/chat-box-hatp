@@ -2,6 +2,7 @@
 
 import { BouncyButton } from "@/core/components/ui";
 import { _Image } from "@/core/config/image";
+import { cn } from "@/core/utils/cn";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -47,7 +48,9 @@ const Feedback = () => {
                 >
                     <div className="flex flex-col items-center gap-2">
                         <div className="relative w-[84px] h-[84px] overflow-hidden lg:w-[120px] lg:h-[120px]">
-                            <div>
+                            <div
+                                className={`relative w-full h-full transition-transform duration-200`}
+                            >
                                 <Image
                                     src={
                                         isActive("good")
@@ -56,9 +59,12 @@ const Feedback = () => {
                                     }
                                     alt="good"
                                     fill
-                                    className={`relative w-full h-full ${
-                                        isActive("good") ? "p-0" : "p-6 lg:p-8"
-                                    }`}
+                                    className={cn(
+                                        "object-contain relative w-full h-full",
+                                        isActive("good")
+                                            ? "scale-120"
+                                            : "scale-100 pt-4"
+                                    )}
                                 />
                             </div>
                         </div>
@@ -82,7 +88,9 @@ const Feedback = () => {
                 >
                     <div className="flex flex-col items-center gap-2">
                         <div className="relative w-[84px] h-[84px] overflow-hidden lg:w-[120px] lg:h-[120px]">
-                            <div>
+                            <div
+                                className={`relative w-full h-full transition-transform duration-200`}
+                            >
                                 <Image
                                     src={
                                         isActive("normal")
@@ -91,11 +99,12 @@ const Feedback = () => {
                                     }
                                     alt="normal"
                                     fill
-                                    className={`object-contain relative w-full h-full ${
+                                    className={cn(
+                                        "object-contain relative w-full h-full",
                                         isActive("normal")
-                                            ? "p-0"
-                                            : "p-6 lg:p-8"
-                                    }`}
+                                            ? "scale-120"
+                                            : "scale-100 pt-4"
+                                    )}
                                 />
                             </div>
                         </div>
@@ -119,7 +128,9 @@ const Feedback = () => {
                 >
                     <div className="flex flex-col items-center gap-2">
                         <div className="relative w-[84px] h-[84px] overflow-hidden lg:w-[120px] lg:h-[120px]">
-                            <div>
+                            <div
+                                className={`relative w-full h-full transition-transform duration-200`}
+                            >
                                 <Image
                                     src={
                                         isActive("bad")
@@ -128,9 +139,12 @@ const Feedback = () => {
                                     }
                                     alt="bad"
                                     fill
-                                    className={`object-contain relative w-full h-full ${
-                                        isActive("bad") ? "p-0" : "p-6 lg:p-8"
-                                    }`}
+                                    className={cn(
+                                        "object-contain relative w-full h-full",
+                                        isActive("bad")
+                                            ? "scale-120"
+                                            : "scale-100 pt-4"
+                                    )}
                                 />
                             </div>
                         </div>

@@ -2,17 +2,18 @@ import { Time } from "@/core/components/common";
 import { ChatBoxContainer } from "@/core/components/layouts";
 import { LoginButton } from "@/core/components/ui";
 import { _Image } from "@/core/config";
-import { scrollbarStyles } from "@/core/styles";
 import Image from "next/image";
+import { Suspense } from "react";
 import AssistantMessage from "../components/AssistantMessage";
 import BottomBar from "../components/BottomBar";
+import BottomBarWrapper from "../components/BottomBarWrapper";
+import Feedback from "../components/Feedback";
 import InfoPanel from "../components/InfoPanel";
 import UserMessage from "../components/UserMessage";
-import Feedback from "../components/Feedback";
 
 const ChatPage = () => {
     return (
-        <div className="flex flex-col h-[calc(100vh-40px)] gap-5">
+        <div className="flex flex-col h-[calc(100svh-40px)] gap-5">
             {/* === header === */}
             <div className="hidden lg:block">
                 <div className="flex items-center justify-between">
@@ -58,14 +59,18 @@ const ChatPage = () => {
             <div className="flex-1 lg:bg-[#DFF3E299] lg:rounded-[32px] lg:pb-5">
                 <ChatBoxContainer className="h-[calc(100vh-40px-40px-20px)] lg:h-[calc(100vh-140px)]">
                     <div
-                        className={`h-full overflow-y-scroll pt-10 pb-50 lg:px-4 ${scrollbarStyles.chatScrollbar} ${scrollbarStyles.smoothScroll}`}
+                        className={`h-full overflow-y-scroll pt-10 pb-50 lg:px-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
                     >
                         <InfoPanel />
 
                         {/* time */}
-                        <Time time={new Date("2025-10-15T10:00:00")} />
-                        <UserMessage content="Thông tin về quy trình trả hàng" />
-                        <div className=" space-y-3">
+                        <div className="mt-3">
+                            <Time time={new Date("2025-10-15T10:00:00")} />
+                        </div>
+                        <div className="mt-3">
+                            <UserMessage content="Thông tin về quy trình trả hàng" />
+                        </div>
+                        <div className=" space-y-3 mt-3">
                             {Array.from({ length: 3 }).map((_, index) => (
                                 <AssistantMessage
                                     key={index}
@@ -73,13 +78,31 @@ const ChatPage = () => {
                                 />
                             ))}
                         </div>
-                        <Feedback />
+
+                        <div className=" space-y-3 mt-3">
+                            {Array.from({ length: 3 }).map((_, index) => (
+                                <AssistantMessage
+                                    key={index}
+                                    avatar={_Image.icon.avt_user}
+                                    name="Huy"
+                                    content="Anh/chị vui lòng đợi từ 3-5 ngày nhé"
+                                />
+                            ))}
+                        </div>
+                        <div className="mt-3">
+                            <Feedback />
+                        </div>
                     </div>
 
                     {/* bottom content */}
-                    <div className="absolute bottom-0 w-full lg:px-4 ">
-                        <BottomBar type="chat" />
-                    </div>
+                    <Suspense>
+                        <div className="absolute bottom-0 w-full lg:px-4 ">
+                            <BottomBarWrapper>
+                                <BottomBar type="info" />
+                                <BottomBar type="chat" />
+                            </BottomBarWrapper>
+                        </div>
+                    </Suspense>
                 </ChatBoxContainer>
             </div>
         </div>

@@ -23,5 +23,16 @@ export const _Image = {
         icon_phone: "/image/icons/icon-phone.png",
         icon_phone_1: "/image/icons/icon-phone-1.png",
         icon_bar: "/image/icons/bar-icon.png",
+        icon_arrow_left: "/image/icons/icon-arrow-left.png",
+        icon_question: "/image/icons/icon-question.png",
+        icon_hand: "/image/icons/hand.gif",
+        emoji: {
+            emoji_1: "/image/icons/emoji/emoji-1.png",
+            emoji_1_at: "/image/icons/emoji/emoji-1-at.png",
+            emoji_2: "/image/icons/emoji/emoji-2.png",
+            emoji_2_at: "/image/icons/emoji/emoji-2-at.png",
+            emoji_3: "/image/icons/emoji/emoji-3.png",
+            emoji_3_at: "/image/icons/emoji/emoji-3-at.png",
+        },
     },
 };

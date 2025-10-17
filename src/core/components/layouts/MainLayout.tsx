@@ -1,26 +1,40 @@
 "use client";
 
 import { cn } from "@/core/utils/cn";
+import { useSidebar } from "@/store/sidebarStore";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect, useState } from "react";
+import Header from "../common/Header";
+import MobileSidebar from "./MobileSidebar";
 import Sidebar from "./Sidebar";
-import { _Image } from "@/core/config";
-import Image from "next/image";
-import { Icon } from "../common";
-import { LoginButton } from "../ui";
 
 const MainLayout = ({ children }: PropsWithChildren) => {
     const [hasBackground, setHasBackground] = useState(true);
+    const { setMobile, isMobile } = useSidebar();
 
     const pathname = usePathname();
 
     useEffect(() => {
         if (pathname === "/") {
             setHasBackground(true);
+        } else if (isMobile) {
+            setHasBackground(true);
         } else {
             setHasBackground(false);
         }
     }, [pathname]);
+
+    // Detect mobile/desktop and update sidebar store
+    useEffect(() => {
+        const checkIsMobile = () => {
+            setMobile(window.innerWidth < 1024);
+        };
+
+        checkIsMobile();
+        window.addEventListener("resize", checkIsMobile);
+
+        return () => window.removeEventListener("resize", checkIsMobile);
+    }, [setMobile]);
     return (
         <div className="bg-background min-h-screen relative z-0">
             {/* === background === */}
@@ -33,29 +47,11 @@ const MainLayout = ({ children }: PropsWithChildren) => {
             ></div>
 
             {/* === header === */}
-            <div className="lg:hidden fixed top-5 w-full flex gap-2 justify-between px-4 ">
-                {/* icon bar */}
-                <div className="">
-                    <Icon src={_Image.icon.icon_bar} size={32} alt="icon-bar" />
-                </div>
-
-                {/* title */}
-                <div className="flex items-center gap-2">
-                    <Icon
-                        src={_Image.icon.icon_headphone}
-                        size={24}
-                        alt="icon-headphone"
-                    />
-                    <p className="text font-semibold text-[#5E5E5E]">
-                        Giấy Hoàng Anh hỗ trợ
-                    </p>
-                </div>
-
-                {/* button login */}
-                <div className="">
-                    <LoginButton />
-                </div>
+            <div className="lg:hidden fixed top-5 w-full z-50">
+                {/* === header mobile === */}
+                <Header />
             </div>
+
             {/* === content === */}
             <div
                 className={`relative z-10 w-full h-full flex flex-col gap-6 p-5 lg:flex-row`}
@@ -68,6 +64,9 @@ const MainLayout = ({ children }: PropsWithChildren) => {
                 {/* === main content === */}
                 <div className="lg:w-5/6 w-full h-fit ">{children}</div>
             </div>
+
+            {/* Mobile Sidebar */}
+            <MobileSidebar />
         </div>
     );
 };

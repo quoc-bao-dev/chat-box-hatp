@@ -14,7 +14,7 @@ const ChatBoxContainer = ({
     return (
         <div
             className={cn(
-                "max-w-[1400px] mx-auto px-2 flex flex-col",
+                "max-w-[1400px] mx-auto lg:px-2 flex flex-col",
                 className
             )}
         >

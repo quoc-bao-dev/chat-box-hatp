@@ -1,19 +1,36 @@
 import { _Image } from "@/core/config";
 import Image from "next/image";
 import Link from "next/link";
-import { Logo } from "../common";
+import { Icon, Logo } from "../common";
+import { useSidebar } from "@/store";
 
 const Sidebar = () => {
+    const { close } = useSidebar();
     return (
         <div
-            className="flex flex-col bg-white rounded-[32px] sticky top-5 h-full"
+            className="flex flex-col bg-white rounded-r-[24px] lg:rounded-l-[32px] lg:rounded-r-[32px]  sticky top-5 h-full"
             style={{ boxShadow: "0px 0px 40px 0px #00000011" }}
         >
+            {/* close button */}
+            <div className="absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/2- lg:hidden">
+                <div
+                    className="p-2.5 rounded-full bg-gray-50- hover:bg-gray-50"
+                    onClick={close}
+                >
+                    <Icon
+                        src={_Image.icon.icon_arrow_left}
+                        size={20}
+                        alt="icon-bar"
+                    />
+                </div>
+            </div>
             {/* === logo === */}
-            <div className="pt-6 w-fit mx-auto">
-                <Link href={"/"}>
-                    <Logo size={120} />
-                </Link>
+            <div className="relative">
+                <div className="pt-6 w-fit mx-auto relative">
+                    <Link href={"/"}>
+                        <Logo size={120} />
+                    </Link>
+                </div>
             </div>
             {/* === items === */}
             <div className="flex-1 pt-10 px-5 flex flex-col gap-2">

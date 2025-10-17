@@ -296,6 +296,18 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@lordicon/helpers@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@lordicon/helpers/-/helpers-1.11.0.tgz#af9a8723069ae248f34ae85b7b6db35b02df5c9e"
+  integrity sha512-ambh76d15jAdGaKYXBCjR9AlTJUB6aGx4H8vlradyfT37GbLlwiG+HfC8MTq9RTM08pBHRKFPWnWOxa34NUIAw==
+
+"@lordicon/react@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@lordicon/react/-/react-1.11.0.tgz#08e5abaf5eebebcb5896e10ec54de6691ed21bb7"
+  integrity sha512-DAxjxr0aSHfdTWxCzeQMf5rnr/rpN0qjnLC9fAePgF0GXOXZpvsVDddi1wfgTYWTWM6iRFc5dDOC7twP24nf3g==
+  dependencies:
+    "@lordicon/helpers" "^1.11.0"
+
 "@napi-rs/wasm-runtime@^0.2.11":
   version "0.2.12"
   resolved "https://registry.npmjs.org/@napi-rs/wasm-runtime/-/wasm-runtime-0.2.12.tgz"
@@ -3001,5 +3013,5 @@ yocto-queue@^0.1.0:
 
 zustand@^5.0.8:
   version "5.0.8"
-  resolved "https://registry.yarnpkg.com/zustand/-/zustand-5.0.8.tgz#b998a0c088c7027a20f2709141a91cb07ac57f8a"
+  resolved "https://registry.npmjs.org/zustand/-/zustand-5.0.8.tgz"
   integrity sha512-gyPKpIaxY9XcO2vSMrLbiER7QMAMGOQZVRdJ6Zi782jkbzZygq5GI9nG8g+sMgitRtndwaBSl7uiqC49o1SSiw==

@@ -4,6 +4,7 @@ type CardItemProps = {
     iconSrc: string;
     title: string;
     description: string;
+    onClick?: () => void;
     type?: "default" | "info";
 };
 
@@ -12,11 +13,15 @@ const CardItem = ({
     title,
     description,
     type = "default",
+    onClick,
 }: CardItemProps) => {
     if (type === "info") {
         return (
-            <div className="h-full p-3 md:p-4 rounded-[20px] bg-white cursor-pointer hover:shadow-xl/4 transition-all duration-300 flex items-center gap-3 md:gap-4 border border-gray-100">
-                <div className="size-[36px] md:size-[40px] bg-emerald-50 rounded-lg flex items-center justify-center">
+            <div
+                className="h-full p-2 md:p-4 rounded-[14px] bg-white cursor-pointer hover:shadow-xl/4 transition-all duration-300 flex items-center gap-3 md:gap-4 border border-gray-100"
+                onClick={onClick}
+            >
+                <div className="size-[36px] md:size-[40px] bg-gray-50 rounded-lg flex items-center justify-center">
                     <Image
                         src={iconSrc}
                         alt={title}
@@ -26,7 +31,7 @@ const CardItem = ({
                     />
                 </div>
                 <div className="flex-1">
-                    <h3 className="text-gray-700 text-[16px] md:text-[18px] font-medium">
+                    <h3 className="text-gray-700 text-[14px] md:text-[18px] font-medium">
                         {title}
                     </h3>
                 </div>
@@ -35,7 +40,10 @@ const CardItem = ({
     }
 
     return (
-        <div className="p-4 h-full rounded-[20px] bg-white cursor-pointer hover:shadow-lg transition-all duration-300">
+        <div
+            className="p-4 h-full rounded-[20px] bg-white cursor-pointer hover:shadow-lg transition-all duration-300"
+            onClick={onClick}
+        >
             <div className="size-[36px] lg:size-[48px] bg-gray-50 rounded-lg flex items-center justify-between">
                 <Image
                     src={iconSrc}

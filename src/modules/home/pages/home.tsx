@@ -15,9 +15,16 @@ const HomePage = () => {
             >
                 {/* === title === */}
                 <div className="flex flex-1 items-center justify-center">
-                    <h1 className="pt-10 lg:pt-0 text-transparent bg-clip-text bg-gradient-to-r from-[#018445] to-[#006BE5] text-[32px] lg:text-[72px] leading-[1.15] text-center font-bold">
-                        Hoàng Anh Tân Phú <br /> xin chào !
-                    </h1>
+                    <div className="flex items-center gap-2">
+                        <h1 className="pt-10 lg:pt-0 text-transparent bg-clip-text bg-gradient-to-r from-[#018445] to-[#006BE5] text-[32px] lg:text-[72px] leading-[1.15] text-center font-bold">
+                            Hoàng Anh Tân Phú <br /> xin chào !
+                        </h1>
+                        {/* <img
+                            src={_Image.icon.icon_hand}
+                            alt=""
+                            className="size-[60px]"
+                        /> */}
+                    </div>
                 </div>
 
                 {/* === list items === */}

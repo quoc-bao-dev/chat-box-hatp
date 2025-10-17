@@ -1,0 +1,48 @@
+"use client";
+
+import { ChatBoxContainer } from "@/core/components/layouts";
+import { ChatInput } from "@/modules/chat";
+import Link from "next/link";
+import { CardItem } from "../../home/components";
+import { homeCards } from "../../home/data/cards";
+
+const HomePage = () => {
+    return (
+        <div className="min-h-[calc(100vh-40px)] lg:min-h-[calc(100vh-40px)] w-full flex flex-col">
+            <ChatBoxContainer
+                className="flex-1 flex flex-col h-full "
+                wrapperClassName="flex flex-col"
+            >
+                {/* === title === */}
+                <div className="flex flex-1 items-center justify-center">
+                    <h1 className="pt-10 lg:pt-0 text-transparent bg-clip-text bg-gradient-to-r from-[#018445] to-[#006BE5] text-[32px] lg:text-[72px] leading-[1.15] text-center font-bold">
+                        Hoàng Anh Tân Phú <br /> xin chào !
+                    </h1>
+                </div>
+
+                {/* === list items === */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
+                    {homeCards.map((c) => (
+                        <Link href={"/chat"} key={c.id} className="h-full">
+                            <CardItem
+                                iconSrc={c.iconSrc}
+                                title={c.title}
+                                description={c.description}
+                            />
+                        </Link>
+                    ))}
+                </div>
+
+                {/* === input chat === */}
+                <ChatInput
+                    placeholder="Nhập tin nhắn..."
+                    onSend={(message) => console.log("Message sent:", message)}
+                    onMicClick={() => console.log("Mic clicked")}
+                    className="pt-5 lg:py-10"
+                />
+            </ChatBoxContainer>
+        </div>
+    );
+};
+
+export default HomePage;

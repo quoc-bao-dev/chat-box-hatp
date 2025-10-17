@@ -1,0 +1,62 @@
+import Image from "next/image";
+
+type CardItemProps = {
+    iconSrc: string;
+    title: string;
+    description: string;
+    type?: "default" | "info";
+};
+
+const CardItem = ({
+    iconSrc,
+    title,
+    description,
+    type = "default",
+}: CardItemProps) => {
+    if (type === "info") {
+        return (
+            <div className="h-full p-3 md:p-4 rounded-[20px] bg-white cursor-pointer hover:shadow-xl/4 transition-all duration-300 flex items-center gap-3 md:gap-4 border border-gray-100">
+                <div className="size-[36px] md:size-[40px] bg-emerald-50 rounded-lg flex items-center justify-center">
+                    <Image
+                        src={iconSrc}
+                        alt={title}
+                        width={28}
+                        height={28}
+                        className="size-[22px] md:size-[24px]"
+                    />
+                </div>
+                <div className="flex-1">
+                    <h3 className="text-gray-700 text-[16px] md:text-[18px] font-medium">
+                        {title}
+                    </h3>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="p-4 h-full rounded-[20px] bg-white cursor-pointer hover:shadow-lg transition-all duration-300">
+            <div className="size-[36px] lg:size-[48px] bg-gray-50 rounded-lg flex items-center justify-between">
+                <Image
+                    src={iconSrc}
+                    alt={title}
+                    width={40}
+                    height={40}
+                    className="size-[24px] lg:size-[36px]  mx-auto"
+                />
+            </div>
+            <div className="pt-2">
+                <h2 className="text-gray-700 text-[18px] lg:text-[24px] font-semibold">
+                    {title}
+                </h2>
+            </div>
+            <div className="pt-1">
+                <p className="text-xs lg:text-base text-gray-500">
+                    {description}
+                </p>
+            </div>
+        </div>
+    );
+};
+
+export default CardItem;

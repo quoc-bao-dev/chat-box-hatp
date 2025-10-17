@@ -1,0 +1,221 @@
+/* Custom Scrollbar Styles */
+.customScrollbar {
+  /* Webkit browsers (Chrome, Safari, Edge) */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 167, 111, 0.3) transparent;
+}
+
+.customScrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.customScrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.customScrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, 
+    rgba(0, 167, 111, 0.2) 0%, 
+    rgba(0, 167, 111, 0.4) 50%, 
+    rgba(0, 167, 111, 0.2) 100%);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.customScrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, 
+    rgba(0, 167, 111, 0.4) 0%, 
+    rgba(0, 167, 111, 0.6) 50%, 
+    rgba(0, 167, 111, 0.4) 100%);
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 167, 111, 0.2);
+}
+
+.customScrollbar::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, 
+    rgba(0, 167, 111, 0.6) 0%, 
+    rgba(0, 167, 111, 0.8) 50%, 
+    rgba(0, 167, 111, 0.6) 100%);
+  transform: scale(1.05);
+}
+
+.customScrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Smooth scrolling behavior */
+.customScrollbar {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+/* Firefox scrollbar */
+@supports (scrollbar-width: thin) {
+  .customScrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 167, 111, 0.4) transparent;
+  }
+}
+
+/* Enhanced smooth scrolling for chat messages */
+.chatScrollbar {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+  scroll-padding: 20px;
+}
+
+.chatScrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatScrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  margin: 4px 0;
+}
+
+.chatScrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, 
+    rgba(0, 167, 111, 0.3) 0%, 
+    rgba(0, 167, 111, 0.5) 50%, 
+    rgba(0, 167, 111, 0.3) 100%);
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.chatScrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, 
+    rgba(0, 167, 111, 0.5) 0%, 
+    rgba(0, 167, 111, 0.7) 50%, 
+    rgba(0, 167, 111, 0.5) 100%);
+  box-shadow: 0 0 6px rgba(0, 167, 111, 0.3);
+}
+
+/* Ultra-thin scrollbar for minimal design */
+.thinScrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 167, 111, 0.2) transparent;
+}
+
+.thinScrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.thinScrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thinScrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 167, 111, 0.3);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.thinScrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 167, 111, 0.5);
+  width: 6px;
+}
+
+/* Animated scrollbar with pulse effect */
+.animatedScrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 167, 111, 0.4) transparent;
+}
+
+.animatedScrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.animatedScrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.animatedScrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, 
+    rgba(0, 167, 111, 0.4), 
+    rgba(0, 167, 111, 0.6), 
+    rgba(0, 167, 111, 0.4));
+  background-size: 200% 200%;
+  border-radius: 8px;
+  animation: scrollbarPulse 3s ease-in-out infinite;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animatedScrollbar::-webkit-scrollbar-thumb:hover {
+  animation: scrollbarPulse 1s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(0, 167, 111, 0.4);
+}
+
+@keyframes scrollbarPulse {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Dark theme scrollbar */
+.darkScrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 167, 111, 0.5) rgba(255, 255, 255, 0.1);
+}
+
+.darkScrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.darkScrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.darkScrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, 
+    rgba(0, 167, 111, 0.5) 0%, 
+    rgba(0, 167, 111, 0.7) 50%, 
+    rgba(0, 167, 111, 0.5) 100%);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.darkScrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, 
+    rgba(0, 167, 111, 0.7) 0%, 
+    rgba(0, 167, 111, 0.9) 50%, 
+    rgba(0, 167, 111, 0.7) 100%);
+  box-shadow: 0 0 8px rgba(0, 167, 111, 0.3);
+}
+
+/* Utility classes for smooth scrolling */
+.smoothScroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.snapScroll {
+  scroll-snap-type: y mandatory;
+  scroll-padding: 20px;
+}
+
+.snapScroll > * {
+  scroll-snap-align: start;
+}
+
+/* Responsive scrollbar adjustments */
+@media (max-width: 768px) {
+  .customScrollbar::-webkit-scrollbar,
+  .chatScrollbar::-webkit-scrollbar,
+  .animatedScrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .thinScrollbar::-webkit-scrollbar {
+    width: 3px;
+  }
+}

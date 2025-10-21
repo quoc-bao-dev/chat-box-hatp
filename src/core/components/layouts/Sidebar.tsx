@@ -4,6 +4,51 @@ import Link from "next/link";
 import { Icon, Logo } from "../common";
 import { useSidebar } from "@/store";
 
+interface SidebarItemProps {
+    icon: string;
+    text: string;
+    href?: string;
+    isActive?: boolean;
+    onClick?: () => void;
+}
+
+const SidebarItem = ({
+    icon,
+    text,
+    href,
+    isActive = false,
+    onClick,
+}: SidebarItemProps) => {
+    const content = (
+        <div
+            className={`
+                w-full px-3 py-2.5 rounded-[14px] 
+                flex items-center gap-3
+                transition-all duration-200 ease-in-out
+                cursor-pointer
+                ${
+                    isActive
+                        ? "bg-[#37C390] text-white hover:bg-[#2ea876] hover:shadow-md"
+                        : "text-gray-900 hover:bg-gray-100 hover:shadow-sm"
+                }
+            `}
+        >
+            <Image src={icon} alt="icon" width={20} height={20} />
+            <p className="text-sm font-semibold">{text}</p>
+        </div>
+    );
+
+    if (href) {
+        return (
+            <Link href={href} onClick={onClick}>
+                {content}
+            </Link>
+        );
+    }
+
+    return content;
+};
+
 const Sidebar = () => {
     const { close } = useSidebar();
     return (
@@ -34,37 +79,18 @@ const Sidebar = () => {
             </div>
             {/* === items === */}
             <div className="flex-1 pt-10 px-5 flex flex-col gap-2">
-                {/* Item */}
-                <Link href={"/chat?type=greeting"} onClick={close}>
-                    <div
-                        className="
-        w-full px-3 py-2.5 rounded-[14px] 
-        flex items-center gap-3
-        bg-[#37C390] text-white"
-                    >
-                        <Image
-                            src={_Image.icon.icon_chat}
-                            alt="icon-chat"
-                            width={20}
-                            height={20}
-                        />
-                        <p className="text-sm font-semibold">Chat</p>
-                    </div>
-                </Link>
-                <div
-                    className="
-        w-full px-3 py-2.5 rounded-[14px] 
-        flex items-center gap-3
-         text-gray-900"
-                >
-                    <Image
-                        src={_Image.icon.icon_phone_1}
-                        alt="icon-chat"
-                        width={20}
-                        height={20}
-                    />
-                    <p className="text-sm font-semibold">Chat</p>
-                </div>
+                <SidebarItem
+                    icon={_Image.icon.icon_chat}
+                    text="Chat"
+                    href="/chat"
+                    isActive={true}
+                    onClick={close}
+                />
+                <SidebarItem
+                    icon={_Image.icon.icon_phone_1}
+                    text="Điện thoại"
+                    isActive={false}
+                />
             </div>
 
             {/* === social === */}

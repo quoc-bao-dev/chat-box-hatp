@@ -1,5 +1,1 @@
-export {
-    default as axiosClient,
-    tokenManager,
-    sessionManager,
-} from "./axiosClient";
+export { axiosInstance, tokenManager, sessionManager } from "./axiosClient";

@@ -11,3 +11,5 @@ export const createMessageFromResponse = (
         options: data.data.options,
     };
 };
+
+export const createMessage = (payload: Message) => payload;

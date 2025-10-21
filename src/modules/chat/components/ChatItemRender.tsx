@@ -15,7 +15,7 @@ const ChatItemRender = ({
     sendType,
     options,
 }: ChatItemRenderProps) => {
-    if (sendType === "select" && sender === "assistant") {
+    if (sender === "assistant" && sendType === "select") {
         return (
             <div>
                 <AssistantMessage content={content!} />
@@ -26,12 +26,12 @@ const ChatItemRender = ({
         );
     }
 
-    if (sendType === "options" && sender === "user") {
-        return <UserMessage content={content || ""} />;
+    if (sender === "assistant" && sendType === "text") {
+        return <AssistantMessage content={content || ""} />;
     }
 
-    if (sendType === "text" && sender === "assistant") {
-        return <AssistantMessage content={content || ""} />;
+    if (sender === "user" && (sendType === "options" || sendType === "text")) {
+        return <UserMessage content={content || ""} />;
     }
 
     return <div>ChatItemRender</div>;

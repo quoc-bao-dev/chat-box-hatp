@@ -7,28 +7,22 @@ import { useChatBoxActions, useChatBoxState } from "@/store";
 import { useEffect } from "react";
 
 const ChatBoxController = () => {
-    const { firstOption } = useChatBoxState();
+    const { firstOption, massages } = useChatBoxState();
     const { setIsAssistantTyping, setFirstOption, setMode } =
         useChatBoxActions();
     const { addMessage } = useChatBoxActions();
 
-    const { mutateAsync: fetchRobotDetail } = useGetActiveRobotDetailMutation({
-        onSuccess: (data) => {
-            console.log("Robot detail data:", data.data);
-        },
-        onError: (error) => {
-            console.error("Error fetching robot detail:", error);
-        },
-    });
+    const { mutateAsync: fetchRobotDetail } = useGetActiveRobotDetailMutation();
 
+    // handle first option and mode
     useEffect(() => {
-        if (!firstOption) {
+        if (!firstOption && massages.length === 0) {
             setFirstOption(1);
             setMode("click");
         }
     }, []);
-    // handle first option
 
+    // handle first option
     useEffect(() => {
         if (firstOption) {
             new Promise((resolve) => {
@@ -46,10 +40,6 @@ const ChatBoxController = () => {
             );
         }
     }, [firstOption, fetchRobotDetail, addMessage]);
-
-    // useEffect(() => {
-    //     setIsAssistantTyping(isPending);
-    // }, [isPending, setIsAssistantTyping]);
 
     return null;
 };

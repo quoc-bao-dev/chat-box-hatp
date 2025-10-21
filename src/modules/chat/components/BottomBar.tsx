@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { _Image } from "@/core/config/image";
+import Image from "next/image";
 import { useState } from "react";
-import ChatInput from "./ChatInput";
+import ChatInputController from "./ChatInputController";
 import FaqToggleList from "./FaqToggleList";
 
 type BottomBarProps = {
@@ -21,7 +21,7 @@ const BottomBar = ({ type }: BottomBarProps) => {
                     onToggle={() => setIsShow(!isShow)}
                 />
                 <div className="pt-2 lg:pt-4">
-                    <ChatInput />
+                    <ChatInputController />
                 </div>
             </div>
         );

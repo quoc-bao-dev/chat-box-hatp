@@ -1,11 +1,11 @@
 "use client";
 
-import { axiosClient } from "@/core/http";
+import { axiosInstance } from "@/core/http";
 import { useGetChatbotList } from "@/services/chatbot";
 import { useEffect } from "react";
 
 const getSession = async () => {
-    const response = await axiosClient.get("api_chatbot/get_session");
+    const response = await axiosInstance.get("api_chatbot/get_session");
     return response.data;
 };
 

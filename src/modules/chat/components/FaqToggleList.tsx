@@ -3,7 +3,6 @@
 import { Icon } from "@/core/components/common";
 import { _Image } from "@/core/config/image";
 import { CardItem } from "@/modules/home/components";
-import { homeCards } from "@/modules/home/data/cards";
 import { useGetChatbotList } from "@/services/chatbot";
 import { useChatBoxActions } from "@/store";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -18,7 +17,7 @@ const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
     const prevIsShowRef = useRef(isShow);
     const { setFirstOption } = useChatBoxActions();
 
-    const { data, isLoading } = useGetChatbotList();
+    const { data } = useGetChatbotList();
 
     // Sử dụng useMemo để map dữ liệu từ API
     const mappedCards = useMemo(() => {
@@ -72,11 +71,24 @@ const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
                     </div>
                 </div>
             )}
+            {!showButton && (
+                <button
+                    onClick={onToggle}
+                    className="absolute -top-10 right-0 w-[35px] h-[35px] rounded-full bg-white/80 hover:bg-white transition-all duration-300 ease-out flex items-center justify-center"
+                >
+                    <Icon
+                        src={_Image.icon.icon_arrow_left}
+                        size={20}
+                        alt="icon-close"
+                        className="mr-1"
+                    />
+                </button>
+            )}
 
             {/* === list items with slide-in from left === */}
             <div
                 className={`
-                    overflow-hidden transition-all duration-300 ease-out
+                    relative overflow-hidden transition-all duration-300 ease-out
                     ${
                         isShow
                             ? "opacity-100 translate-x-0 max-h-[999px]"

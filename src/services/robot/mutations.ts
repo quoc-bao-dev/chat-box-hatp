@@ -1,26 +1,9 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { robotApi, ActiveRobotDetailPayload } from "./api";
-import { GetActiveRobotDetailResponse } from "./types";
+import { useMutation } from "@tanstack/react-query";
+import robotApi from "./api";
+import { ActiveRobotDetailPayload } from "./type";
 
-// Hook to get active robot detail using mutation
-export const useGetActiveRobotDetailMutation = (
-    options?: Omit<
-        UseMutationOptions<
-            GetActiveRobotDetailResponse,
-            Error,
-            ActiveRobotDetailPayload
-        >,
-        "mutationFn"
-    >
-) => {
-    return useMutation({
+export const useGetActiveRobotDetailMutation = () =>
+    useMutation({
         mutationFn: (payload: ActiveRobotDetailPayload) =>
             robotApi.getActiveRobotDetail(payload),
-        ...options,
     });
-};
-
-// Export all mutation hooks
-export const robotMutations = {
-    useGetActiveRobotDetailMutation,
-} as const;

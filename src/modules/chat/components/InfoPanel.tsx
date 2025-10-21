@@ -2,8 +2,9 @@
 
 import { _Image } from "@/core/config";
 import { botConfig } from "@/core/config/bot";
-import { axiosClient } from "@/core/http";
+import axiosClient from "@/core/http/axiosClient";
 import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
+import { getSession } from "@/core/utils/session";
 import { useChatBoxActions, useChatBoxState } from "@/store";
 import Image from "next/image";
 
@@ -34,9 +35,8 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
         if (isAssistantTyping) return;
 
         try {
-            // setIsAssistantTyping(true);
             const response = await axiosClient.post(next, {
-                sp_session: sessionStorage.getItem("sp_session"),
+                sp_session: getSession(),
             });
 
             addMessage(createMessageFromResponse(response.data));

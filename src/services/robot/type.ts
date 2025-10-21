@@ -1,6 +1,5 @@
-// Robot service types
+// Request/response types for robot
 
-// Individual option item from API response
 export interface RobotOption {
     id: string;
     id_robot_support: string;
@@ -16,7 +15,6 @@ export interface RobotOption {
     next?: string;
 }
 
-// Robot data structure from API response
 export interface RobotData {
     id_robot_support: string;
     id_robot_support_detail: string;
@@ -38,24 +36,13 @@ export interface RobotData {
     options: RobotOption[];
 }
 
-// API response structure for active robot detail
 export interface GetActiveRobotDetailResponse {
     result: boolean;
     data: RobotData;
     next: boolean;
 }
 
-// API error response structure
-export interface ApiErrorResponse {
-    result: false;
-    message?: string;
-    error?: string;
+export interface ActiveRobotDetailPayload {
+    option_id: number;
+    sp_session?: string;
 }
-
-// Query key factory for React Query
-export const robotKeys = {
-    all: ["robot"] as const,
-    details: () => [...robotKeys.all, "detail"] as const,
-    detail: (optionId?: string, sessionId?: string) =>
-        [...robotKeys.details(), optionId, sessionId || ""] as const,
-} as const;

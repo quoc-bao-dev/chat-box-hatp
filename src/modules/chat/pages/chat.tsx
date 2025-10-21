@@ -1,13 +1,9 @@
 import { ChatBoxContainer } from "@/core/components/layouts";
-import { LoginButton } from "@/core/components/ui";
-import { _Image } from "@/core/config";
-import Image from "next/image";
-import { Suspense } from "react";
 import BottomBar from "../components/BottomBar";
 import BottomBarWrapper from "../components/BottomBarWrapper";
-import ChatBoxRender from "../components/ChatBoxRender";
-import ChatBoxHeader from "../components/ChatBoxHeader";
 import ChatBoxController from "../components/ChatBoxController";
+import ChatBoxHeader from "../components/ChatBoxHeader";
+import ChatBoxRender from "../components/ChatBoxRender";
 
 const ChatPage = () => {
     return (

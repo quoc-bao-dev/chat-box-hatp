@@ -27,7 +27,7 @@ const getCookie = (name: string): string | null => {
 const BASE_URL = envConfig.apiUrl || "http://localhost:3000/api";
 
 // Create axios instance
-const axiosClient: AxiosInstance = axios.create({
+const axiosInstance: AxiosInstance = axios.create({
     baseURL: BASE_URL,
     timeout: 10000,
     headers: {
@@ -36,7 +36,7 @@ const axiosClient: AxiosInstance = axios.create({
 });
 
 // Request interceptor
-axiosClient.interceptors.request.use(
+axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         // Get token from localStorage
         const token =
@@ -49,16 +49,17 @@ axiosClient.interceptors.request.use(
             config.headers.Authorization = `Bearer ${token}`;
         }
 
-        // if (spSession && config.headers) {
-        //     (config.headers as any)["sp_session"] = spSession;
-        // }
-
-        // Log request (for development)
-        // console.log("🚀 Request:", {
-        //     method: config.method?.toUpperCase(),
-        //     url: config.url,
-        //     baseURL: config.baseURL,
-        // });
+        // Inject language into request body for write methods (POST/PUT/PATCH/DELETE)
+        if (
+            config.method &&
+            ["post", "put", "patch", "delete"].includes(
+                config.method.toLowerCase()
+            )
+        ) {
+            if (config.data && typeof config.data === "object") {
+                config.data.language = "vi"; // Default to Vietnamese
+            }
+        }
 
         return config;
     },
@@ -69,15 +70,8 @@ axiosClient.interceptors.request.use(
 );
 
 // Response interceptor
-axiosClient.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     (response: AxiosResponse) => {
-        // Log successful response (for development)
-        // console.log("✅ Response:", {
-        //     status: response.status,
-        //     url: response.config.url,
-        //     data: response.data,
-        // });
-
         return response;
     },
     (error: AxiosError) => {
@@ -210,4 +204,5 @@ export const sessionManager = {
     },
 };
 
-export default axiosClient;
+export { axiosInstance };
+export default axiosInstance;

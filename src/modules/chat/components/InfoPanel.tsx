@@ -29,11 +29,17 @@ const defaultItems: InfoItem[] = [
 
 const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
     const { isAssistantTyping } = useChatBoxState();
-    const { addMessage, setIsAssistantTyping } = useChatBoxActions();
+    const {
+        addMessage,
+        setIsAssistantTyping,
+        startCountdownFeedback,
+        stopCountdownFeedback,
+        setSessionRobot,
+    } = useChatBoxActions();
     const handleNext = (next: string) => async () => {
         if (!next) return;
         if (isAssistantTyping) return;
-
+        stopCountdownFeedback();
         try {
             const response = await axiosClient.post(next, {
                 sp_session: getSession(),
@@ -42,6 +48,9 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
             addMessage(createMessageFromResponse(response.data));
             setIsAssistantTyping(false);
             const nextRes = response.data.next;
+            const sessionRobot = response.data.session_robot;
+
+            setSessionRobot(sessionRobot);
 
             if (nextRes) {
                 setIsAssistantTyping(true);
@@ -51,6 +60,9 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
                 handleNext(nextRes)();
             } else {
                 // setMode("chat");
+
+                // TODO: start countdown feedback
+                startCountdownFeedback();
             }
         } catch (error) {
             setIsAssistantTyping(false);

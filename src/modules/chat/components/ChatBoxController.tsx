@@ -10,7 +10,7 @@ const ChatBoxController = () => {
     const { firstOption, massages } = useChatBoxState();
     const { setIsAssistantTyping, setFirstOption, setMode } =
         useChatBoxActions();
-    const { addMessage } = useChatBoxActions();
+    const { addMessage, setSessionRobot } = useChatBoxActions();
 
     const { mutateAsync: fetchRobotDetail } = useGetActiveRobotDetailMutation();
 
@@ -32,7 +32,16 @@ const ChatBoxController = () => {
                 fetchRobotDetail({
                     option_id: firstOption,
                 })
-                    .then((data) => addMessage(createMessageFromResponse(data)))
+                    .then((data) => {
+                        addMessage(createMessageFromResponse(data));
+
+                        console.log(
+                            "data.data.session_robot",
+                            data.data.session_robot
+                        );
+
+                        setSessionRobot(data.data.session_robot);
+                    })
                     .then(() => {
                         setIsAssistantTyping(false);
                         setFirstOption(null);

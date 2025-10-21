@@ -18,14 +18,14 @@ const CardItem = ({
     if (type === "info") {
         return (
             <div
-                className="h-full p-2 md:p-4 rounded-[14px] bg-white cursor-pointer hover:shadow-xl/4 transition-all duration-300 flex items-center gap-3 md:gap-4 border border-gray-100"
+                className="h-full p-2 md:p-4 rounded-[14px] bg-white cursor-pointer hover:shadow-xl/4 transition-all duration-300 flex items-center gap-3 md:gap-4"
                 onClick={onClick}
             >
                 <Image
                     src={iconSrc}
                     alt={title}
-                    width={28}
-                    height={28}
+                    width={100}
+                    height={100}
                     className="size-[36px] lg:size-[40px]"
                 />
                 <div className="flex-1">
@@ -45,8 +45,8 @@ const CardItem = ({
             <Image
                 src={iconSrc}
                 alt={title}
-                width={60}
-                height={60}
+                width={100}
+                height={100}
                 className="size-[36px] lg:size-[48px]"
             />
             <div className="pt-2">

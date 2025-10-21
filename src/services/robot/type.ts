@@ -34,6 +34,7 @@ export interface RobotData {
     event_app: string | null;
     event_show: string;
     options: RobotOption[];
+    session_robot: string;
 }
 
 export interface GetActiveRobotDetailResponse {

@@ -29,13 +29,13 @@ const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
                     </div>
                 ) : (
                     // === assistant ===
-                    <div className="size-[40px] rounded-full overflow-hidden p-2.5 bg-[#37C39066] flex-shrink-0">
+                    <div className="size-[40px] rounded-full overflow-hidden flex items-center justify-center bg-[#37C39066] flex-shrink-0">
                         <Image
                             src={avatar || defaultAvatar}
                             alt="bot-avatar"
                             width={50}
                             height={50}
-                            className="w-full h-full object-cover"
+                            className="size-[22px] object-cover"
                         />
                     </div>
                 )}

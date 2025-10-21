@@ -20,7 +20,8 @@ const FaqToggleList = ({
 }: FaqToggleListProps) => {
     const [isAnimatingOut, setIsAnimatingOut] = useState(defaultShow);
     const prevIsShowRef = useRef(defaultShow);
-    const { setFirstOption } = useChatBoxActions();
+    const { setFirstOption, setIsFeedback, stopCountdownFeedback } =
+        useChatBoxActions();
 
     const { data } = useGetChatbotList();
 
@@ -113,6 +114,8 @@ const FaqToggleList = ({
                             onClick={() => {
                                 onToggle();
                                 setFirstOption(c.id!);
+                                setIsFeedback(false);
+                                stopCountdownFeedback();
                             }}
                         />
                     ))}

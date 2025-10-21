@@ -1,13 +1,14 @@
 "use client";
 
 import { useChatBoxState } from "@/store";
+import { useEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
-import { useEffect, useRef, useState } from "react";
+import Feedback from "./Feedback";
 import ScrollToBottomButton from "./ScrollToBottomButton";
 
 const ChatBoxRender = () => {
-    const { isAssistantTyping, massages } = useChatBoxState();
+    const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -47,6 +48,13 @@ const ChatBoxRender = () => {
         el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
     };
 
+    // show feedback
+    useEffect(() => {
+        if (isFeedback) {
+            scrollToBottom();
+        }
+    }, [isFeedback]);
+
     return (
         <div
             ref={containerRef}
@@ -70,6 +78,13 @@ const ChatBoxRender = () => {
                 show={showScrollButton}
                 onClick={scrollToBottom}
             />
+
+            {/* === feedback === */}
+            {isFeedback && (
+                <div className="pt-5">
+                    <Feedback />
+                </div>
+            )}
         </div>
     );
 };

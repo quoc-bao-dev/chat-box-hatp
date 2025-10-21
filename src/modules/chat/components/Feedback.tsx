@@ -4,11 +4,12 @@ import { BouncyButton } from "@/core/components/ui";
 import { _Image } from "@/core/config/image";
 import scrollbarStyles from "@/core/styles/scrollbar.module.css";
 import { cn } from "@/core/utils/cn";
+import { useEvaluateSupportMutation, useGetListTags } from "@/services/chatbot";
+import { useChatBoxState } from "@/store";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 type Rating = "good" | "normal" | "bad";
-type ReasonKey = "enthusiastic" | "fast" | "support";
 
 interface EmojiButtonProps {
     rating: Rating;
@@ -34,7 +35,7 @@ const EmojiButton = ({
             aria-pressed={isActive}
         >
             <div className="flex flex-col items-center gap-2 mt-3">
-                <div className="relative w-[100px] h-[100px] overflow-hidden lg:w-[120px] lg:h-[120px] -my-4 lg:-mx-2">
+                <div className="relative w-[100px] h-[100px] overflow-hidden lg:w-[120px] lg:h-[120px] -my-4 ">
                     <div className="relative w-full h-full transition-transform duration-200">
                         <Image
                             src={isActive ? activeImage : normalImage}
@@ -63,9 +64,67 @@ const EmojiButton = ({
 
 const Feedback = () => {
     const [rating, setRating] = useState<Rating | null>(null);
-    const [reasons, setReasons] = useState<Set<ReasonKey>>(new Set());
+    const [reasons, setReasons] = useState<Set<string>>(new Set());
 
-    const toggleReason = (key: ReasonKey) => {
+    const { sessionRobot } = useChatBoxState();
+
+    const { data: listTags } = useGetListTags();
+
+    // Map dữ liệu listTags thành tagList với useMemo - tất cả tags độc lập
+    const tagList = useMemo(() => {
+        if (!listTags?.data) return [];
+
+        return Object.keys(listTags.data).reduce((acc, ratingKey) => {
+            const tags = listTags.data[ratingKey];
+            const mappedTags = tags.map((tag, index) => ({
+                id: `${ratingKey}-${index}`,
+                text: tag,
+                rating: ratingKey,
+            }));
+            return [...acc, ...mappedTags];
+        }, [] as Array<{ id: string; text: string; rating: string }>);
+    }, [listTags]);
+
+    const { mutateAsync: evaluateSupportMutation } =
+        useEvaluateSupportMutation();
+
+    const handleEvaluateSupport = async () => {
+        console.log("sessionRobot", sessionRobot);
+        console.log("rating", rating);
+
+        if (!sessionRobot || !rating) return;
+
+        // Map rating to API format
+        const ratingMap = {
+            good: "3",
+            normal: "2",
+            bad: "1",
+        };
+
+        const requestData = {
+            params: {
+                session_robot: sessionRobot,
+                evaluate: ratingMap[rating],
+            },
+            payload: {
+                tag: Array.from(reasons),
+            },
+        };
+
+        console.log("=== handleEvaluateSupport Data ===");
+        console.log("Session Robot:", sessionRobot);
+        console.log("Rating:", rating);
+        console.log("Mapped Rating:", ratingMap[rating]);
+        console.log("Selected Reasons:", Array.from(reasons));
+        console.log("Request Data:", requestData);
+
+        const response = await evaluateSupportMutation(requestData);
+
+        console.log("=== API Response ===");
+        console.log(response);
+    };
+
+    const toggleReason = (key: string) => {
         setReasons((prev) => {
             const next = new Set(prev);
             if (next.has(key)) {
@@ -125,83 +184,52 @@ const Feedback = () => {
                 {/* Mobile: Horizontal scroll */}
                 <div
                     className={cn(
-                        "flex items-center gap-3 overflow-x-auto pb-2 lg:hidden",
+                        "flex items-center gap-3 overflow-x-auto pb-2 lg:hidde-n max-w-[420px]",
                         scrollbarStyles.customScrollbar
                     )}
                 >
                     <div className="flex items-center gap-3 flex-shrink-0">
-                        <BouncyButton
-                            variant={
-                                reasons.has("enthusiastic")
-                                    ? "solid"
-                                    : "outlineGradient"
-                            }
-                            size="sm"
-                            onClick={() => toggleReason("enthusiastic")}
-                        >
-                            Tư vấn nhiệt tình
-                        </BouncyButton>
-
-                        <BouncyButton
-                            variant={
-                                reasons.has("fast")
-                                    ? "solid"
-                                    : "outlineGradient"
-                            }
-                            size="sm"
-                            onClick={() => toggleReason("fast")}
-                        >
-                            Hỗ trợ nhanh chóng
-                        </BouncyButton>
-
-                        <BouncyButton
-                            variant={
-                                reasons.has("support")
-                                    ? "solid"
-                                    : "outlineGradient"
-                            }
-                            size="sm"
-                            onClick={() => toggleReason("support")}
-                        >
-                            Hỗ trợ nhanh chóng
-                        </BouncyButton>
+                        {tagList.map((tag) => (
+                            <BouncyButton
+                                key={tag.id}
+                                variant={
+                                    reasons.has(tag.id)
+                                        ? "solid"
+                                        : "outlineGradient"
+                                }
+                                size="sm"
+                                onClick={() => toggleReason(tag.id)}
+                            >
+                                {tag.text}
+                            </BouncyButton>
+                        ))}
                     </div>
                 </div>
 
+                <button
+                    onClick={handleEvaluateSupport}
+                    className="w-full bg-[#00A76F] text-white rounded-[100px] p-2 mt-3"
+                >
+                    <span className="text-white">Gửi đánh giá</span>
+                </button>
+
                 {/* Desktop: Centered layout */}
-                <div className="hidden lg:flex items-center justify-center gap-3 flex-wrap">
-                    <BouncyButton
-                        variant={
-                            reasons.has("enthusiastic")
-                                ? "solid"
-                                : "outlineGradient"
-                        }
-                        size="sm"
-                        onClick={() => toggleReason("enthusiastic")}
-                    >
-                        Tư vấn nhiệt tình
-                    </BouncyButton>
-
-                    <BouncyButton
-                        variant={
-                            reasons.has("fast") ? "solid" : "outlineGradient"
-                        }
-                        size="sm"
-                        onClick={() => toggleReason("fast")}
-                    >
-                        Hỗ trợ nhanh chóng
-                    </BouncyButton>
-
-                    <BouncyButton
-                        variant={
-                            reasons.has("support") ? "solid" : "outlineGradient"
-                        }
-                        size="sm"
-                        onClick={() => toggleReason("support")}
-                    >
-                        Hỗ trợ nhanh chóng
-                    </BouncyButton>
-                </div>
+                {/* <div className="hidden lg:flex items-center justify-center gap-3 flex-wrap max-w-[400px]">
+                    {tagList.map((tag) => (
+                        <BouncyButton
+                            key={tag.id}
+                            variant={
+                                reasons.has(tag.id)
+                                    ? "solid"
+                                    : "outlineGradient"
+                            }
+                            size="sm"
+                            onClick={() => toggleReason(tag.id)}
+                        >
+                            {tag.text}
+                        </BouncyButton>
+                    ))}
+                </div> */}
             </div>
         </div>
     );

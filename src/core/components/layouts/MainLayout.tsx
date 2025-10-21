@@ -4,6 +4,7 @@ import { useDevice } from "@/core/hook/useDevice";
 import { cn } from "@/core/utils/cn";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import Header from "../common/Header";
 import MobileSidebar from "./MobileSidebar";
 import Sidebar from "./Sidebar";
@@ -57,6 +58,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
 
             {/* Mobile Sidebar */}
             <MobileSidebar />
+            <Toaster />
         </div>
     );
 };

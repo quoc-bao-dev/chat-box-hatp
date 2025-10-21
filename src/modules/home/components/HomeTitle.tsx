@@ -16,7 +16,7 @@ const HomeTitle = () => {
                         onComplete={() => {
                             console.log("Animation completed");
                         }}
-                        className="size-[70px] lg:size-[180px] scale-x-[-1]"
+                        className="size-[50px] lg:size-[100px] scale-x-[-1]"
                     />
                 </div>
             </div>

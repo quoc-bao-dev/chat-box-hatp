@@ -29,7 +29,7 @@ const defaultItems: InfoItem[] = [
 
 const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
     const { isAssistantTyping } = useChatBoxState();
-    const { addMessage, setIsAssistantTyping, setMode } = useChatBoxActions();
+    const { addMessage, setIsAssistantTyping } = useChatBoxActions();
     const handleNext = (next: string) => async () => {
         if (!next) return;
         if (isAssistantTyping) return;
@@ -50,7 +50,7 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
                 );
                 handleNext(nextRes)();
             } else {
-                setMode("chat");
+                // setMode("chat");
             }
         } catch (error) {
             setIsAssistantTyping(false);

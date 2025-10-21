@@ -44,7 +44,7 @@ const useChatBoxStore = create<ChatBoxStore>((set) => {
         // state
         firstOption: null,
         isAssistantTyping: false,
-        mode: "chat",
+        mode: "click",
         massages: [],
         // action
         setFirstOption,

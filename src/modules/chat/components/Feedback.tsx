@@ -34,7 +34,7 @@ const EmojiButton = ({
             aria-pressed={isActive}
         >
             <div className="flex flex-col items-center gap-2 mt-3">
-                <div className="relative w-[100px] h-[100px] overflow-hidden lg:w-[120px] lg:h-[120px] -my-4 -mx-2">
+                <div className="relative w-[100px] h-[100px] overflow-hidden lg:w-[120px] lg:h-[120px] -my-4 lg:-mx-2">
                     <div className="relative w-full h-full transition-transform duration-200">
                         <Image
                             src={isActive ? activeImage : normalImage}

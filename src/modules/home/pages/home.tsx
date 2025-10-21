@@ -1,8 +1,8 @@
 "use client";
 
 import { ChatBoxContainer } from "@/core/components/layouts";
-import { ChatInput } from "@/modules/chat";
 import { HomeCardList } from "../../home/components";
+import BottomButton from "../components/BottomButton";
 import HomeTitle from "../components/HomeTitle";
 
 const HomePage = () => {
@@ -18,12 +18,9 @@ const HomePage = () => {
                 {/* === list items === */}
                 <HomeCardList />
 
-                {/* === input chat === */}
-                <ChatInput
-                    placeholder="Nhập tin nhắn..."
-                    onSend={(message) => console.log("Message sent:", message)}
-                    className="pt-5 lg:py-10 "
-                />
+                {/* === button chat === */}
+                <BottomButton />
+                <div className="pt-10"></div>
             </ChatBoxContainer>
         </div>
     );

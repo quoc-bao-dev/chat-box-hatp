@@ -1,5 +1,4 @@
 import { cn } from "@/core/utils/cn";
-import React from "react";
 
 type LoginButtonProps = {
     className?: string;

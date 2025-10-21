@@ -17,23 +17,27 @@ const LoginButton: React.FC<LoginButtonProps> = ({
             type="button"
             onClick={onClick}
             className={cn(
-                "relative inline-flex rounded-full p-[2px] cursor-pointer",
-                "bg-[linear-gradient(225deg,#FFFFFF99,#37C390,#37C39066)]",
+                "relative inline-flex rounded-full p-[1px] cursor-pointer",
+                "bg-[#30E3CA]",
                 "shadow-[0_8px_24px_rgba(30,158,100,0.20)]",
+                "transition-all duration-300 ease-out",
+                "hover:brightness-105 hover:shadow-[0_12px_32px_rgba(30,158,100,0.30)]",
                 className
             )}
         >
             <span
                 className={cn(
-                    "inline-flex items-center gap-5 px-1 lg:px-2 py-1 lg:py-2 rounded-full",
+                    "inline-flex items-center gap-3 px-1 lg:px-2 py-1.5 lg:py-2 rounded-full",
                     // inner background gradient (green)
-                    "bg-[linear-gradient(180deg,#35C282_0%,#1E9E64_100%)]",
+                    "bg-[linear-gradient(90deg,#00A76F_50.96%,#A1EBD2_93.27%)]",
                     "shadow-[inset_0_-6px_14px_rgba(0,0,0,0.12)]"
                 )}
             >
-                <span className="text-sm lg:text-[16px] leading-none font-semibold select-none pl-4 lg:pl-6 truncate text-white">
+                <span className="text-sm lg:text-[16px] leading-none font-semibold select-none pl-4 lg:pl-4 truncate text-white">
                     {children ?? "Đăng nhập"}
                 </span>
+
+                {/* === icon === */}
                 <span
                     className={cn(
                         "flex items-center justify-center",

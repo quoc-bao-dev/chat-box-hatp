@@ -19,6 +19,7 @@ const AutoSetSession = () => {
         if (getSessionStorage()) {
             return;
         }
+
         getSession().then(handlePrefetch);
     }, []);
     return null;

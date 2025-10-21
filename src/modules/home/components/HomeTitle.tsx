@@ -1,5 +1,7 @@
-import { Icon } from "@/core/components/common";
-import { _Image } from "@/core/config";
+"use client";
+
+import Lottie from "lottie-react";
+import handWave from "../../../../public/image/icons/wired-flat.json";
 
 const HomeTitle = () => {
     return (
@@ -9,11 +11,12 @@ const HomeTitle = () => {
                     Hoàng Anh Tân Phú <br /> xin chào !
                 </h1>
                 <div className="pt-10 lg:pt-0">
-                    <Icon
-                        src={_Image.icon.icon_hand_1}
-                        size={100}
-                        alt="icon-hand-1"
-                        className="size-[50px] lg:size-[100px]"
+                    <Lottie
+                        animationData={handWave}
+                        onComplete={() => {
+                            console.log("Animation completed");
+                        }}
+                        className="size-[70px] lg:size-[180px] scale-x-[-1]"
                     />
                 </div>
             </div>

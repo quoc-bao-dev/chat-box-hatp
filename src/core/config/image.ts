@@ -27,6 +27,7 @@ export const _Image = {
         icon_question: "/image/icons/icon-question.png",
         icon_hand: "/image/icons/hand.gif",
         icon_hand_1: "/image/icons/icon-hand-1.png",
+        icon_hand_wave: "/image/icon/hand-wave.json",
         emoji: {
             emoji_1: "/image/icons/emoji/emoji-1.png",
             emoji_1_at: "/image/icons/emoji/emoji-1-at.png",

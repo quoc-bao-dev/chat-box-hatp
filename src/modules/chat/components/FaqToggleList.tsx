@@ -9,12 +9,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 type FaqToggleListProps = {
     isShow: boolean;
+    defaultShow?: boolean;
     onToggle: () => void;
 };
 
-const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
-    const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-    const prevIsShowRef = useRef(isShow);
+const FaqToggleList = ({
+    isShow,
+    defaultShow,
+    onToggle,
+}: FaqToggleListProps) => {
+    const [isAnimatingOut, setIsAnimatingOut] = useState(defaultShow);
+    const prevIsShowRef = useRef(defaultShow);
     const { setFirstOption } = useChatBoxActions();
 
     const { data } = useGetChatbotList();

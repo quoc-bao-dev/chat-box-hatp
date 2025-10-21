@@ -11,7 +11,7 @@ type BottomBarProps = {
 };
 
 const BottomBar = ({ type }: BottomBarProps) => {
-    const [isShow, setIsShow] = useState(false);
+    const [isShow, setIsShow] = useState(type === "info");
 
     if (type === "chat") {
         return (
@@ -29,6 +29,7 @@ const BottomBar = ({ type }: BottomBarProps) => {
     return (
         <div>
             <FaqToggleList
+                defaultShow
                 isShow={isShow}
                 onToggle={() => setIsShow(!isShow)}
             />

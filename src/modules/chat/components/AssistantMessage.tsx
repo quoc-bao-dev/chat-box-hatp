@@ -15,8 +15,9 @@ const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
     return (
         <div>
             <div className="flex items-start gap-2 pt-6">
-                {/* avatar */}
+                {/* === avatar === */}
                 {avatar ? (
+                    // === chatbot ===
                     <div className="size-[40px] rounded-full overflow-hidden flex-shrink-0">
                         <Image
                             src={avatar || defaultAvatar}
@@ -27,6 +28,7 @@ const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
                         />
                     </div>
                 ) : (
+                    // === assistant ===
                     <div className="size-[40px] rounded-full overflow-hidden p-2.5 bg-[#37C39066] flex-shrink-0">
                         <Image
                             src={avatar || defaultAvatar}
@@ -37,14 +39,14 @@ const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
                         />
                     </div>
                 )}
-                {/* content */}
+                {/* === content === */}
                 <div className="relative">
-                    {/* name */}
+                    {/* === name === */}
                     <div className="absolute -top-6 left-2 text-sm text-gray-500">
                         {name || defaultName}
                     </div>
 
-                    {/* message */}
+                    {/* === message === */}
                     <div className="w-full">
                         <Message content={content} sender="assistant" />
                     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { axiosInstance } from "@/core/http";
-import { useGetChatbotList } from "@/services/chatbot";
+import { getSession as getSessionStorage } from "@/core/utils/session";
 import { useEffect } from "react";
 
 const getSession = async () => {
@@ -10,16 +10,15 @@ const getSession = async () => {
 };
 
 const AutoSetSession = () => {
-    const { refetch } = useGetChatbotList();
-
     // prefetch
     const handlePrefetch = async (data: string) => {
         sessionStorage.setItem("sp_session", data);
-
-        await refetch();
     };
 
     useEffect(() => {
+        if (getSessionStorage()) {
+            return;
+        }
         getSession().then(handlePrefetch);
     }, []);
     return null;

@@ -14,7 +14,7 @@
     "@tanstack/react-query-devtools": "^5.90.2",
     "axios": "^1.12.2",
     "date-fns": "^4.1.0",
-    "lottie-web": "^5.13.0",
+    "lottie-react": "^2.4.1",
     "next": "15.5.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",

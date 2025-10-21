@@ -33,23 +33,24 @@ const EmojiButton = ({
             className="group outline-none"
             aria-pressed={isActive}
         >
-            <div className="flex flex-col items-center gap-2">
-                <div className="relative w-[84px] h-[84px] overflow-hidden lg:w-[120px] lg:h-[120px]">
+            <div className="flex flex-col items-center gap-2 mt-3">
+                <div className="relative w-[100px] h-[100px] overflow-hidden lg:w-[120px] lg:h-[120px] -my-4 -mx-2">
                     <div className="relative w-full h-full transition-transform duration-200">
                         <Image
                             src={isActive ? activeImage : normalImage}
                             alt={rating}
-                            fill
+                            width={200}
+                            height={200}
                             className={cn(
-                                "object-contain relative w-full h-full",
-                                isActive ? "scale-120" : "scale-100 pt-4"
+                                "object-contain relative w-full h-full transition-transform duration-200",
+                                isActive ? "scale-120" : "scale-100"
                             )}
                         />
                     </div>
                 </div>
                 <p
                     className={cn(
-                        "font-semibold",
+                        "font-semibold text-sm lg:text-base",
                         isActive ? "text-[#00A76F]" : "text-[#1D2939]"
                     )}
                 >

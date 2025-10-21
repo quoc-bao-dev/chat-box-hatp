@@ -1,33 +1,76 @@
+"use client";
+
 import { _Image } from "@/core/config";
+import { botConfig } from "@/core/config/bot";
+import { axiosClient } from "@/core/http";
+import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
+import { useChatBoxActions, useChatBoxState } from "@/store";
 import Image from "next/image";
 
 type InfoItem = {
     id: string;
-    label: string;
+    content: string;
+    next?: string;
 };
 
-const items: InfoItem[] = [
-    { id: "return", label: "Thông tin về quy trình trả hàng" },
-    { id: "payment", label: "Quy trình trình thanh toán" },
-    { id: "debt", label: "Số ngày công nợ" },
-    { id: "invoice", label: "Quy trình xuất hoá đơn" },
-    { id: "hotline", label: "Gọi hotline liên hệ tư vấn viên" },
+type InfoPanelProps = {
+    items?: InfoItem[];
+    // title?: string;
+};
+
+const defaultItems: InfoItem[] = [
+    { id: "return", content: "Thông tin về quy trình trả hàng" },
+    { id: "payment", content: "Quy trình trình thanh toán" },
+    { id: "debt", content: "Số ngày công nợ" },
+    { id: "invoice", content: "Quy trình xuất hoá đơn" },
+    { id: "hotline", content: "Gọi hotline liên hệ tư vấn viên" },
 ];
 
-const InfoPanel = () => {
+const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
+    const { isAssistantTyping } = useChatBoxState();
+    const { addMessage, setIsAssistantTyping, setMode } = useChatBoxActions();
+    const handleNext = (next: string) => async () => {
+        if (!next) return;
+        if (isAssistantTyping) return;
+
+        try {
+            // setIsAssistantTyping(true);
+            const response = await axiosClient.post(next, {
+                sp_session: sessionStorage.getItem("sp_session"),
+            });
+
+            addMessage(createMessageFromResponse(response.data));
+            setIsAssistantTyping(false);
+            const nextRes = response.data.next;
+
+            if (nextRes) {
+                setIsAssistantTyping(true);
+                await new Promise((resolve) =>
+                    setTimeout(resolve, botConfig.typingDelay)
+                );
+                handleNext(nextRes)();
+            } else {
+                setMode("chat");
+            }
+        } catch (error) {
+            setIsAssistantTyping(false);
+        }
+    };
+
+    const title = "Thông tin khác về Hoàng Anh Tân Phú";
+
     return (
         <div className="px-3.5 py-4 rounded-[20px] bg-white max-w-[400px]">
-            <p className="text-[18px] font-semibold">
-                Thông tin khác về Hoàng Anh Tân Phú
-            </p>
+            <p className="text-[18px] font-semibold text-gray-900">{title}</p>
             <div className="pt-2 flex flex-col gap-2">
                 {items.map((item) => (
                     <div
                         key={item.id}
+                        onClick={handleNext(item.next!)}
                         className="cursor-pointer px-4 py-2 rounded-xl bg-gray-50/80 hover:bg-gray-100 flex items-center justify-between"
                     >
                         <p className="text-[#00A76F] font-medium">
-                            {item.label}
+                            {item.content}
                         </p>
                         <Image
                             src={_Image.icon.icon_send_2}

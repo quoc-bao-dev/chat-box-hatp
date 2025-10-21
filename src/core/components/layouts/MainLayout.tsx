@@ -39,6 +39,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
             <div className="lg:hidden fixed top-5 w-full z-50">
                 {/* === header mobile === */}
                 <Header />
+                {/* <p className="text-gray-600">{log}</p> */}
             </div>
 
             {/* === content === */}

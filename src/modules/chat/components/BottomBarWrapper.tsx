@@ -1,17 +1,16 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useChatBoxState } from "@/store";
 import { Children, PropsWithChildren } from "react";
 
 const BottomBarWrapper = ({ children }: PropsWithChildren) => {
-    const searchParams = useSearchParams();
-    const type = searchParams.get("type");
+    const { mode } = useChatBoxState();
 
     const childArray = Children.toArray(children);
     const first = childArray[0] ?? null;
     const second = childArray[1] ?? null;
 
-    if (type === "greeting") {
+    if (mode === "click") {
         return <>{first}</>;
     }
     return <>{second}</>;

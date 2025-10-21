@@ -1,23 +1,23 @@
 import { _Image } from "@/core/config";
 import Image from "next/image";
+import TypingIndicator from "./TypingIndicator";
 import Message from "./Message";
 
-type AssistantMessageProps = {
+type AssistantTypingProps = {
     avatar?: string;
-    content: string;
     name?: string;
 };
 
-const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
+const AssistantTyping = ({ avatar, name }: AssistantTypingProps) => {
     const defaultAvatar = _Image.icon.bot_avatar;
     const defaultName = "Chatbot HATP";
 
     return (
         <div>
-            <div className="flex items-start gap-2 pt-6">
+            <div className="flex items-end gap-2 pt-6">
                 {/* avatar */}
                 {avatar ? (
-                    <div className="size-[40px] rounded-full overflow-hidden flex-shrink-0">
+                    <div className="size-[40px] rounded-full overflow-hidden ">
                         <Image
                             src={avatar || defaultAvatar}
                             alt="bot-avatar"
@@ -27,7 +27,7 @@ const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
                         />
                     </div>
                 ) : (
-                    <div className="size-[40px] rounded-full overflow-hidden p-2.5 bg-[#37C39066] flex-shrink-0">
+                    <div className="size-[40px] rounded-full overflow-hidden p-2.5 bg-[#37C39066]">
                         <Image
                             src={avatar || defaultAvatar}
                             alt="bot-avatar"
@@ -40,18 +40,19 @@ const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
                 {/* content */}
                 <div className="relative">
                     {/* name */}
-                    <div className="absolute -top-6 left-2 text-sm text-gray-500">
+                    <div className="absolute -top-6 left-2 text-sm text-gray-500 truncate">
                         {name || defaultName}
                     </div>
 
                     {/* message */}
-                    <div className="w-full">
-                        <Message content={content} sender="assistant" />
-                    </div>
+                    <Message
+                        sender="assistant"
+                        content={<TypingIndicator />}
+                    ></Message>
                 </div>
             </div>
         </div>
     );
 };
 
-export default AssistantMessage;
+export default AssistantTyping;

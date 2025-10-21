@@ -7,14 +7,12 @@ interface ChatInputProps {
     placeholder?: string;
     className?: string;
     onSend?: (message: string) => void;
-    onMicClick?: () => void;
 }
 
 const ChatInput = ({
     placeholder = "Nhập tin nhắn...",
     className = "",
     onSend,
-    onMicClick,
 }: ChatInputProps) => {
     const handleSend = () => {
         const input = document.querySelector(
@@ -37,12 +35,12 @@ const ChatInput = ({
             <div className="bg-white p-2 rounded-full flex items-center border border-[#E2E8F0]">
                 <input
                     type="text"
-                    className="flex-1 outline-none pl-5"
+                    className="flex-1 outline-none pl-5 text-gray-800"
                     placeholder={placeholder}
                     onKeyPress={handleKeyPress}
                 />
                 <div
-                    className="p-3 rounded-full bg-[#00A76F] flex items-center justify-center cursor-pointer hover:bg-[#00A76F]/90 transition-colors"
+                    className="p-2 md:p-3 rounded-full bg-[#00A76F] flex items-center justify-center cursor-pointer hover:bg-[#00A76F]/90 transition-colors"
                     onClick={handleSend}
                 >
                     <Image
@@ -50,6 +48,7 @@ const ChatInput = ({
                         alt="icon-send"
                         width={20}
                         height={20}
+                        className="size-[18px] md:size-[20px] "
                     />
                 </div>
             </div>

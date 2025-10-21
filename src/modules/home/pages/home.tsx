@@ -1,19 +1,16 @@
 "use client";
 
-import { ChatBoxContainer } from "@/core/components/layouts";
-import { Player } from "@lordicon/react";
-import { ChatInput } from "@/modules/chat";
-import Link from "next/link";
-import { CardItem } from "../../home/components";
-import { homeCards } from "../../home/data/cards";
 import { Icon } from "@/core/components/common";
+import { ChatBoxContainer } from "@/core/components/layouts";
 import { _Image } from "@/core/config";
+import { ChatInput } from "@/modules/chat";
+import { HomeCardList } from "../../home/components";
 
 const HomePage = () => {
     return (
-        <div className="min-h-[calc(100vh-40px)] lg:min-h-[calc(100svh-40px)] w-full flex flex-col">
+        <div className="min-h-[calc(100svh-40px)] lg:min-h-[calc(100svh-40px)] w-full flex flex-col">
             <ChatBoxContainer
-                className="flex-1 flex flex-col h-full "
+                className="flex-1 flex flex-col h-full"
                 wrapperClassName="flex flex-col"
             >
                 {/* === title === */}
@@ -34,28 +31,13 @@ const HomePage = () => {
                 </div>
 
                 {/* === list items === */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
-                    {homeCards.map((c) => (
-                        <Link
-                            href={"/chat?type=greeting"}
-                            key={c.id}
-                            className="h-full"
-                        >
-                            <CardItem
-                                iconSrc={c.iconSrc}
-                                title={c.title}
-                                description={c.description}
-                            />
-                        </Link>
-                    ))}
-                </div>
+                <HomeCardList />
 
                 {/* === input chat === */}
                 <ChatInput
                     placeholder="Nhập tin nhắn..."
                     onSend={(message) => console.log("Message sent:", message)}
-                    onMicClick={() => console.log("Mic clicked")}
-                    className="pt-5 lg:py-10"
+                    className="pt-5 lg:py-10 "
                 />
             </ChatBoxContainer>
         </div>

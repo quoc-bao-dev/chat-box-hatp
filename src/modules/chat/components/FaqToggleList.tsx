@@ -4,8 +4,9 @@ import { Icon } from "@/core/components/common";
 import { _Image } from "@/core/config/image";
 import { CardItem } from "@/modules/home/components";
 import { homeCards } from "@/modules/home/data/cards";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useGetChatbotList } from "@/services/chatbot";
+import { useChatBoxActions } from "@/store";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type FaqToggleListProps = {
     isShow: boolean;
@@ -15,7 +16,21 @@ type FaqToggleListProps = {
 const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
     const [isAnimatingOut, setIsAnimatingOut] = useState(false);
     const prevIsShowRef = useRef(isShow);
-    const router = useRouter();
+    const { setFirstOption } = useChatBoxActions();
+
+    const { data, isLoading } = useGetChatbotList();
+
+    // Sử dụng useMemo để map dữ liệu từ API
+    const mappedCards = useMemo(() => {
+        if (!data?.data) return [];
+
+        return data.data.map((chatbot) => ({
+            id: Number(chatbot.id),
+            iconSrc: chatbot.avatar || "/image/icons/icon-01.png", // fallback icon
+            title: chatbot.name,
+            description: "Craft compelling text for ads and emails.", // default description
+        }));
+    }, [data?.data]);
 
     useEffect(() => {
         if (!isShow && prevIsShowRef.current) {
@@ -34,7 +49,7 @@ const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
     };
 
     return (
-        <>
+        <div className="min-h-[36px] relative">
             {/* === toggle items === */}
             {showButton && (
                 <div
@@ -51,7 +66,7 @@ const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
                             size={20}
                             alt="icon-question"
                         />
-                        <p className="text-sm font-medium">
+                        <p className="text-sm font-medium text-gray-900">
                             Các câu hỏi thường gặp
                         </p>
                     </div>
@@ -64,14 +79,14 @@ const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
                     overflow-hidden transition-all duration-300 ease-out
                     ${
                         isShow
-                            ? "opacity-100 translate-x-0 max-h-[999px] mt-3"
+                            ? "opacity-100 translate-x-0 max-h-[999px]"
                             : "opacity-0 -translate-x-3 max-h-0"
                     }
                 `}
                 onTransitionEnd={handleTransitionEnd}
             >
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
-                    {homeCards.map((c) => (
+                    {mappedCards.map((c) => (
                         <CardItem
                             key={c.id}
                             type="info"
@@ -80,13 +95,13 @@ const FaqToggleList = ({ isShow, onToggle }: FaqToggleListProps) => {
                             description={c.description}
                             onClick={() => {
                                 onToggle();
-                                router.push(`/chat?type=${c.id}`);
+                                setFirstOption(c.id!);
                             }}
                         />
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

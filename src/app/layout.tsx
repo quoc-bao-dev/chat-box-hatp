@@ -1,4 +1,4 @@
-import DeviceProvider from "@/core/provider/DeviceProvider";
+import AppProvider from "@/core/provider/AppProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -32,7 +32,7 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
             >
-                <DeviceProvider>{children}</DeviceProvider>
+                <AppProvider>{children}</AppProvider>
             </body>
         </html>
     );

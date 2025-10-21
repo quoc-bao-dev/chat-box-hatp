@@ -9,7 +9,7 @@ const Header = () => {
     return (
         <div className="w-full flex gap-2 justify-between px-4 ">
             {/* icon bar */}
-            <div className="">
+            <div className="flex-shrink-0">
                 <button
                     onClick={toggle}
                     className="p-1 rounded-lg hover:bg-gray-100/70 transition-colors duration-200 lg:hidden"

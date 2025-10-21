@@ -53,7 +53,7 @@ const Sidebar = () => {
     const { close } = useSidebar();
     return (
         <div
-            className="flex flex-col bg-white rounded-r-[24px] lg:rounded-l-[32px] lg:rounded-r-[32px]  sticky top-5 h-full"
+            className="flex flex-col bg-white rounded-r-[24px] lg:rounded-l-[32px] lg:rounded-r-[32px] sticky top-5 h-full"
             style={{ boxShadow: "0px 0px 40px 0px #00000011" }}
         >
             {/* close button */}
@@ -78,7 +78,7 @@ const Sidebar = () => {
                 </div>
             </div>
             {/* === items === */}
-            <div className="flex-1 pt-10 px-5 flex flex-col gap-2">
+            <div className="flex-1 pt-10 px-3 2xl:px-5 flex flex-col gap-2">
                 <SidebarItem
                     icon={_Image.icon.icon_chat}
                     text="Chat"

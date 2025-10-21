@@ -13,9 +13,6 @@ const HomeTitle = () => {
                 <div className="pt-10 lg:pt-0">
                     <Lottie
                         animationData={handWave}
-                        onComplete={() => {
-                            console.log("Animation completed");
-                        }}
                         className="size-[50px] lg:size-[100px] scale-x-[-1]"
                     />
                 </div>

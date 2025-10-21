@@ -4,7 +4,7 @@ import { ChatbotListResponse } from "./type";
 const chatbotApi = {
     // Reads
     getList: async () => {
-        const res = await axiosInstance.post<ChatbotListResponse>(
+        const res = await axiosInstance.get<ChatbotListResponse>(
             "/Api_chatbot/GetList"
         );
         return res.data;

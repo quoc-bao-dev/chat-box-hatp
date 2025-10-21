@@ -76,7 +76,7 @@ const FaqToggleList = ({
                     </div>
                 </div>
             )}
-            {!showButton && (
+            {/* {!showButton && (
                 <button
                     onClick={onToggle}
                     className="absolute -top-10 right-0 w-[35px] h-[35px] rounded-full bg-white/80 hover:bg-white transition-all duration-300 ease-out flex items-center justify-center"
@@ -88,7 +88,7 @@ const FaqToggleList = ({
                         className="mr-1"
                     />
                 </button>
-            )}
+            )} */}
 
             {/* === list items with slide-in from left === */}
             <div

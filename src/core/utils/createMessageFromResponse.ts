@@ -16,6 +16,33 @@ export const createMessageFromResponse = (
 export const createMessageFromHistoryResponse = (
     data: GetActiveRobotDetailResponse["data"]
 ): Message => {
+    const mapEvaluate = {
+        "1": "bad",
+        "2": "normal",
+        "3": "good",
+    };
+    if (data.event === "evaluate_support") {
+        console.log(data);
+
+        const jsonItem = data.json_item as {
+            evaluate: string;
+            tag: string[];
+        };
+        return {
+            id: Number(data.id),
+            sender: data.type_send === "1" ? "user" : "assistant",
+            content: data.message,
+            sendType: "feedback",
+            feedback: {
+                rating: mapEvaluate[jsonItem.evaluate as "1" | "2" | "3"] as
+                    | "good"
+                    | "normal"
+                    | "bad",
+                tags: jsonItem.tag,
+                isEvaluated: true,
+            },
+        };
+    }
     return {
         id: Number(data.id),
         sender: data.type_send === "1" ? "user" : "assistant",

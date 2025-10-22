@@ -6,13 +6,18 @@ export type Message = {
 
     sender: "user" | "assistant";
     content: string;
-    sendType: "select" | "options" | "text";
+    sendType: "select" | "options" | "text" | "feedback";
     options?: {
         id: string;
         content: string;
         next?: string;
         disabled?: boolean;
     }[];
+    feedback?: {
+        rating: "good" | "normal" | "bad";
+        tags: string[];
+        isEvaluated: boolean;
+    };
 };
 
 type ChatBoxState = {
@@ -35,6 +40,11 @@ type ChatBoxActions = {
     addMessage: (message: Message) => void;
     setSessionRobot: (sessionRobot: string | null) => void;
     disableOptionInMessage: (messageId: number, optionId: string) => void;
+    addFeedbackMessage: (feedbackData: {
+        rating: "good" | "normal" | "bad";
+        tags: string[];
+        isEvaluated: boolean;
+    }) => void;
 };
 
 type ChatBoxStore = ChatBoxState & ChatBoxActions;
@@ -94,6 +104,23 @@ const useChatBoxStore = create<ChatBoxStore>()(
             }));
         };
 
+        const addFeedbackMessage = (feedbackData: {
+            rating: "good" | "normal" | "bad";
+            tags: string[];
+            isEvaluated: boolean;
+        }) => {
+            const feedbackMessage: Message = {
+                id: Date.now(),
+                sender: "user",
+                content: "",
+                sendType: "feedback",
+                feedback: feedbackData,
+            };
+            set((state) => ({
+                massages: [...state.massages, feedbackMessage],
+            }));
+        };
+
         return {
             // state
             firstOption: null,
@@ -113,6 +140,7 @@ const useChatBoxStore = create<ChatBoxStore>()(
             addMessage,
             setSessionRobot,
             disableOptionInMessage,
+            addFeedbackMessage,
         };
     })
 );
@@ -165,6 +193,9 @@ export const useChatBoxActions = () => {
     const disableOptionInMessage = useChatBoxStore(
         (state) => state.disableOptionInMessage
     );
+    const addFeedbackMessage = useChatBoxStore(
+        (state) => state.addFeedbackMessage
+    );
     return {
         setFirstOption,
         setIsAssistantTyping,
@@ -175,5 +206,6 @@ export const useChatBoxActions = () => {
         addMessage,
         setSessionRobot,
         disableOptionInMessage,
+        addFeedbackMessage,
     };
 };

@@ -1,4 +1,5 @@
 import AssistantMessage from "./AssistantMessage";
+import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
 import UserMessage from "./UserMessage";
 
@@ -6,8 +7,13 @@ type ChatItemRenderProps = {
     id: number;
     sender: "user" | "assistant";
     content?: string;
-    sendType: "select" | "options" | "text" | "start";
+    sendType: "select" | "options" | "text" | "start" | "feedback";
     options?: { id: string; content: string; next?: string }[];
+    feedback?: {
+        rating: "good" | "normal" | "bad";
+        tags: string[];
+        isEvaluated: boolean;
+    };
 };
 
 const ChatItemRender = ({
@@ -16,6 +22,7 @@ const ChatItemRender = ({
     content,
     sendType,
     options,
+    feedback,
 }: ChatItemRenderProps) => {
     if (sender === "assistant" && sendType === "select") {
         return (
@@ -49,6 +56,10 @@ const ChatItemRender = ({
 
     if (sender === "user" && (sendType === "options" || sendType === "text")) {
         return <UserMessage content={content || ""} />;
+    }
+
+    if (sendType === "feedback") {
+        return <Feedback feedbackData={feedback} />;
     }
 
     return <div></div>;

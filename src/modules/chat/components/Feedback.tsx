@@ -5,7 +5,7 @@ import { _Image } from "@/core/config/image";
 import scrollbarStyles from "@/core/styles/scrollbar.module.css";
 import { cn } from "@/core/utils/cn";
 import { useEvaluateSupportMutation, useGetListTags } from "@/services/chatbot";
-import { useChatBoxState } from "@/store";
+import { useChatBoxState, useChatBoxActions } from "@/store";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
@@ -14,14 +14,26 @@ type Rating = "good" | "normal" | "bad";
 
 type FeedbackProps = {
     onScrollToBottom?: () => void;
+    feedbackData?: {
+        rating: "good" | "normal" | "bad";
+        tags: string[];
+        isEvaluated: boolean;
+    };
 };
 
-const Feedback = ({ onScrollToBottom }: FeedbackProps) => {
-    const [rating, setRating] = useState<Rating | null>(null);
-    const [reasons, setReasons] = useState<Set<string>>(new Set());
-    const [isEvaluated, setIsEvaluated] = useState(false);
+const Feedback = ({ onScrollToBottom, feedbackData }: FeedbackProps) => {
+    const [rating, setRating] = useState<Rating | null>(
+        feedbackData?.rating || null
+    );
+    const [reasons, setReasons] = useState<Set<string>>(
+        new Set(feedbackData?.tags || [])
+    );
+    const [isEvaluated, setIsEvaluated] = useState(
+        feedbackData?.isEvaluated || false
+    );
 
     const { sessionRobot } = useChatBoxState();
+    const { addFeedbackMessage, setIsFeedback } = useChatBoxActions();
 
     const { data: listTags } = useGetListTags();
 
@@ -79,6 +91,13 @@ const Feedback = ({ onScrollToBottom }: FeedbackProps) => {
         // Đánh dấu đã đánh giá thành công
         if (response.result) {
             setIsEvaluated(true);
+            // Lưu feedback vào store
+            addFeedbackMessage({
+                rating,
+                tags: Array.from(reasons),
+                isEvaluated: true,
+            });
+            setIsFeedback(false);
             toast.success("Đánh giá thành công");
         } else {
             toast.error("Đánh giá thất bại");

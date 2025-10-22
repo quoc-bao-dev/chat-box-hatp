@@ -9,7 +9,6 @@ import {
     useGetActiveRobotDetailMutation,
 } from "@/services/robot";
 import { useChatBoxActions, useChatBoxState } from "@/store";
-import { log } from "node:console";
 import { useEffect } from "react";
 
 const ChatBoxController = () => {

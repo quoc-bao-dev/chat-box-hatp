@@ -69,6 +69,7 @@ const ChatBoxRender = () => {
                     content={message.content}
                     sendType={message.sendType}
                     options={message.options}
+                    feedback={message.feedback}
                 />
             ))}
 

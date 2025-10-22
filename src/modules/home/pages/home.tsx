@@ -18,8 +18,6 @@ const HomePage = () => {
                 {/* === list items === */}
                 <HomeCardList />
 
-                <div className="pt-10"></div>
-
                 {/* === button chat === */}
                 <BottomButton />
             </ChatBoxContainer>

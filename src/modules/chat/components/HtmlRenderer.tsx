@@ -20,11 +20,13 @@ const HtmlRenderer = ({
     className,
     bulletPointConfig = {
         enabled: true,
-        bulletJSX: <div className="w-1 h-1 bg-blue-500 rounded-full"></div>,
-        bulletClassName: "flex items-center justify-center mr-2",
+        bulletJSX: (
+            <div className="w-1 h-1 bg-blue-500 rounded-full mt-2"></div>
+        ),
+        bulletClassName: " flex items-start justify-center mr-2",
         liSpacing: "0rem", // Khoảng cách mặc định giữa các li
-        ulClassName: "-mt-5",
-        liClassName: "-my-5",
+        ulClassName: "",
+        liClassName: "-my-2 flex items-start justify-start",
     },
 }: HtmlRendererProps) => {
     // Config để xử lý HTML
@@ -129,9 +131,9 @@ const HtmlRenderer = ({
             // Xử lý từng li element
             const liElements = ul.querySelectorAll("li");
             liElements.forEach((li) => {
-                li.style.display = "flex";
-                li.style.alignItems = "center"; // Thay đổi từ flex-start thành center
-                li.style.marginBottom = bulletPointConfig.liSpacing || "0.5rem";
+                // li.style.display = "flex";
+                // li.style.alignItems = "center"; // Thay đổi từ flex-start thành center
+                // li.style.marginBottom = bulletPointConfig.liSpacing || "0.5rem";
 
                 // Áp dụng CSS class cho li nếu có
                 if (bulletPointConfig.liClassName) {
@@ -162,8 +164,18 @@ const HtmlRenderer = ({
                     bulletSpan.textContent = "•";
                 }
 
-                // Insert bullet point vào đầu li
-                li.insertBefore(bulletSpan, li.firstChild);
+                // Tạo wrapper cho nội dung của li và di chuyển toàn bộ nội dung hiện tại vào trong
+                const contentWrapper = document.createElement("div");
+                const existingNodes = Array.from(li.childNodes);
+                li.innerHTML = "";
+
+                existingNodes.forEach((node) => {
+                    contentWrapper.appendChild(node);
+                });
+
+                // Chèn bullet và content wrapper để li có đúng 2 phần tử con: bullet và nội dung
+                li.appendChild(bulletSpan);
+                li.appendChild(contentWrapper);
             });
         });
 

@@ -5,13 +5,13 @@ import ChatInput from "./ChatInput";
 const ChatInputController = () => {
     const { addMessage } = useChatBoxActions();
     const handleSend = (message: string) => {
-        addMessage(
-            createMessage({
-                content: message,
-                sendType: "text",
-                sender: "user",
-            })
-        );
+        // addMessage(
+        //     createMessage({
+        //         content: message,
+        //         sendType: "text",
+        //         sender: "user",
+        //     })
+        // );
     };
     return <ChatInput onSend={handleSend} />;
 };

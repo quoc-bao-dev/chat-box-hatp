@@ -3,6 +3,7 @@ import { devtools } from "zustand/middleware";
 
 export type Message = {
     id: number;
+
     sender: "user" | "assistant";
     content: string;
     sendType: "select" | "options" | "text";

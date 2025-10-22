@@ -13,7 +13,7 @@ type BouncyButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-full transition-all duration-200 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none";
+    "inline-flex items-center justify-center font-medium rounded-full transition-all duration-200 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none transition-all duration-200";
 
 // Normalize outer box for all variants; inner span carries padding
 const variantClasses: Record<BouncyButtonVariant, string> = {
@@ -31,9 +31,9 @@ const sizeClasses: Record<BouncyButtonSize, string> = {
 };
 
 const innerOutlineGradientBase =
-    "rounded-full bg-white text-gray-900 hover:bg-white/95";
+    "rounded-full bg-white text-gray-900 hover:bg-white/90";
 const innerSolidBase =
-    "rounded-full bg-[#00A76F] text-white hover:bg-[#00A76F]/90";
+    "rounded-full bg-[#00A76F] text-white hover:bg-[#00A76F]/80";
 const innerSubtleBase = "rounded-full bg-white text-gray-900";
 const innerSizeClasses: Record<BouncyButtonSize, string> = {
     sm: "text-sm px-4 py-2",

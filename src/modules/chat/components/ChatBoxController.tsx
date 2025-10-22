@@ -1,10 +1,15 @@
 "use client";
 
 import { botConfig } from "@/core/config/bot";
+import { axiosInstance } from "@/core/http";
 import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
 import { getSession } from "@/core/utils/session";
-import { useGetActiveRobotDetailMutation } from "@/services/robot";
+import {
+    GetActiveRobotDetailResponse,
+    useGetActiveRobotDetailMutation,
+} from "@/services/robot";
 import { useChatBoxActions, useChatBoxState } from "@/store";
+import { log } from "node:console";
 import { useEffect } from "react";
 
 const ChatBoxController = () => {
@@ -35,7 +40,31 @@ const ChatBoxController = () => {
                 fetchRobotDetail({
                     option_id: firstOption,
                 })
-                    .then((data) => {
+                    .then(async (data) => {
+                        console.log("data", data);
+
+                        const typeEvent = data.data.event;
+
+                        if (typeEvent === "start" && data.next) {
+                            const res =
+                                await axiosInstance.get<GetActiveRobotDetailResponse>(
+                                    data.next as unknown as string,
+                                    {
+                                        params: {
+                                            sp_session: getSession(),
+                                        },
+                                    }
+                                );
+
+                            console.log("res", res);
+
+                            //  handle event
+                            // is_chat == 1 mở input chat luông
+                            if (data.is_chat === 1) {
+                            }
+                            // is_chat == 2 mở input chat 1 lần
+                        }
+
                         addMessage(createMessageFromResponse(data));
                         setSessionRobot(data.data.session_robot);
                     })

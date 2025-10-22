@@ -24,7 +24,7 @@ export interface RobotData {
     is_read: number;
     type_send: "0" | "1"; // 0 -> nhân viên, 1 -> khách
     message: string; // nội dung tin nhắn show ra
-    event: "select" | "text" | "options"; // select -> option , text
+    event: "select" | "text" | "options" | "start"; // select -> option , text
     file: string | null; // file đính kèm (hình ảnh)
     suport_items: number;
     json_item: any | null;
@@ -41,6 +41,9 @@ export interface GetActiveRobotDetailResponse {
     result: boolean;
     data: RobotData;
     next: boolean;
+    is_chat: 1 | 2 | null; // 1 -> bat luon , 2 -> bat 1 lan , null -> khong bat
+    send_chat: 1; // 1-> dừng lại nhập mã sản phẩm
+    next_wait?: string;
 }
 
 export interface ActiveRobotDetailPayload {

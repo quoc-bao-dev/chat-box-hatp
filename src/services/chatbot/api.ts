@@ -28,9 +28,21 @@ const chatbotApi = {
         params: EvaluateSupportParams,
         payload: EvaluateSupportRequest
     ) => {
+        const formData = new FormData();
+        if (Array.isArray(payload.tag)) {
+            payload.tag.forEach((t) => {
+                formData.append("tag[]", t);
+            });
+        }
+
         const res = await axiosInstance.post<EvaluateSupportResponse>(
             `/api_chatbot/evaluate_support/${params.session_robot}/${params.evaluate}`,
-            payload
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
         );
         return res.data;
     },

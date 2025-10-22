@@ -24,7 +24,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
     }, [pathname, isMobileDevice]);
 
     return (
-        <div className="bg-background min-h-[100svh] relative z-0 bg-white">
+        <div className="min-h-[100svh] relative z-0 bg-white">
             {/* === background === */}
             <div
                 className={cn(

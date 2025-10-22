@@ -26,7 +26,7 @@ const InfoList = ({
             className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] ${className}`}
         >
             <p className="text-[18px] font-semibold text-gray-900">{title}</p>
-            <div className="pt-2 flex flex-col gap-2">
+            <div className="pt-3 flex flex-col gap-2">
                 {items.map((item) => (
                     <div
                         key={item.id}

@@ -1,11 +1,32 @@
 import { cn } from "@/core/utils/cn";
+import React from "react";
+import { renderToString } from "react-dom/server";
 
 type HtmlRendererProps = {
     htmlContent: string;
     className?: string;
+    bulletPointConfig?: {
+        enabled?: boolean;
+        bulletJSX?: React.ReactNode;
+        bulletClassName?: string;
+        liSpacing?: string; // Khoảng cách giữa các li items
+        ulClassName?: string; // CSS class cho ul
+        liClassName?: string; // CSS class cho li
+    };
 };
 
-const HtmlRenderer = ({ htmlContent, className }: HtmlRendererProps) => {
+const HtmlRenderer = ({
+    htmlContent,
+    className,
+    bulletPointConfig = {
+        enabled: true,
+        bulletJSX: <div className="w-1 h-1 bg-blue-500 rounded-full"></div>,
+        bulletClassName: "flex items-center justify-center mr-2",
+        liSpacing: "0rem", // Khoảng cách mặc định giữa các li
+        ulClassName: "-mt-5",
+        liClassName: "-my-5",
+    },
+}: HtmlRendererProps) => {
     // Config để xử lý HTML
     const processHtmlContent = (html: string) => {
         // Decode HTML entities
@@ -72,15 +93,89 @@ const HtmlRenderer = ({ htmlContent, className }: HtmlRendererProps) => {
         return decodedHtml;
     };
 
-    // Xử lý HTML content
-    const processedHtml = processHtmlContent(htmlContent);
+    // Render HTML với xử lý đặc biệt cho ul/li
+    const renderHtmlWithBullets = (html: string) => {
+        const processedHtml = processHtmlContent(html);
 
-    return (
-        <div
-            className={cn("text-base font-medium w-full", className)}
-            dangerouslySetInnerHTML={{ __html: processedHtml }}
-        />
-    );
+        // Nếu không bật bullet points hoặc không có ul/li, render bình thường
+        if (
+            !bulletPointConfig.enabled ||
+            (!processedHtml.includes("<ul>") && !processedHtml.includes("<li>"))
+        ) {
+            return (
+                <div
+                    className={cn("text-base font-medium w-full", className)}
+                    dangerouslySetInnerHTML={{ __html: processedHtml }}
+                />
+            );
+        }
+
+        // Parse HTML để xử lý ul/li
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(processedHtml, "text/html");
+
+        // Tìm tất cả ul elements
+        const ulElements = doc.querySelectorAll("ul");
+        ulElements.forEach((ul) => {
+            ul.style.listStyleType = "none";
+            ul.style.paddingLeft = "0";
+            ul.style.marginLeft = "0";
+
+            // Áp dụng CSS class cho ul nếu có
+            if (bulletPointConfig.ulClassName) {
+                ul.className = bulletPointConfig.ulClassName;
+            }
+
+            // Xử lý từng li element
+            const liElements = ul.querySelectorAll("li");
+            liElements.forEach((li) => {
+                li.style.display = "flex";
+                li.style.alignItems = "center"; // Thay đổi từ flex-start thành center
+                li.style.marginBottom = bulletPointConfig.liSpacing || "0.5rem";
+
+                // Áp dụng CSS class cho li nếu có
+                if (bulletPointConfig.liClassName) {
+                    li.className = bulletPointConfig.liClassName;
+                }
+
+                // Tạo bullet point element
+                const bulletSpan = document.createElement("div");
+                bulletSpan.className =
+                    bulletPointConfig.bulletClassName ||
+                    "text-gray-600 mr-2 flex items-center justify-center";
+
+                // Xử lý bulletJSX - có thể là string hoặc JSX element
+                if (typeof bulletPointConfig.bulletJSX === "string") {
+                    bulletSpan.textContent = bulletPointConfig.bulletJSX;
+                } else if (React.isValidElement(bulletPointConfig.bulletJSX)) {
+                    // Convert JSX element to HTML string
+                    try {
+                        const htmlString = renderToString(
+                            bulletPointConfig.bulletJSX
+                        );
+                        bulletSpan.innerHTML = htmlString;
+                    } catch (error) {
+                        console.warn("Error rendering bulletJSX:", error);
+                        bulletSpan.textContent = "•";
+                    }
+                } else {
+                    bulletSpan.textContent = "•";
+                }
+
+                // Insert bullet point vào đầu li
+                li.insertBefore(bulletSpan, li.firstChild);
+            });
+        });
+
+        return (
+            <div
+                className={cn("text-base font-medium w-full", className)}
+                dangerouslySetInnerHTML={{ __html: doc.body.innerHTML }}
+            />
+        );
+    };
+
+    return renderHtmlWithBullets(htmlContent);
 };
 
 export default HtmlRenderer;

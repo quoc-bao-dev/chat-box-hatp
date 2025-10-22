@@ -1,13 +1,12 @@
 "use client";
 
-import { _Image } from "@/core/config";
+import { InfoList, InfoListItem } from "@/core/components/ui";
 import { botConfig } from "@/core/config/bot";
 import axiosClient from "@/core/http/axiosClient";
 import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
 import { getSession } from "@/core/utils/session";
 import { useChatBoxActions, useChatBoxState } from "@/store";
 import { useCartItemEffect } from "@/store/cartItemEffect";
-import Image from "next/image";
 
 type InfoItem = {
     id: string;
@@ -40,6 +39,7 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
 
     const { triggerForceClose } = useCartItemEffect();
 
+    // xử lí kịch bản ở đây
     const handleNext = (next: string) => async () => {
         if (!next) return;
         if (isAssistantTyping) return;
@@ -75,31 +75,27 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
         }
     };
 
+    const handleItemClick = (item: InfoListItem) => {
+        const infoItem = items.find((i) => i.id === item.id);
+        if (infoItem?.next) {
+            handleNext(infoItem.next)();
+        }
+    };
+
     const title = "Thông tin khác về Hoàng Anh Tân Phú";
 
+    // Convert InfoItem[] to InfoListItem[]
+    const infoListItems: InfoListItem[] = items.map((item) => ({
+        id: item.id,
+        content: item.content,
+    }));
+
     return (
-        <div className="px-3.5 py-4 rounded-[20px] bg-white max-w-[400px]">
-            <p className="text-[18px] font-semibold text-gray-900">{title}</p>
-            <div className="pt-2 flex flex-col gap-2">
-                {items.map((item) => (
-                    <div
-                        key={item.id}
-                        onClick={handleNext(item.next!)}
-                        className="cursor-pointer px-4 py-2 rounded-xl bg-gray-50/80 hover:bg-gray-100 flex items-center justify-between"
-                    >
-                        <p className="text-[#00A76F] font-medium">
-                            {item.content}
-                        </p>
-                        <Image
-                            src={_Image.icon.icon_send_2}
-                            alt="arrow-right"
-                            width={20}
-                            height={20}
-                        />
-                    </div>
-                ))}
-            </div>
-        </div>
+        <InfoList
+            title={title}
+            items={infoListItems}
+            onItemClick={handleItemClick}
+        />
     );
 };
 

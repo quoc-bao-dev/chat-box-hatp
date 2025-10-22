@@ -82,8 +82,9 @@ const useChatBoxStore = create<ChatBoxStore>()(
                             ...message,
                             options: message.options.map((option) =>
                                 option.id === optionId
-                                    ? { ...option, disabled: true }
-                                    : option
+                                    ? // toggle disable
+                                      { ...option, disabled: true }
+                                    : { ...option, disabled: true }
                             ),
                         };
                     }

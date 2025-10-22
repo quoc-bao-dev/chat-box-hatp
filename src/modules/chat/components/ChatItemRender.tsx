@@ -19,12 +19,19 @@ const ChatItemRender = ({
 }: ChatItemRenderProps) => {
     if (sender === "assistant" && sendType === "select") {
         return (
-            <div>
-                <AssistantMessage content={content!} />
-                <div className="pt-3 pl-12">
-                    <InfoPanel items={options} messageId={id} />
-                </div>
-            </div>
+            <AssistantMessage
+                content={
+                    options && options.length > 0 ? (
+                        <InfoPanel
+                            title={content}
+                            items={options}
+                            messageId={id}
+                        />
+                    ) : (
+                        content
+                    )
+                }
+            />
         );
     }
 

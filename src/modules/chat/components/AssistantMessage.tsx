@@ -1,10 +1,11 @@
 import { _Image } from "@/core/config";
 import Image from "next/image";
+import React from "react";
 import Message from "./Message";
 
 type AssistantMessageProps = {
     avatar?: string;
-    content: string;
+    content: string | React.ReactNode;
     name?: string;
 };
 
@@ -47,9 +48,15 @@ const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
                     </div>
 
                     {/* === message === */}
-                    <div className="w-full">
-                        <Message content={content} sender="assistant" />
-                    </div>
+                    {React.isValidElement(content) ? (
+                        <> {content}</>
+                    ) : (
+                        <div>
+                            <div className="w-full">
+                                <Message content={content} sender="assistant" />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

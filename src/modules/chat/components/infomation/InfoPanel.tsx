@@ -16,6 +16,7 @@ type InfoItem = {
 };
 
 type InfoPanelProps = {
+    title?: string;
     items?: InfoItem[];
     messageId?: number;
 };
@@ -28,7 +29,7 @@ const defaultItems: InfoItem[] = [
     { id: "hotline", content: "Gọi hotline liên hệ tư vấn viên" },
 ];
 
-const InfoPanel = ({ items = [], messageId }: InfoPanelProps) => {
+const InfoPanel = ({ title, items = [], messageId }: InfoPanelProps) => {
     const { isAssistantTyping } = useChatBoxState();
 
     const {
@@ -71,7 +72,6 @@ const InfoPanel = ({ items = [], messageId }: InfoPanelProps) => {
             } else {
                 // setMode("chat");
 
-                // TODO: start countdown feedback
                 startCountdownFeedback();
             }
         } catch (error) {
@@ -91,8 +91,6 @@ const InfoPanel = ({ items = [], messageId }: InfoPanelProps) => {
         }
     };
 
-    const title = "Thông tin khác về Hoàng Anh Tân Phú";
-
     // Convert InfoItem[] to InfoListItem[]
     const infoListItems: InfoListItem[] = items.map((item) => ({
         id: item.id,
@@ -106,7 +104,7 @@ const InfoPanel = ({ items = [], messageId }: InfoPanelProps) => {
 
     return (
         <InfoList
-            title={title}
+            title={title!}
             items={infoListItems}
             onItemClick={handleItemClick}
         />

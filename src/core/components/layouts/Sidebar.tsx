@@ -33,7 +33,7 @@ const SidebarItem = ({
                 ${
                     isActive
                         ? "bg-[#37C390] text-white hover:bg-[#2ea876]"
-                        : "text-gray-900 hover:bg-gray-100/70"
+                        : "text-gray-600 hover:bg-gray-100/70"
                 }
             `}
         >

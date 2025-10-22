@@ -8,7 +8,7 @@ const AutoLoadMessage = () => {
         per_page: 10,
     });
 
-    // console.log(data);
+    console.log(data);
 
     return null;
 };

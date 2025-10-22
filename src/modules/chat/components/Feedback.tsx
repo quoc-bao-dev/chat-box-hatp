@@ -35,7 +35,7 @@ const EmojiButton = ({
             aria-pressed={isActive}
         >
             <div className="flex flex-col items-center gap-2 mt-3">
-                <div className="relative w-[100px] h-[100px] overflow-hidden lg:w-[120px] lg:h-[120px] -my-4 ">
+                <div className="relative flex items-center w-[100px] h-[100px] overflow-hidden lg:w-[120px] lg:h-[120px] -my-4 ">
                     <div className="relative w-full h-full transition-transform duration-200">
                         <Image
                             src={isActive ? activeImage : normalImage}
@@ -184,7 +184,7 @@ const Feedback = () => {
                 {/* Mobile: Horizontal scroll */}
                 <div
                     className={cn(
-                        "flex items-center gap-3 overflow-x-auto pb-2 lg:hidde-n max-w-[420px]",
+                        "flex items-center gap-3 overflow-x-auto pb-2 max-w-full lg:max-w-[420px]",
                         scrollbarStyles.customScrollbar
                     )}
                 >

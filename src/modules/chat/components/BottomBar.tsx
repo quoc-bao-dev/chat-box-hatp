@@ -1,7 +1,8 @@
 "use client";
 
 import BottomButton from "@/modules/home/components/BottomButton";
-import { useState } from "react";
+import { useCartItemEffect } from "@/store/cartItemEffect";
+import { useEffect, useState } from "react";
 import ChatInputController from "./ChatInputController";
 import FaqToggleList from "./FaqToggleList";
 
@@ -10,7 +11,17 @@ type BottomBarProps = {
 };
 
 const BottomBar = ({ type }: BottomBarProps) => {
-    const [isShow, setIsShow] = useState(type === "info");
+    const [isShow, setIsShow] = useState(false);
+
+    // side effect
+    const { forceClose, resetForceClose } = useCartItemEffect();
+
+    useEffect(() => {
+        if (forceClose) {
+            setIsShow(false);
+            resetForceClose();
+        }
+    }, [forceClose]);
 
     if (type === "chat") {
         return (
@@ -28,7 +39,6 @@ const BottomBar = ({ type }: BottomBarProps) => {
     return (
         <div>
             <FaqToggleList
-                defaultShow
                 isShow={isShow}
                 onToggle={() => setIsShow(!isShow)}
             />

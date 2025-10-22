@@ -40,7 +40,7 @@ const AssistantTyping = ({ avatar, name }: AssistantTypingProps) => {
                 {/* content */}
                 <div className="relative">
                     {/* name */}
-                    <div className="absolute -top-6 left-2 text-sm text-gray-500 truncate">
+                    <div className="absolute -top-6 left-2 text-xs text-gray-500 truncate">
                         {name || defaultName}
                     </div>
 

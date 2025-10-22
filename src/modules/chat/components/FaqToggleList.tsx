@@ -5,6 +5,7 @@ import { _Image } from "@/core/config/image";
 import { CardItem } from "@/modules/home/components";
 import { useGetChatbotList } from "@/services/chatbot";
 import { useChatBoxActions } from "@/store";
+import { useCartItemEffect } from "@/store/cartItemEffect";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type FaqToggleListProps = {
@@ -72,11 +73,13 @@ const FaqToggleList = ({
                             alt="icon-question"
                         />
                         <p className="text-sm font-medium text-gray-900">
-                            Các câu hỏi thường gặp
+                            Vấn để cần hỗ trợ
                         </p>
                     </div>
                 </div>
             )}
+
+            {/* === close button === */}
             {/* {!showButton && (
                 <button
                     onClick={onToggle}

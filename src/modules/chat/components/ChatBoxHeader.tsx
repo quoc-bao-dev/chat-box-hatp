@@ -15,10 +15,10 @@ const ChatBoxHeader = () => {
                             alt="icon-headphone"
                             width={32}
                             height={32}
-                            className="size-[32px]"
+                            className="size-[24px]"
                         />
-                        <h1 className="font-semibold text-[#5E5E5E] text-[28px] leading-[1.15]">
-                            Hoàng Anh Tân Phú hỗ trợ
+                        <h1 className="font-semibold text-[#5E5E5E] text-[20px] leading-[1.15]">
+                            Giấy Hoàng Anh hỗ trợ
                         </h1>
                     </div>
                     {/* login */}

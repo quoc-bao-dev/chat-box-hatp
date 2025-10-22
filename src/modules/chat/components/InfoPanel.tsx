@@ -6,6 +6,7 @@ import axiosClient from "@/core/http/axiosClient";
 import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
 import { getSession } from "@/core/utils/session";
 import { useChatBoxActions, useChatBoxState } from "@/store";
+import { useCartItemEffect } from "@/store/cartItemEffect";
 import Image from "next/image";
 
 type InfoItem = {
@@ -29,6 +30,7 @@ const defaultItems: InfoItem[] = [
 
 const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
     const { isAssistantTyping } = useChatBoxState();
+
     const {
         addMessage,
         setIsAssistantTyping,
@@ -36,10 +38,15 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
         stopCountdownFeedback,
         setSessionRobot,
     } = useChatBoxActions();
+
+    const { triggerForceClose } = useCartItemEffect();
+
     const handleNext = (next: string) => async () => {
         if (!next) return;
         if (isAssistantTyping) return;
+
         stopCountdownFeedback();
+        triggerForceClose();
         try {
             const response = await axiosClient.post(next, {
                 sp_session: getSession(),

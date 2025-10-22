@@ -64,6 +64,7 @@ const ChatBoxRender = () => {
             {massages.map((message, index) => (
                 <ChatItemRender
                     key={index}
+                    id={message.id}
                     sender={message.sender}
                     content={message.content}
                     sendType={message.sendType}

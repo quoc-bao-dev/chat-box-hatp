@@ -1,10 +1,17 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 export type Message = {
+    id: number;
     sender: "user" | "assistant";
     content: string;
     sendType: "select" | "options" | "text";
-    options?: any[];
+    options?: {
+        id: string;
+        content: string;
+        next?: string;
+        disabled?: boolean;
+    }[];
 };
 
 type ChatBoxState = {
@@ -26,62 +33,87 @@ type ChatBoxActions = {
     setMode: (mode: "chat" | "click") => void;
     addMessage: (message: Message) => void;
     setSessionRobot: (sessionRobot: string | null) => void;
+    disableOptionInMessage: (messageId: number, optionId: string) => void;
 };
 
 type ChatBoxStore = ChatBoxState & ChatBoxActions;
 
-const useChatBoxStore = create<ChatBoxStore>((set) => {
-    const setFirstOption = (firstOption: number | null) => {
-        set({ firstOption });
-    };
+const useChatBoxStore = create<ChatBoxStore>()(
+    devtools((set) => {
+        const setFirstOption = (firstOption: number | null) => {
+            set({ firstOption });
+        };
 
-    const setIsAssistantTyping = (isAssistantTyping: boolean) => {
-        set({ isAssistantTyping });
-    };
-    const setIsFeedback = (isFeedback: boolean) => {
-        set({ isFeedback });
-    };
+        const setIsAssistantTyping = (isAssistantTyping: boolean) => {
+            set({ isAssistantTyping });
+        };
+        const setIsFeedback = (isFeedback: boolean) => {
+            set({ isFeedback });
+        };
 
-    const startCountdownFeedback = () => {
-        set({ isCountdownFeedback: true });
-    };
+        const startCountdownFeedback = () => {
+            set({ isCountdownFeedback: true });
+        };
 
-    const stopCountdownFeedback = () => {
-        set({ isCountdownFeedback: false });
-    };
+        const stopCountdownFeedback = () => {
+            set({ isCountdownFeedback: false });
+        };
 
-    const setMode = (mode: "chat" | "click") => {
-        set({ mode });
-    };
+        const setMode = (mode: "chat" | "click") => {
+            set({ mode });
+        };
 
-    const setSessionRobot = (sessionRobot: string | null) => {
-        set({ sessionRobot });
-    };
+        const setSessionRobot = (sessionRobot: string | null) => {
+            set({ sessionRobot });
+        };
 
-    const addMessage = (message: Message) => {
-        set((state) => ({ massages: [...state.massages, message] }));
-    };
+        const addMessage = (message: Message) => {
+            set((state) => ({ massages: [...state.massages, message] }));
+        };
 
-    return {
-        // state
-        firstOption: null,
-        isAssistantTyping: false,
-        isCountdownFeedback: false,
-        isFeedback: false,
-        mode: "click",
-        massages: [],
-        sessionRobot: null,
-        // action
-        setFirstOption,
-        setIsAssistantTyping,
-        setIsFeedback,
-        startCountdownFeedback,
-        stopCountdownFeedback,
-        setMode,
-        addMessage,
-        setSessionRobot,
-    };
-});
+        const disableOptionInMessage = (
+            messageId: number,
+            optionId: string
+        ) => {
+            set((state) => ({
+                massages: state.massages.map((message) => {
+                    if (message.id === messageId && message.options) {
+                        return {
+                            ...message,
+                            options: message.options.map((option) =>
+                                option.id === optionId
+                                    ? { ...option, disabled: true }
+                                    : option
+                            ),
+                        };
+                    }
+                    return message;
+                }),
+            }));
+        };
+
+        return {
+            // state
+            firstOption: null,
+            isAssistantTyping: false,
+            isCountdownFeedback: false,
+            isFeedback: false,
+            mode: "click",
+            massages: [],
+            sessionRobot: null,
+            // action
+            setFirstOption,
+            setIsAssistantTyping,
+            setIsFeedback,
+            startCountdownFeedback,
+            stopCountdownFeedback,
+            setMode,
+            addMessage,
+            setSessionRobot,
+            disableOptionInMessage,
+        };
+    })
+);
 
 export default useChatBoxStore;
 
@@ -128,6 +160,9 @@ export const useChatBoxActions = () => {
     const setMode = useChatBoxStore((state) => state.setMode);
     const addMessage = useChatBoxStore((state) => state.addMessage);
     const setSessionRobot = useChatBoxStore((state) => state.setSessionRobot);
+    const disableOptionInMessage = useChatBoxStore(
+        (state) => state.disableOptionInMessage
+    );
     return {
         setFirstOption,
         setIsAssistantTyping,
@@ -137,5 +172,6 @@ export const useChatBoxActions = () => {
         setMode,
         addMessage,
         setSessionRobot,
+        disableOptionInMessage,
     };
 };

@@ -1,9 +1,11 @@
 import Image from "next/image";
 import { _Image } from "@/core/config";
+import { cn } from "@/core/utils/cn";
 
 export type InfoListItem = {
     id: string;
     content: string;
+    disabled?: boolean;
 };
 
 export type InfoListProps = {
@@ -28,10 +30,20 @@ const InfoList = ({
                 {items.map((item) => (
                     <div
                         key={item.id}
-                        onClick={() => onItemClick?.(item)}
-                        className="cursor-pointer px-4 py-2 rounded-xl bg-gray-50/80 hover:bg-gray-100 flex items-center justify-between"
+                        onClick={() => !item.disabled && onItemClick?.(item)}
+                        className={cn(
+                            ` px-4 py-2 rounded-xl bg-gray-50/80 flex items-center justify-between ${
+                                item.disabled
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : "cursor-pointer hover:bg-gray-100 "
+                            }`
+                        )}
                     >
-                        <p className="text-[#00A76F] font-medium">
+                        <p
+                            className={`text-[#00A76F] font-medium ${
+                                item.disabled ? "text-gray-500" : ""
+                            }`}
+                        >
                             {item.content}
                         </p>
                         <Image

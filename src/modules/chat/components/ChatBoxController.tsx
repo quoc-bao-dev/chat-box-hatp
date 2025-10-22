@@ -2,6 +2,7 @@
 
 import { botConfig } from "@/core/config/bot";
 import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
+import { getSession } from "@/core/utils/session";
 import { useGetActiveRobotDetailMutation } from "@/services/robot";
 import { useChatBoxActions, useChatBoxState } from "@/store";
 import { useEffect } from "react";
@@ -16,9 +17,11 @@ const ChatBoxController = () => {
 
     // handle first option and mode
     useEffect(() => {
+        if (getSession()) return;
+
         if (!firstOption && massages.length === 0) {
-            setFirstOption(1);
-            setMode("click");
+            // setFirstOption(1);
+            // setMode("click");
         }
     }, []);
 
@@ -34,12 +37,6 @@ const ChatBoxController = () => {
                 })
                     .then((data) => {
                         addMessage(createMessageFromResponse(data));
-
-                        console.log(
-                            "data.data.session_robot",
-                            data.data.session_robot
-                        );
-
                         setSessionRobot(data.data.session_robot);
                     })
                     .then(() => {

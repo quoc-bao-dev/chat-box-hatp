@@ -12,10 +12,12 @@ type InfoItem = {
     id: string;
     content: string;
     next?: string;
+    disabled?: boolean;
 };
 
 type InfoPanelProps = {
     items?: InfoItem[];
+    messageId?: number;
 };
 
 const defaultItems: InfoItem[] = [
@@ -26,7 +28,7 @@ const defaultItems: InfoItem[] = [
     { id: "hotline", content: "Gọi hotline liên hệ tư vấn viên" },
 ];
 
-const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
+const InfoPanel = ({ items = [], messageId }: InfoPanelProps) => {
     const { isAssistantTyping } = useChatBoxState();
 
     const {
@@ -35,6 +37,8 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
         startCountdownFeedback,
         stopCountdownFeedback,
         setSessionRobot,
+        disableOptionInMessage,
+        setIsFeedback,
     } = useChatBoxActions();
 
     const { triggerForceClose } = useCartItemEffect();
@@ -76,8 +80,13 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
     };
 
     const handleItemClick = (item: InfoListItem) => {
+        setIsFeedback(false);
         const infoItem = items.find((i) => i.id === item.id);
         if (infoItem?.next) {
+            // Disable option trước khi thực hiện next
+            if (messageId) {
+                disableOptionInMessage(messageId, item.id);
+            }
             handleNext(infoItem.next)();
         }
     };
@@ -88,7 +97,12 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
     const infoListItems: InfoListItem[] = items.map((item) => ({
         id: item.id,
         content: item.content,
+        disabled: item.disabled,
     }));
+
+    if (infoListItems.length === 0) {
+        return null;
+    }
 
     return (
         <InfoList

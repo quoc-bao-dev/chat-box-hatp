@@ -3,6 +3,7 @@ import InfoPanel from "./infomation/InfoPanel";
 import UserMessage from "./UserMessage";
 
 type ChatItemRenderProps = {
+    id: number;
     sender: "user" | "assistant";
     content?: string;
     sendType: "select" | "options" | "text";
@@ -10,6 +11,7 @@ type ChatItemRenderProps = {
 };
 
 const ChatItemRender = ({
+    id,
     sender,
     content,
     sendType,
@@ -20,7 +22,7 @@ const ChatItemRender = ({
             <div>
                 <AssistantMessage content={content!} />
                 <div className="pt-3 pl-12">
-                    <InfoPanel items={options} />
+                    <InfoPanel items={options} messageId={id} />
                 </div>
             </div>
         );

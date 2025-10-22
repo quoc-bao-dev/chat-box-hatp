@@ -5,7 +5,6 @@ import { _Image } from "@/core/config/image";
 import { CardItem } from "@/modules/home/components";
 import { useGetChatbotList } from "@/services/chatbot";
 import { useChatBoxActions } from "@/store";
-import { useCartItemEffect } from "@/store/cartItemEffect";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type FaqToggleListProps = {
@@ -35,6 +34,7 @@ const FaqToggleList = ({
             iconSrc: chatbot.avatar || "/image/icons/icon-01.png", // fallback icon
             title: chatbot.name,
             description: "Craft compelling text for ads and emails.", // default description
+            disabled: chatbot.disabled === "1",
         }));
     }, [data?.data]);
 
@@ -120,6 +120,7 @@ const FaqToggleList = ({
                                 setIsFeedback(false);
                                 stopCountdownFeedback();
                             }}
+                            disabled={c.disabled}
                         />
                     ))}
                 </div>

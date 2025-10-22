@@ -8,7 +8,7 @@ import CardItem from "./CardItem";
 import HomeCardListSkeleton from "./HomeCardListSkeleton";
 
 const HomeCardList = () => {
-    const { setFirstOption, setMode } = useChatBoxActions();
+    const { setFirstOption, setMode, setIsFeedback } = useChatBoxActions();
     const router = useRouter();
 
     const { data, isLoading } = useGetChatbotList();
@@ -22,12 +22,14 @@ const HomeCardList = () => {
             iconSrc: chatbot.avatar || "/image/icons/icon-01.png", // fallback icon
             title: chatbot.name,
             description: "Craft compelling text for ads and emails.", // default description
+            disabled: chatbot.disabled === "1",
         }));
     }, [data?.data]);
 
     const handleClick = (id: number) => {
         setFirstOption(id);
         setMode("click");
+        setIsFeedback(false);
         router.push("/chat");
     };
 
@@ -46,6 +48,7 @@ const HomeCardList = () => {
                             title={card.title}
                             description={card.description}
                             onClick={() => handleClick(card.id)}
+                            disabled={card.disabled}
                         />
                     </div>
                 ))

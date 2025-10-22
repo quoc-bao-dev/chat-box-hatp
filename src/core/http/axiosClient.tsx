@@ -56,9 +56,9 @@ axiosInstance.interceptors.request.use(
                 config.method.toLowerCase()
             )
         ) {
-            if (config.data && typeof config.data === "object") {
-                config.data.language = "vi"; // Default to Vietnamese
-            }
+            // if (config.data && typeof config.data === "object") {
+            //     config.data.language = "vi"; // Default to Vietnamese
+            // }
         }
 
         return config;

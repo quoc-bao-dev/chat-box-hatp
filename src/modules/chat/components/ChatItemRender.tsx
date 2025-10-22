@@ -1,5 +1,5 @@
 import AssistantMessage from "./AssistantMessage";
-import InfoPanel from "./InfoPanel";
+import InfoPanel from "./infomation/InfoPanel";
 import UserMessage from "./UserMessage";
 
 type ChatItemRenderProps = {

@@ -17,7 +17,6 @@ type InfoItem = {
 
 type InfoPanelProps = {
     items?: InfoItem[];
-    // title?: string;
 };
 
 const defaultItems: InfoItem[] = [
@@ -55,7 +54,7 @@ const InfoPanel = ({ items = defaultItems }: InfoPanelProps) => {
             addMessage(createMessageFromResponse(response.data));
             setIsAssistantTyping(false);
             const nextRes = response.data.next;
-            const sessionRobot = response.data.session_robot;
+            const sessionRobot = response.data.data.session_robot;
 
             setSessionRobot(sessionRobot);
 

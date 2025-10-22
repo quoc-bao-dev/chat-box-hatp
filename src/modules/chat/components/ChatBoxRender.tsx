@@ -82,7 +82,13 @@ const ChatBoxRender = () => {
             {/* === feedback === */}
             {isFeedback && (
                 <div className="pt-5">
-                    <Feedback />
+                    <Feedback
+                        onScrollToBottom={() =>
+                            setTimeout(() => {
+                                scrollToBottom();
+                            }, 100)
+                        }
+                    />
                 </div>
             )}
         </div>

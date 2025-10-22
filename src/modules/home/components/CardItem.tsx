@@ -1,9 +1,12 @@
+import { cn } from "@/core/utils/cn";
 import Image from "next/image";
 
 type CardItemProps = {
     iconSrc: string;
     title: string;
     description: string;
+    disabled?: boolean;
+
     onClick?: () => void;
     type?: "default" | "info";
 };
@@ -13,13 +16,17 @@ const CardItem = ({
     title,
     description,
     type = "default",
+    disabled = false,
     onClick,
 }: CardItemProps) => {
     if (type === "info") {
         return (
             <div
-                className="h-full p-2 md:p-4 rounded-[14px] bg-white cursor-pointer hover:shadow-xl/4 transition-all duration-300 flex items-center gap-3 md:gap-4"
-                onClick={onClick}
+                className={cn(
+                    "relative h-full p-2 md:p-4 rounded-[14px] bg-white cursor-pointer hover:shadow-xl/4 transition-all duration-300 flex items-center gap-3 md:gap-4",
+                    disabled && "cursor-not-allowed hover:shadow-none"
+                )}
+                onClick={() => !disabled && onClick?.()}
             >
                 <Image
                     src={iconSrc}
@@ -33,14 +40,25 @@ const CardItem = ({
                         {title}
                     </h3>
                 </div>
+
+                {disabled && (
+                    <div className="absolute inset-0 bg-black/10 rounded-[14px] z-10 cursor-not-allowed">
+                        <div className="absolute top-2 right-4 bg-red-500 text-white px-1.5 py-0.5 rounded-full text-xs font-semibold">
+                            Sắp ra mắt
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
 
     return (
         <div
-            className="p-4 h-full rounded-[20px] bg-white cursor-pointer hover:shadow-lg transition-all duration-300"
-            onClick={onClick}
+            className={cn(
+                "relative p-4 h-full rounded-[20px] bg-white cursor-pointer hover:shadow-lg transition-all duration-300",
+                disabled && "cursor-not-allowed hover:shadow-none"
+            )}
+            onClick={() => !disabled && onClick?.()}
         >
             <Image
                 src={iconSrc}
@@ -59,6 +77,14 @@ const CardItem = ({
                     {description}
                 </p>
             </div>
+
+            {disabled && (
+                <div className="absolute inset-0 bg-black/15 rounded-[20px] z-10 cursor-not-allowed">
+                    <div className="absolute top-4 right-5 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        Sắp ra mắt
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

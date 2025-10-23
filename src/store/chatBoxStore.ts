@@ -38,6 +38,7 @@ type ChatBoxActions = {
     stopCountdownFeedback: () => void;
     setMode: (mode: "chat" | "click") => void;
     addMessage: (message: Message) => void;
+    addMessageToTop: (message: Message) => void;
     setSessionRobot: (sessionRobot: string | null) => void;
     disableOptionInMessage: (messageId: number, optionId: string) => void;
     addFeedbackMessage: (feedbackData: {
@@ -80,6 +81,10 @@ const useChatBoxStore = create<ChatBoxStore>()(
 
         const addMessage = (message: Message) => {
             set((state) => ({ massages: [...state.massages, message] }));
+        };
+
+        const addMessageToTop = (message: Message) => {
+            set((state) => ({ massages: [message, ...state.massages] }));
         };
 
         const disableOptionInMessage = (
@@ -138,6 +143,7 @@ const useChatBoxStore = create<ChatBoxStore>()(
             stopCountdownFeedback,
             setMode,
             addMessage,
+            addMessageToTop,
             setSessionRobot,
             disableOptionInMessage,
             addFeedbackMessage,
@@ -189,6 +195,7 @@ export const useChatBoxActions = () => {
     );
     const setMode = useChatBoxStore((state) => state.setMode);
     const addMessage = useChatBoxStore((state) => state.addMessage);
+    const addMessageToTop = useChatBoxStore((state) => state.addMessageToTop);
     const setSessionRobot = useChatBoxStore((state) => state.setSessionRobot);
     const disableOptionInMessage = useChatBoxStore(
         (state) => state.disableOptionInMessage
@@ -204,6 +211,7 @@ export const useChatBoxActions = () => {
         stopCountdownFeedback,
         setMode,
         addMessage,
+        addMessageToTop,
         setSessionRobot,
         disableOptionInMessage,
         addFeedbackMessage,

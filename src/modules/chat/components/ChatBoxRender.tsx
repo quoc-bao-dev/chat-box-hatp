@@ -91,6 +91,7 @@ const ChatBoxRender = () => {
                     options={message.options}
                     feedback={message.feedback}
                     time={message.time}
+                    products={message.products}
                 />
             ))}
 

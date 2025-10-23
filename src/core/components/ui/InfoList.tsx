@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { _Image } from "@/core/config";
 import { cn } from "@/core/utils/cn";
+import HtmlRenderer from "@/modules/chat/components/HtmlRenderer";
 
 export type InfoListItem = {
     id: string;
@@ -23,7 +26,7 @@ const InfoList = ({
 }: InfoListProps) => {
     return (
         <div
-            className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] ${className}`}
+            className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] min-w-[300px] ${className}`}
         >
             <p className="text-[18px] font-semibold text-gray-900">{title}</p>
             <div className="pt-3 flex flex-col gap-2">
@@ -40,11 +43,11 @@ const InfoList = ({
                         )}
                     >
                         <p
-                            className={`text-[#00A76F] font-medium ${
+                            className={`text-[#00A76F] font-medium  ${
                                 item.disabled ? "text-gray-500" : ""
                             }`}
                         >
-                            {item.content}
+                            <HtmlRenderer htmlContent={item.content} />
                         </p>
                         <Image
                             src={_Image.icon.icon_send_2}

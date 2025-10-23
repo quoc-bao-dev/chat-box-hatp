@@ -9,6 +9,7 @@ import {
     useGetActiveRobotDetailMutation,
 } from "@/services/robot";
 import { useChatBoxActions, useChatBoxState } from "@/store";
+import { useChatInputStore } from "@/store/chatInputStore";
 import { useEffect } from "react";
 
 const ChatBoxController = () => {
@@ -16,6 +17,8 @@ const ChatBoxController = () => {
     const { setIsAssistantTyping, setFirstOption, setMode } =
         useChatBoxActions();
     const { addMessage, setSessionRobot } = useChatBoxActions();
+
+    const { setEvent, setNextLink } = useChatInputStore();
 
     const { mutateAsync: fetchRobotDetail } = useGetActiveRobotDetailMutation();
 
@@ -40,10 +43,12 @@ const ChatBoxController = () => {
                     option_id: firstOption,
                 })
                     .then(async (data) => {
-                        console.log("data", data);
+                        addMessage(createMessageFromResponse(data));
+                        setSessionRobot(data.data.session_robot);
 
                         const typeEvent = data.data.event;
 
+                        // luồng tra cứu giá sản phẩm
                         if (typeEvent === "start" && data.next) {
                             const res =
                                 await axiosInstance.get<GetActiveRobotDetailResponse>(
@@ -55,17 +60,23 @@ const ChatBoxController = () => {
                                     }
                                 );
 
-                            console.log("res", res);
+                            // add message from response
+                            addMessage(createMessageFromResponse(res.data));
 
                             //  handle event
-                            // is_chat == 1 mở input chat luông
-                            if (data.is_chat === 1) {
+                            // is_chat == 1 mở input chat luôn
+                            if (res.data.is_chat === 1) {
+                                setEvent(1);
+                                // setActive(true);
+                                setMode("chat");
+                                setNextLink(res.data.next_wait ?? null);
                             }
                             // is_chat == 2 mở input chat 1 lần
+                            if (res.data.is_chat === 2) {
+                                setEvent(2);
+                                setMode("chat");
+                            }
                         }
-
-                        addMessage(createMessageFromResponse(data));
-                        setSessionRobot(data.data.session_robot);
                     })
                     .then(() => {
                         setIsAssistantTyping(false);

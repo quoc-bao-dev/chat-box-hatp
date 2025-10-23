@@ -7,6 +7,7 @@ import { createMessageFromResponse } from "@/core/utils/createMessageFromRespons
 import { getSession } from "@/core/utils/session";
 import { useChatBoxActions, useChatBoxState } from "@/store";
 import { useCartItemEffect } from "@/store/cartItemEffect";
+import { useChatInputStore } from "@/store/chatInputStore";
 
 type InfoItem = {
     id: string;
@@ -40,7 +41,10 @@ const InfoPanel = ({ title, items = [], messageId }: InfoPanelProps) => {
         setSessionRobot,
         disableOptionInMessage,
         setIsFeedback,
+        setMode,
     } = useChatBoxActions();
+
+    const { setEvent, setNextLink, setDataPost } = useChatInputStore();
 
     const { triggerForceClose } = useCartItemEffect();
 
@@ -58,20 +62,45 @@ const InfoPanel = ({ title, items = [], messageId }: InfoPanelProps) => {
 
             addMessage(createMessageFromResponse(response.data));
             setIsAssistantTyping(false);
+
             const nextRes = response.data.next;
+            const nextWait = response.data.next_wait;
             const sessionRobot = response.data.data.session_robot;
 
             setSessionRobot(sessionRobot);
 
+            // luồng thông tin HATP
             if (nextRes) {
                 setIsAssistantTyping(true);
                 await new Promise((resolve) =>
                     setTimeout(resolve, botConfig.typingDelay)
                 );
                 handleNext(nextRes)();
-            } else {
-                // setMode("chat");
+            }
+            // luồng tra cứu giá và lên đơn
+            else if (nextWait) {
+                // lấy data post từ response gửi kèm message
+                const dataPost = response.data.data.data_post;
 
+                //  [Handle Event]
+
+                // [is_chat == 1] mở input chat luôn
+                if (response.data.is_chat === 1) {
+                    setEvent(1);
+                    // setActive(true);
+                    // setMode("chat");
+                    // setNextLink(response.data.next_wait ?? null);
+                    // setDataPost(dataPost);
+                }
+
+                // [is_chat == 2] mở input chat 1 lần
+                if (response.data.is_chat === 2) {
+                    setEvent(2);
+                    setMode("chat");
+                    setNextLink(response.data.next_wait ?? null);
+                    setDataPost(dataPost);
+                }
+            } else {
                 startCountdownFeedback();
             }
         } catch (error) {
@@ -81,6 +110,7 @@ const InfoPanel = ({ title, items = [], messageId }: InfoPanelProps) => {
 
     const handleItemClick = (item: InfoListItem) => {
         setIsFeedback(false);
+        setMode("click");
         const infoItem = items.find((i) => i.id === item.id);
         if (infoItem?.next) {
             // Disable option trước khi thực hiện next

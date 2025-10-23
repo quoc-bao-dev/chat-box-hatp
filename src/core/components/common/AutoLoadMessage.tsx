@@ -42,7 +42,7 @@ const AutoLoadMessage = () => {
         if (firstRender) {
             if (data?.data?.length && data?.data?.length > 0) {
                 let lastTime: Date | null = null;
-                data?.data?.reverse().forEach((item) => {
+                data?.data?.reverse().forEach((item, index) => {
                     const currentTime = new Date(item.created_at);
 
                     // Check if we need to add a time separator
@@ -52,7 +52,11 @@ const AutoLoadMessage = () => {
                             lastTime
                         );
 
-                        if (timeDiff >= botConfig.timeDifferenceThreshold) {
+                        if (
+                            timeDiff >= botConfig.timeDifferenceThreshold ||
+                            index == data?.data?.length - 1 ||
+                            index == 0
+                        ) {
                             addTimeMessage(currentTime.toISOString());
                         }
                     }

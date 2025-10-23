@@ -1,3 +1,4 @@
+import { ProductItem } from "@/services/chatbot";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -6,7 +7,15 @@ export type Message = {
 
     sender: "user" | "assistant";
     content: string;
-    sendType: "select" | "options" | "text" | "feedback" | "time";
+    sendType:
+        | "select"
+        | "options"
+        | "text"
+        | "feedback"
+        | "time"
+        | "wait_reply"
+        | "products";
+    products?: ProductItem[];
     options?: {
         id: string;
         content: string;

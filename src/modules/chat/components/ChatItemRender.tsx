@@ -3,13 +3,24 @@ import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
 import UserMessage from "./UserMessage";
 import Time from "@/core/components/common/Time";
+import { ProductItem } from "@/services/chatbot";
+import ProductPanel from "./product-price-lookup/ProductPanel";
 
 type ChatItemRenderProps = {
     id: number;
     sender: "user" | "assistant";
     content?: string;
-    sendType: "select" | "options" | "text" | "start" | "feedback" | "time";
+    sendType:
+        | "select"
+        | "options"
+        | "text"
+        | "start"
+        | "feedback"
+        | "time"
+        | "wait_reply"
+        | "products";
     options?: { id: string; content: string; next?: string }[];
+    products?: ProductItem[];
     feedback?: {
         rating: "good" | "normal" | "bad";
         tags: string[];
@@ -24,6 +35,7 @@ const ChatItemRender = ({
     content,
     sendType,
     options,
+    products,
     feedback,
     time,
 }: ChatItemRenderProps) => {
@@ -51,6 +63,29 @@ const ChatItemRender = ({
 
     if (sender === "assistant" && sendType === "text") {
         return <AssistantMessage content={content || ""} />;
+    }
+
+    if (sender === "assistant" && sendType === "wait_reply") {
+        return <AssistantMessage content={content || ""} />;
+    }
+    if (sender === "assistant" && sendType === "options") {
+        return <AssistantMessage content={content || ""} />;
+    }
+
+    if (sender === "assistant" && sendType === "products") {
+        console.log("products", products);
+
+        return (
+            <AssistantMessage
+                content={
+                    <ProductPanel
+                        id={id}
+                        content={content}
+                        products={products}
+                    />
+                }
+            />
+        );
     }
 
     if (sender === "user" && sendType === "start") {

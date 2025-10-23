@@ -24,7 +24,13 @@ export interface RobotData {
     is_read: number;
     type_send: "0" | "1"; // 0 -> nhân viên, 1 -> khách
     message: string; // nội dung tin nhắn show ra
-    event: "select" | "text" | "options" | "start" | "evaluate_support"; // select -> option , text
+    event:
+        | "select"
+        | "text"
+        | "options"
+        | "start"
+        | "evaluate_support"
+        | "wait_reply"; // select -> option , text
     file: string | null; // file đính kèm (hình ảnh)
     suport_items: number;
     json_item: any | null;

@@ -1,5 +1,5 @@
 export const botConfig = {
-    typingDelay: 3000,
+    typingDelay: 2000,
     timeToFeedback: 6000,
     delayToLoadMore: 1500,
     timeDifferenceThreshold: 30, // minutes - thời gian chênh lệch để tạo time separator (30 phút)

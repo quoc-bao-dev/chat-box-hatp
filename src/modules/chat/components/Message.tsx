@@ -4,6 +4,13 @@ import HtmlRenderer from "./HtmlRenderer";
 
 type MessageType = "user" | "assistant";
 
+// Hàm decode HTML entities về text bình thường
+const decodeHtmlEntities = (text: string): string => {
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = text;
+    return textarea.value;
+};
+
 // Hàm check HTML
 const isHtmlContent = (content: string | ReactNode): boolean => {
     if (typeof content !== "string") return false;
@@ -40,9 +47,16 @@ const Message = ({ content, sender }: MessageProps) => {
             ) : (
                 // Render text content
                 <p className="text-base font-medium w-full whitespace-pre-wrap">
-                    {content}
+                    {typeof content === "string"
+                        ? decodeHtmlEntities(content)
+                        : content}
                 </p>
             )}
+
+            {/* <HtmlRenderer
+                htmlContent={content as string}
+                className="whitespace-pre-wrap"
+            /> */}
         </div>
     );
 };

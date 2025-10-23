@@ -8,7 +8,11 @@ export const createMessageFromResponse = (
         id: Number(data.data.id),
         sender: data.data.type_send === "1" ? "user" : "assistant",
         content: data.data.message,
-        sendType: data.data.event as "select" | "options" | "text",
+        sendType: data.data.event as
+            | "select"
+            | "options"
+            | "text"
+            | "wait_reply",
         options: data.data.options,
     };
 };
@@ -21,6 +25,8 @@ export const createMessageFromHistoryResponse = (
         "2": "normal",
         "3": "good",
     };
+
+    // show feedback
     if (data.event === "evaluate_support") {
         console.log(data);
 
@@ -41,6 +47,20 @@ export const createMessageFromHistoryResponse = (
                 tags: jsonItem.tag,
                 isEvaluated: true,
             },
+        };
+    }
+
+    // show products
+    if (
+        data.show_move_event === "FindInfoProduct" ||
+        data.show_move_event === "event_order"
+    ) {
+        return {
+            id: Number(data.id),
+            sender: data.type_send === "1" ? "user" : "assistant",
+            content: data.message,
+            sendType: "products",
+            products: data.json_item,
         };
     }
     return {

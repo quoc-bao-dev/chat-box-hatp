@@ -38,7 +38,7 @@ const usePaginationStore = create<PaginationStore>()(
         };
         return {
             page: 1,
-            limit: 10,
+            limit: 20,
             enable: false,
             hasNextPage: false,
             loading: false,

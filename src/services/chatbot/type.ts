@@ -82,6 +82,9 @@ export interface ChatbotProductItem {
     json_item: ProductItem[];
     show_move_event: string | null;
     is_function: string;
+    is_chat: 1 | 2 | null;
+    next_wait: string | null;
+    data_post: any | null;
     id: number;
     options: ProductOption[];
 }

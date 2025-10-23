@@ -8,7 +8,9 @@ import ChatInput from "./ChatInput";
 
 const ChatInputController = () => {
     const { addMessage, setMode, setIsAssistantTyping } = useChatBoxActions();
-    const { event, nextLink, dataPost } = useChatInputStore();
+
+    const { event, nextLink, dataPost, setEvent, setNextLink, setDataPost } =
+        useChatInputStore();
     const handleSend = async (message: string) => {
         addMessage(
             createMessage({
@@ -53,7 +55,14 @@ const ChatInputController = () => {
                     });
                 }
 
+                // xử lý khi không tìm thấy sản phẩm
                 if (item.show_move_event === "not_found_product") {
+                    if (item.is_chat === 2) {
+                        setEvent(2);
+                        setMode("chat");
+                        setNextLink(item.next_wait);
+                        setDataPost(item.data_post);
+                    }
                     addMessage({
                         id: -1,
                         sender: "assistant",

@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";
-import ScrollToBottomButton from "./ScrollToBottomButton";
 import PaginationTrigger from "./PaginationTrigger";
+import ScrollToBottomButton from "./ScrollToBottomButton";
 
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
@@ -90,6 +90,7 @@ const ChatBoxRender = () => {
                     sendType={message.sendType}
                     options={message.options}
                     feedback={message.feedback}
+                    time={message.time}
                 />
             ))}
 

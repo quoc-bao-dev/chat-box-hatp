@@ -2,18 +2,20 @@ import AssistantMessage from "./AssistantMessage";
 import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
 import UserMessage from "./UserMessage";
+import Time from "@/core/components/common/Time";
 
 type ChatItemRenderProps = {
     id: number;
     sender: "user" | "assistant";
     content?: string;
-    sendType: "select" | "options" | "text" | "start" | "feedback";
+    sendType: "select" | "options" | "text" | "start" | "feedback" | "time";
     options?: { id: string; content: string; next?: string }[];
     feedback?: {
         rating: "good" | "normal" | "bad";
         tags: string[];
         isEvaluated: boolean;
     };
+    time?: string;
 };
 
 const ChatItemRender = ({
@@ -23,6 +25,7 @@ const ChatItemRender = ({
     sendType,
     options,
     feedback,
+    time,
 }: ChatItemRenderProps) => {
     if (sender === "assistant" && sendType === "select") {
         return (
@@ -60,6 +63,10 @@ const ChatItemRender = ({
 
     if (sendType === "feedback") {
         return <Feedback feedbackData={feedback} />;
+    }
+
+    if (sendType === "time" && time) {
+        return <Time time={time} />;
     }
 
     return <div></div>;

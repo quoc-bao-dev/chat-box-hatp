@@ -117,11 +117,9 @@ const ChatItemRender = ({
         return <UserMessage content={content || ""} />;
     }
 
-    if (sender === "user") {
-        return <UserMessage content={content || ""} />;
-    }
-
     if (sendType === "feedback") {
+        console.log("feedback render", feedback);
+
         return <Feedback feedbackData={feedback} />;
     }
 
@@ -129,6 +127,9 @@ const ChatItemRender = ({
         return <Time time={time} />;
     }
 
+    if (sender === "user") {
+        return <UserMessage content={content || ""} />;
+    }
     return <div></div>;
 };
 

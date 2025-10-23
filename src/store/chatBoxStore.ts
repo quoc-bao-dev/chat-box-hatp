@@ -134,6 +134,9 @@ const useChatBoxStore = create<ChatBoxStore>()(
                 sendType: "feedback",
                 feedback: feedbackData,
             };
+
+            console.log("feedbackMessage ", feedbackMessage);
+
             set((state) => ({
                 massages: [...state.massages, feedbackMessage],
             }));

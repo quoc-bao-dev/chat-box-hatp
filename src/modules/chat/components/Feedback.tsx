@@ -257,7 +257,7 @@ const EmojiButton = ({
             onClick={onClick}
             disabled={disabled}
             className={cn(
-                "group outline-none",
+                "group outline-none cursor-pointer",
                 disabled && "cursor-not-allowed opacity-50"
             )}
             aria-pressed={isActive}

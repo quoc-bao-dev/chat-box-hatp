@@ -6,10 +6,12 @@ import { useGetListChat } from "@/services/chat";
 import { useChatBoxActions } from "@/store";
 import usePaginationStore from "@/store/paginationStore";
 import { useEffect, useState } from "react";
+import { differenceInMinutes } from "date-fns";
 
 const AutoLoadMessage = () => {
     const [firstRender, setFirstRender] = useState(true);
-    const { addMessage, addMessageToTop } = useChatBoxActions();
+    const { addMessage, addMessageToTop, addTimeMessage, addTimeToTopMessage } =
+        useChatBoxActions();
     const { page, limit, enable, setEnable, setLoading, setHasNextPage } =
         usePaginationStore();
     const { data, isLoading } = useGetListChat({
@@ -39,19 +41,54 @@ const AutoLoadMessage = () => {
     useEffect(() => {
         if (firstRender) {
             if (data?.data?.length && data?.data?.length > 0) {
+                let lastTime: Date | null = null;
                 data?.data?.reverse().forEach((item) => {
+                    const currentTime = new Date(item.created_at);
+
+                    // Check if we need to add a time separator
+                    if (lastTime) {
+                        const timeDiff = differenceInMinutes(
+                            currentTime,
+                            lastTime
+                        );
+
+                        if (timeDiff >= botConfig.timeDifferenceThreshold) {
+                            addTimeMessage(currentTime.toISOString());
+                        }
+                    }
+
                     addMessage(createMessageFromHistoryResponse(item as any));
+                    lastTime = currentTime;
                 });
                 setHasNextPage(data?.next || false);
                 setFirstRender(false);
             }
         } else if (enable) {
             if (data?.data?.length && data?.data?.length > 0) {
-                data?.data?.forEach((item) => {
+                let lastTime: Date | null = null;
+                data?.data?.forEach((item, index) => {
+                    const currentTime = new Date(item.created_at);
+
                     // push message lên đầu
                     addMessageToTop(
                         createMessageFromHistoryResponse(item as any)
                     );
+
+                    // Check if we need to add a time separator
+                    if (lastTime) {
+                        const timeDiff = differenceInMinutes(
+                            lastTime,
+                            currentTime
+                        );
+
+                        if (
+                            timeDiff >= botConfig.timeDifferenceThreshold ||
+                            index == data?.data?.length - 1
+                        ) {
+                            addTimeToTopMessage(currentTime.toISOString());
+                        }
+                    }
+                    lastTime = currentTime;
                 });
                 setHasNextPage(data?.next || false);
             }

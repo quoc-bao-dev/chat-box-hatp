@@ -6,7 +6,7 @@ export type Message = {
 
     sender: "user" | "assistant";
     content: string;
-    sendType: "select" | "options" | "text" | "feedback";
+    sendType: "select" | "options" | "text" | "feedback" | "time";
     options?: {
         id: string;
         content: string;
@@ -18,6 +18,7 @@ export type Message = {
         tags: string[];
         isEvaluated: boolean;
     };
+    time?: string;
 };
 
 type ChatBoxState = {
@@ -46,6 +47,8 @@ type ChatBoxActions = {
         tags: string[];
         isEvaluated: boolean;
     }) => void;
+    addTimeMessage: (time: string) => void;
+    addTimeToTopMessage: (time: string) => void;
 };
 
 type ChatBoxStore = ChatBoxState & ChatBoxActions;
@@ -126,6 +129,32 @@ const useChatBoxStore = create<ChatBoxStore>()(
             }));
         };
 
+        const addTimeMessage = (time: string) => {
+            const timeMessage: Message = {
+                id: Date.now(),
+                sender: "assistant",
+                content: "",
+                sendType: "time",
+                time: time,
+            };
+            set((state) => ({
+                massages: [...state.massages, timeMessage],
+            }));
+        };
+
+        const addTimeToTopMessage = (time: string) => {
+            const timeMessage: Message = {
+                id: Date.now(),
+                sender: "assistant",
+                content: "",
+                sendType: "time",
+                time: time,
+            };
+            set((state) => ({
+                massages: [timeMessage, ...state.massages],
+            }));
+        };
+
         return {
             // state
             firstOption: null,
@@ -147,6 +176,8 @@ const useChatBoxStore = create<ChatBoxStore>()(
             setSessionRobot,
             disableOptionInMessage,
             addFeedbackMessage,
+            addTimeMessage,
+            addTimeToTopMessage,
         };
     })
 );
@@ -203,6 +234,10 @@ export const useChatBoxActions = () => {
     const addFeedbackMessage = useChatBoxStore(
         (state) => state.addFeedbackMessage
     );
+    const addTimeMessage = useChatBoxStore((state) => state.addTimeMessage);
+    const addTimeToTopMessage = useChatBoxStore(
+        (state) => state.addTimeToTopMessage
+    );
     return {
         setFirstOption,
         setIsAssistantTyping,
@@ -215,5 +250,7 @@ export const useChatBoxActions = () => {
         setSessionRobot,
         disableOptionInMessage,
         addFeedbackMessage,
+        addTimeMessage,
+        addTimeToTopMessage,
     };
 };

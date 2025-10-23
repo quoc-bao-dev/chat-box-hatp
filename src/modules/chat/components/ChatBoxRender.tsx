@@ -6,9 +6,11 @@ import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";
 import ScrollToBottomButton from "./ScrollToBottomButton";
+import PaginationTrigger from "./PaginationTrigger";
 
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
+    const [canScrollToBottom, setCanScrollToBottom] = useState(true);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -16,19 +18,32 @@ const ChatBoxRender = () => {
     const updateScrollButtonVisibility = () => {
         const el = containerRef.current;
         if (!el) return;
+
         const threshold = 80; // px from bottom considered "at bottom"
         const isAtBottom =
             el.scrollHeight - el.scrollTop - el.clientHeight <= threshold;
+
+        // Kiểm tra nếu user đang ở gần top (100px từ đầu)
+        const isNearTop = el.scrollTop < 0;
+
+        // Chỉ cho phép auto scroll nếu user ở gần cuối và không ở gần top
+        const shouldAllowAutoScroll = isAtBottom && !isNearTop;
+        setCanScrollToBottom(shouldAllowAutoScroll);
+
         setShowScrollButton(!isAtBottom);
     };
 
     useEffect(() => {
         const el = containerRef.current;
         if (!el) return;
-        el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-        // After auto-scroll, hide the button (we are at bottom)
+
+        // Chỉ auto scroll nếu được phép
+        if (canScrollToBottom) {
+            el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+            // After auto-scroll, hide the button (we are at bottom)
+        }
         setShowScrollButton(false);
-    }, [massages, isAssistantTyping]);
+    }, [massages, isAssistantTyping, canScrollToBottom]);
 
     useEffect(() => {
         const el = containerRef.current;
@@ -46,6 +61,8 @@ const ChatBoxRender = () => {
         const el = containerRef.current;
         if (!el) return;
         el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+        // Reset state khi user click scroll to bottom
+        setCanScrollToBottom(true);
     };
 
     // show feedback
@@ -60,6 +77,9 @@ const ChatBoxRender = () => {
             ref={containerRef}
             className={`h-full space-y-3 overflow-y-scroll py-5 lg:px-4 relative [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
         >
+            {/* === trigger === */}
+            <PaginationTrigger />
+
             {/* === list message === */}
             {massages.map((message, index) => (
                 <ChatItemRender

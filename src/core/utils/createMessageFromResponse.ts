@@ -61,8 +61,19 @@ export const createMessageFromHistoryResponse = (
             content: data.message,
             sendType: "products",
             products: data.json_item,
+            options: data.options,
         };
     }
+
+    if (data.show_move_event === "not_found_product") {
+        return {
+            id: Number(data.id),
+            sender: data.type_send === "1" ? "user" : "assistant",
+            content: data.message,
+            sendType: "not-found-product",
+        };
+    }
+
     return {
         id: Number(data.id),
         sender: data.type_send === "1" ? "user" : "assistant",

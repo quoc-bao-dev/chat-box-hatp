@@ -3,8 +3,9 @@ import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
 import UserMessage from "./UserMessage";
 import Time from "@/core/components/common/Time";
-import { ProductItem } from "@/services/chatbot";
+import { ProductItem, ProductOption } from "@/services/chatbot";
 import ProductPanel from "./product-price-lookup/ProductPanel";
+import { NoProductFound } from "@/core/components/ui";
 
 type ChatItemRenderProps = {
     id: number;
@@ -18,8 +19,10 @@ type ChatItemRenderProps = {
         | "feedback"
         | "time"
         | "wait_reply"
-        | "products";
+        | "products"
+        | "not-found-product";
     options?: { id: string; content: string; next?: string }[];
+    productOptions?: ProductOption[];
     products?: ProductItem[];
     feedback?: {
         rating: "good" | "normal" | "bad";
@@ -35,6 +38,7 @@ const ChatItemRender = ({
     content,
     sendType,
     options,
+    productOptions,
     products,
     feedback,
     time,
@@ -57,6 +61,10 @@ const ChatItemRender = ({
         );
     }
 
+    if (sender === "assistant" && sendType === "not-found-product") {
+        return <AssistantMessage content={<NoProductFound />} />;
+    }
+
     if (sender === "assistant" && sendType === "start") {
         return <AssistantMessage content={content || ""} />;
     }
@@ -73,8 +81,6 @@ const ChatItemRender = ({
     }
 
     if (sender === "assistant" && sendType === "products") {
-        console.log("products", products);
-
         return (
             <AssistantMessage
                 content={
@@ -82,6 +88,21 @@ const ChatItemRender = ({
                         id={id}
                         content={content}
                         products={products}
+                        options={productOptions}
+                    />
+                }
+            />
+        );
+    }
+    if (sender === "user" && sendType === "products") {
+        return (
+            <AssistantMessage
+                content={
+                    <ProductPanel
+                        id={id}
+                        content={content}
+                        products={products}
+                        options={productOptions}
                     />
                 }
             />
@@ -93,6 +114,10 @@ const ChatItemRender = ({
     }
 
     if (sender === "user" && (sendType === "options" || sendType === "text")) {
+        return <UserMessage content={content || ""} />;
+    }
+
+    if (sender === "user") {
         return <UserMessage content={content || ""} />;
     }
 

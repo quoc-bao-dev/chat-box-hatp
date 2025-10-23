@@ -1,10 +1,14 @@
 "use client";
 
 import { _Image } from "@/core/config";
+import { axiosInstance } from "@/core/http/axiosClient";
 import { cn } from "@/core/utils/cn";
-import HtmlRenderer from "@/modules/chat/components/HtmlRenderer";
-import { ProductItem } from "@/services/chatbot";
+import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
+import { getSession } from "@/core/utils/session";
+import { ProductItem, ProductOption } from "@/services/chatbot";
+import { useChatBoxActions } from "@/store";
 import Image from "next/image";
+import { useState } from "react";
 
 export type InfoListItem = {
     id: string;
@@ -17,6 +21,7 @@ export type InfoListItem = {
 export type InfoListProps = {
     title: string;
     items: ProductItem[];
+    options?: ProductOption[];
     onItemClick?: (item: ProductItem) => void;
     onConfirmClick?: () => void;
     onEditClick?: () => void;
@@ -27,6 +32,7 @@ export type InfoListProps = {
 const InfoList = ({
     title,
     items,
+    options = [],
     onItemClick,
     onConfirmClick,
     onEditClick,
@@ -34,6 +40,108 @@ const InfoList = ({
     className = "",
 }: InfoListProps) => {
     const imageProdPlaceholder = _Image.icon.icon_product;
+    const [isConfirmLoading, setIsConfirmLoading] = useState(false);
+    const [isEditLoading, setIsEditLoading] = useState(false);
+    const [isCancelLoading, setIsCancelLoading] = useState(false);
+
+    const { setIsAssistantTyping, addMessage } = useChatBoxActions();
+    // Function to call API based on next URL with specific loading state
+    const callApiByEvent = async (
+        eventType: string,
+        setLoading: (loading: boolean) => void
+    ) => {
+        const option = options.find((opt) => opt.show_move_event === eventType);
+        if (!option?.next) {
+            console.warn(`No API endpoint found for event: ${eventType}`);
+            return;
+        }
+
+        setLoading(true);
+        try {
+            console.log(`🚀 Calling API for event: ${eventType}`);
+            console.log(`📍 API URL: ${option.next}`);
+
+            const response = await axiosInstance.get(option.next, {
+                params: {
+                    sp_session: getSession(),
+                },
+            });
+            const data = response.data;
+            addMessage(createMessageFromResponse(data));
+            console.log(`✅ API Response for ${eventType}:`, data.data);
+
+            // Handle specific response based on event type
+            switch (eventType) {
+                case "confirm_product":
+                case "create_order":
+                case "save_edit_product":
+                    console.log("📦 Product confirmed/ordered:", data);
+                    break;
+                case "edit_product":
+                case "view_edit_product":
+                    console.log("✏️ Edit product action:", data);
+                    break;
+                case "cancel_edit_product":
+                case "cancel_product":
+                    console.log("❌ Product cancelled:", data);
+                    break;
+                default:
+                    console.log("🔄 Other action:", data);
+            }
+
+            return data;
+        } catch (error) {
+            console.error(`❌ API Error for ${eventType}:`, error);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Conditional rendering logic for action buttons using show_move_event
+    const moveEvents = options
+        .map((opt) => opt.show_move_event)
+        .filter((v): v is string => Boolean(v));
+
+    const shouldShowConfirmButton = moveEvents.some((event) =>
+        ["confirm_product", "create_order", "save_edit_product"].includes(event)
+    );
+
+    const shouldShowEditButton = moveEvents.some((event) =>
+        ["edit_product", "view_edit_product"].includes(event)
+    );
+
+    const shouldShowCancelButton = moveEvents.some((event) =>
+        ["cancel_edit_product", "cancel_product"].includes(event)
+    );
+
+    // Empty state when no products are available
+    if (!items || items.length === 0) {
+        return (
+            <div
+                className={`px-3.5 py-4 rounded-[20px] bg-white max-w[460px] min-w-[300px] ${className}`}
+            >
+                <div className="w-full flex flex-col items-center text-center py-4">
+                    <Image
+                        src={_Image.icon.icon_product_not_found}
+                        alt="Không tìm thấy sản phẩm"
+                        width={120}
+                        height={120}
+                        className="mb-3"
+                    />
+                    <p className="text-[18px] font-semibold text-gray-900">
+                        Không tìm thấy sản phẩm
+                    </p>
+                    <p className="text-sm text-[#5E5E5E]">
+                        Rất tiếc, chúng tôi không tìm thấy mã sản phẩm trên
+                    </p>
+                    <p className="text-sm text-[#5E5E5E]">
+                        Vui lòng nhập lại mã sản phẩm nhé!
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div
@@ -79,27 +187,62 @@ const InfoList = ({
 
             {/* === action button === */}
             <div className="flex flex-col gap-2 pt-5">
-                <button
-                    type="button"
-                    className="h-10 rounded-xl bg-[#2FB06B] text-white font-semibold"
-                    onClick={onConfirmClick}
-                >
-                    Xác nhận
-                </button>
-                <button
-                    type="button"
-                    className="h-10 rounded-xl bg-white text-gray-700 font-medium border border-gray-200"
-                    onClick={onEditClick}
-                >
-                    Tôi muốn chỉnh sửa mã sản phẩm
-                </button>
-                <button
-                    type="button"
-                    className="h-10 rounded-xl bg-white text-[#F04438] border border-[#F04438] font-semibold"
-                    onClick={onCancelClick}
-                >
-                    Hủy
-                </button>
+                {shouldShowConfirmButton && (
+                    <button
+                        type="button"
+                        className="h-10 rounded-xl bg-[#2FB06B] text-white font-semibold disabled:opacity-50"
+                        onClick={async () => {
+                            await callApiByEvent(
+                                "confirm_product",
+                                setIsConfirmLoading
+                            );
+                            onConfirmClick?.();
+                        }}
+                        disabled={
+                            isConfirmLoading || isEditLoading || isCancelLoading
+                        }
+                    >
+                        {isConfirmLoading ? "Đang xác nhận..." : "Xác nhận"}
+                    </button>
+                )}
+                {shouldShowEditButton && (
+                    <button
+                        type="button"
+                        className="h-10 rounded-xl bg-white text-gray-700 font-medium border border-gray-200 disabled:opacity-50"
+                        onClick={async () => {
+                            await callApiByEvent(
+                                "edit_product",
+                                setIsEditLoading
+                            );
+                            onEditClick?.();
+                        }}
+                        disabled={
+                            isConfirmLoading || isEditLoading || isCancelLoading
+                        }
+                    >
+                        {isEditLoading
+                            ? "Đang chỉnh sửa..."
+                            : "Tôi muốn chỉnh sửa mã sản phẩm"}
+                    </button>
+                )}
+                {shouldShowCancelButton && (
+                    <button
+                        type="button"
+                        className="h-10 rounded-xl bg-white text-[#F04438] border border-[#F04438] font-semibold disabled:opacity-50"
+                        onClick={async () => {
+                            await callApiByEvent(
+                                "cancel_product",
+                                setIsCancelLoading
+                            );
+                            onCancelClick?.();
+                        }}
+                        disabled={
+                            isConfirmLoading || isEditLoading || isCancelLoading
+                        }
+                    >
+                        {isCancelLoading ? "Đang hủy..." : "Hủy"}
+                    </button>
+                )}
             </div>
         </div>
     );

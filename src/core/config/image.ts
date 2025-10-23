@@ -29,6 +29,7 @@ export const _Image = {
         icon_hand_1: "/image/icons/icon-hand-1.png",
         icon_hand_wave: "/image/icon/hand-wave.json",
         icon_product: "/image/icons/image-product-placeholder.png",
+        icon_product_not_found: "/image/icons/not-found.svg",
         emoji: {
             emoji_1: "/image/icons/emoji/emoji-1.png",
             emoji_1_at: "/image/icons/emoji/emoji-1-at.png",

@@ -1,18 +1,22 @@
 import InfoProductList from "@/core/components/ui/InfoProductList";
 import React from "react";
-import { ProductItem } from "@/services/chatbot";
+import { ProductItem, ProductOption } from "@/services/chatbot";
 
 type ProductPanelProps = {
     id: number;
     content?: string;
     products?: ProductItem[];
+    options?: ProductOption[];
 };
 
 const ProductPanel = ({
     id,
     content = "",
     products = [],
+    options = [],
 }: ProductPanelProps) => {
+    console.log(options);
+
     const handleItemClick = (item: ProductItem) => {
         // placeholder: handle select product item
     };
@@ -35,6 +39,7 @@ const ProductPanel = ({
         <InfoProductList
             title={content}
             items={products}
+            options={options}
             onItemClick={handleItemClick}
             onConfirmClick={handleConfirmClick}
             onEditClick={handleEditClick}

@@ -1,5 +1,6 @@
 "use client";
 
+import { ProductOption } from "@/services/chatbot";
 import { useChatBoxState } from "@/store";
 import { useEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
@@ -7,6 +8,7 @@ import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";
 import PaginationTrigger from "./PaginationTrigger";
 import ScrollToBottomButton from "./ScrollToBottomButton";
+import EditProductCode from "@/core/components/ui/EditProductCode";
 
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
@@ -72,6 +74,8 @@ const ChatBoxRender = () => {
         }
     }, [isFeedback]);
 
+    console.log(massages);
+
     return (
         <div
             ref={containerRef}
@@ -92,9 +96,9 @@ const ChatBoxRender = () => {
                     feedback={message.feedback}
                     time={message.time}
                     products={message.products}
+                    productOptions={message.options as ProductOption[]}
                 />
             ))}
-
             {isAssistantTyping && <AssistantTyping />}
 
             {/* === scroll bottom button === */}

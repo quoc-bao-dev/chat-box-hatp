@@ -11,3 +11,4 @@ export {
     SkeletonGrid,
     SkeletonWave,
 } from "./Skeleton";
+export { default as NoProductFound } from "./NoProductFound";

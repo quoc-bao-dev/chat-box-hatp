@@ -140,7 +140,7 @@ const InfoList = ({
                         {/* === name === */}
                         <div className="flex flex-col gap-0.5">
                             <p className="text-[#5E5E5E] font-bold text-sm">
-                                {item.name}
+                                {item.code}
                             </p>
                             <p className="text-[#5E5E5E] font-semibold text-xs">
                                 {item.name_category}

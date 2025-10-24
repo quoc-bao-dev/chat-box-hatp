@@ -30,7 +30,7 @@ const EditProductCode = ({
 
     return (
         <div
-            className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] min-w-[300px] ${className}`}
+            className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] min-w-[300px] lg:w-full ${className}`}
         >
             {/* === title === */}
             <p className="text-[18px] font-semibold text-gray-900">{title}</p>

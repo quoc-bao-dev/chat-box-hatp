@@ -12,6 +12,8 @@ export type EditProductCodeProps = {
     onRemoveItem?: (itemId: number) => void;
     onEditProductCode?: (itemId: number, newCode: string) => void;
     className?: string;
+    disable?: boolean;
+    resetTriggers?: Record<number, number>;
 };
 
 const EditProductCode = ({
@@ -21,6 +23,8 @@ const EditProductCode = ({
     onRemoveItem,
     onEditProductCode,
     className = "",
+    disable = false,
+    resetTriggers = {},
 }: EditProductCodeProps) => {
     const imageProdPlaceholder = _Image.icon.icon_product;
 
@@ -59,7 +63,7 @@ const EditProductCode = ({
                             {/* === product info === */}
                             <div className="flex flex-col gap-0.5 flex-1">
                                 <p className="text-[#5E5E5E] font-semibold text-sm">
-                                    {item.name}
+                                    {item.code}
                                 </p>
                                 <p className="text-[#5E5E5E] font-semibold text-xs">
                                     {item.name_category}
@@ -72,13 +76,18 @@ const EditProductCode = ({
                             onSubmit={(value) =>
                                 onEditProductCode?.(item.id, value)
                             }
+                            disable={disable}
+                            resetTrigger={resetTriggers[item.id]}
                         />
 
                         {/* === remove button === */}
                         <button
                             type="button"
-                            onClick={() => onRemoveItem?.(item.id)}
-                            className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors p-1"
+                            onClick={() => !disable && onRemoveItem?.(item.id)}
+                            disabled={disable}
+                            className={`absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors p-1 ${
+                                disable ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
                         >
                             <svg
                                 width="16"
@@ -103,7 +112,7 @@ const EditProductCode = ({
                 <button
                     type="button"
                     className="w-full h-10 rounded-xl bg-[#00A76F] text-white font-semibold hover:bg-[#28a05a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={items.length === 0}
+                    disabled={items.length === 0 || disable}
                     onClick={onConfirmClick}
                 >
                     Xác nhận

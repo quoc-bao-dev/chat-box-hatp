@@ -52,6 +52,7 @@ export const createMessageFromHistoryResponse = (
             sendType: "edit-product-code",
             products: data.json_item,
             options: data.options,
+            disableAction: true,
         };
     }
 

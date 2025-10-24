@@ -32,6 +32,7 @@ type ChatItemRenderProps = {
         isEvaluated: boolean;
     };
     time?: string;
+    disableAction?: boolean;
 };
 
 const ChatItemRender = ({
@@ -44,6 +45,7 @@ const ChatItemRender = ({
     products,
     feedback,
     time,
+    disableAction = false,
 }: ChatItemRenderProps) => {
     if (sender === "assistant" && sendType === "select") {
         return (
@@ -125,6 +127,7 @@ const ChatItemRender = ({
                 <EditProductCodePanel
                     items={products || []}
                     idChat={id.toString()}
+                    disable={disableAction}
                 />
             </div>
         );

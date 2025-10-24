@@ -31,6 +31,7 @@ export type Message = {
         isEvaluated: boolean;
     };
     time?: string;
+    disableAction?: boolean;
 };
 
 type ChatBoxState = {

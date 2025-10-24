@@ -26,17 +26,23 @@ const convertApiResponseToProductItems = (jsonItems: any[]): ProductItem[] => {
 interface EditProductCodePanelProps {
     items: ProductItem[];
     idChat: string;
+    disable?: boolean;
 }
 
-const EditProductCodePanel = ({ items, idChat }: EditProductCodePanelProps) => {
+const EditProductCodePanel = ({
+    items,
+    idChat,
+    disable,
+}: EditProductCodePanelProps) => {
     const { mutateAsync: editProductItem } = useEditProductItem();
     const { mutateAsync: removeItem } = useRemoveItem();
 
     const [itemsEdited, setItemsEdited] = useState<ProductItem[]>(items);
+    const [resetTriggers, setResetTriggers] = useState<Record<number, number>>(
+        {}
+    );
 
     const handleEditProductCode = async (itemId: number, newCode: string) => {
-        // gọi hook mutation ở đây
-
         const res = await editProductItem({
             params: { id: itemId.toString(), id_chat: idChat },
             payload: { searchCode: newCode },
@@ -49,6 +55,13 @@ const EditProductCodePanel = ({ items, idChat }: EditProductCodePanelProps) => {
                     res.data.json_item
                 );
                 setItemsEdited(convertedItems);
+
+                // Reset input của item đã chỉnh sửa thành công
+                setResetTriggers((prev) => ({
+                    ...prev,
+                    [itemId]: (prev[itemId] || 0) + 1,
+                }));
+
                 toast.success("Chỉnh sửa mã sản phẩm thành công");
             } else {
                 toast.error("Không có dữ liệu sản phẩm trả về");
@@ -100,6 +113,8 @@ const EditProductCodePanel = ({ items, idChat }: EditProductCodePanelProps) => {
             onConfirmClick={handleConfirmClick}
             onRemoveItem={handleRemoveItem}
             onEditProductCode={handleEditProductCode}
+            resetTriggers={resetTriggers}
+            disable={disable}
         />
     );
 };

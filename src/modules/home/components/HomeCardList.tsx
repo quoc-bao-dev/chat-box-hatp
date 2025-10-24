@@ -17,13 +17,15 @@ const HomeCardList = () => {
     const mappedCards = useMemo(() => {
         if (!data?.data) return [];
 
-        return data.data.map((chatbot) => ({
-            id: Number(chatbot.id),
-            iconSrc: chatbot.avatar || "/image/icons/icon-01.png", // fallback icon
-            title: chatbot.name,
-            description: "Craft compelling text for ads and emails.", // default description
-            disabled: chatbot.disabled === "1",
-        }));
+        return data.data
+            .map((chatbot) => ({
+                id: Number(chatbot.id),
+                iconSrc: chatbot.avatar || "/image/icons/icon-01.png", // fallback icon
+                title: chatbot.name,
+                description: "Craft compelling text for ads and emails.", // default description
+                disabled: chatbot.disabled === "1",
+            }))
+            .sort((a) => (a.disabled ? 1 : -1));
     }, [data?.data]);
 
     const handleClick = (id: number) => {

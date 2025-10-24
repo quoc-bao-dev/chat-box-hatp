@@ -2,7 +2,7 @@
 
 import { ProductOption } from "@/services/chatbot";
 import { useChatBoxState } from "@/store";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";

@@ -5,7 +5,6 @@ export const createMessageFromResponse = (
     data: GetActiveRobotDetailResponse
 ): Message => {
     // show edit product code
-    console.log(data);
 
     if (
         data.data.event_app === "event_order" &&
@@ -58,8 +57,6 @@ export const createMessageFromHistoryResponse = (
 
     // show feedback
     if (data.event === "evaluate_support") {
-        console.log(data);
-
         const jsonItem = data.json_item as {
             evaluate: string;
             tag: string[];

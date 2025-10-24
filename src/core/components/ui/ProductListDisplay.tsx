@@ -97,38 +97,42 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
             </div>
 
             {/* === action button === */}
-            <div className="flex flex-col gap-2 mt-5">
-                {shouldShowConfirmButton && (
-                    <button
-                        type="button"
-                        className=" h-10 rounded-xl bg-[#2FB06B] text-white font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
-                        onClick={onConfirmClick}
-                        disabled={
-                            isConfirmLoading ||
-                            isEditLoading ||
-                            isCancelLoading ||
-                            disable
-                        }
-                    >
-                        {isConfirmLoading ? "Đang xử lý..." : "Lên đơn"}
-                    </button>
-                )}
-                {shouldShowCancelButton && (
-                    <button
-                        type="button"
-                        className="h-10 rounded-xl bg-white text-[#F04438] border border-[#F04438] font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
-                        onClick={onCancelClick}
-                        disabled={
-                            isConfirmLoading ||
-                            isEditLoading ||
-                            isCancelLoading ||
-                            disable
-                        }
-                    >
-                        {isCancelLoading ? "Đang hủy..." : "Hủy"}
-                    </button>
-                )}
-            </div>
+            {(shouldShowCancelButton ||
+                shouldShowConfirmButton ||
+                shouldShowEditButton) && (
+                <div className="flex flex-col gap-2 mt-5">
+                    {shouldShowConfirmButton && (
+                        <button
+                            type="button"
+                            className=" h-10 rounded-xl bg-[#2FB06B] text-white font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                            onClick={onConfirmClick}
+                            disabled={
+                                isConfirmLoading ||
+                                isEditLoading ||
+                                isCancelLoading ||
+                                disable
+                            }
+                        >
+                            {isConfirmLoading ? "Đang xử lý..." : "Lên đơn"}
+                        </button>
+                    )}
+                    {shouldShowCancelButton && (
+                        <button
+                            type="button"
+                            className="h-10 rounded-xl bg-white text-[#F04438] border border-[#F04438] font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                            onClick={onCancelClick}
+                            disabled={
+                                isConfirmLoading ||
+                                isEditLoading ||
+                                isCancelLoading ||
+                                disable
+                            }
+                        >
+                            {isCancelLoading ? "Đang hủy..." : "Hủy"}
+                        </button>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

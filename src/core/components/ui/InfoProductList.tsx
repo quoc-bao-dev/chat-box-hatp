@@ -9,6 +9,7 @@ import { ProductItem, ProductOption } from "@/services/chatbot";
 import { useChatBoxActions } from "@/store";
 import Image from "next/image";
 import { useState } from "react";
+import NoProductFound from "./NoProductFound";
 
 export type InfoListItem = {
     id: string;
@@ -43,8 +44,9 @@ const InfoList = ({
     const [isConfirmLoading, setIsConfirmLoading] = useState(false);
     const [isEditLoading, setIsEditLoading] = useState(false);
     const [isCancelLoading, setIsCancelLoading] = useState(false);
+    const [disable, setDisable] = useState(false);
 
-    const { setIsAssistantTyping, addMessage } = useChatBoxActions();
+    const { addMessage } = useChatBoxActions();
     // Function to call API based on next URL with specific loading state
     const callApiByEvent = async (
         eventType: string,
@@ -58,7 +60,6 @@ const InfoList = ({
 
         setLoading(true);
         try {
-            console.log(`🚀 Calling API for event: ${eventType}`);
             console.log(`📍 API URL: ${option.next}`);
 
             const response = await axiosInstance.get(option.next, {
@@ -68,7 +69,9 @@ const InfoList = ({
             });
             const data = response.data;
             addMessage(createMessageFromResponse(data));
+
             console.log(`✅ API Response for ${eventType}:`, data.data);
+            // setDisable(true);
 
             // Handle specific response based on event type
             switch (eventType) {
@@ -76,6 +79,20 @@ const InfoList = ({
                 case "create_order":
                 case "save_edit_product":
                     console.log("📦 Product confirmed/ordered:", data);
+                    const res = await axiosInstance.get(data.next, {
+                        params: { sp_session: getSession() },
+                    });
+
+                    const dataNext = res.data;
+
+                    //  xử lí tiếp lên đơn huỷ đơn
+                    console.log(data.next);
+                    console.log(dataNext);
+
+                    // addMessage -> createMessageFromResponse
+
+                    // addMessage(createMessageFromResponse(data));
+                    // setDisable(true);
                     break;
                 case "edit_product":
                 case "view_edit_product":
@@ -117,30 +134,7 @@ const InfoList = ({
 
     // Empty state when no products are available
     if (!items || items.length === 0) {
-        return (
-            <div
-                className={`px-3.5 py-4 rounded-[20px] bg-white max-w[460px] min-w-[300px] ${className}`}
-            >
-                <div className="w-full flex flex-col items-center text-center py-4">
-                    <Image
-                        src={_Image.icon.icon_product_not_found}
-                        alt="Không tìm thấy sản phẩm"
-                        width={120}
-                        height={120}
-                        className="mb-3"
-                    />
-                    <p className="text-[18px] font-semibold text-gray-900">
-                        Không tìm thấy sản phẩm
-                    </p>
-                    <p className="text-sm text-[#5E5E5E]">
-                        Rất tiếc, chúng tôi không tìm thấy mã sản phẩm trên
-                    </p>
-                    <p className="text-sm text-[#5E5E5E]">
-                        Vui lòng nhập lại mã sản phẩm nhé!
-                    </p>
-                </div>
-            </div>
-        );
+        return <NoProductFound />;
     }
 
     return (
@@ -158,7 +152,7 @@ const InfoList = ({
                         key={item.id}
                         onClick={() => onItemClick?.(item)}
                         className={cn(
-                            ` px-4 py-3 rounded-xl bg-[#F8F8F8] hover:bg-gray-100 cursor-pointer flex items-center  gap-4 shadow-xl/4`
+                            ` px-4 py-3.5 rounded-xl bg-[#F8F8F8] hover:bg-gray-100 cursor-pointer flex items-center  gap-4 shadow-xl/4`
                         )}
                     >
                         {/* === image === */}
@@ -174,7 +168,7 @@ const InfoList = ({
                         />
                         {/* === name === */}
                         <div className="flex flex-col gap-0.5">
-                            <p className="text-[#5E5E5E] font-semibold text-sm">
+                            <p className="text-[#5E5E5E] font-bold text-sm">
                                 {item.name}
                             </p>
                             <p className="text-[#5E5E5E] font-semibold text-xs">
@@ -186,11 +180,11 @@ const InfoList = ({
             </div>
 
             {/* === action button === */}
-            <div className="flex flex-col gap-2 pt-5">
+            <div className="flex flex-col gap-2 mt-5">
                 {shouldShowConfirmButton && (
                     <button
                         type="button"
-                        className="h-10 rounded-xl bg-[#2FB06B] text-white font-semibold disabled:opacity-50"
+                        className=" h-10 rounded-xl bg-[#2FB06B] text-white font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                         onClick={async () => {
                             await callApiByEvent(
                                 "confirm_product",
@@ -199,7 +193,10 @@ const InfoList = ({
                             onConfirmClick?.();
                         }}
                         disabled={
-                            isConfirmLoading || isEditLoading || isCancelLoading
+                            isConfirmLoading ||
+                            isEditLoading ||
+                            isCancelLoading ||
+                            disable
                         }
                     >
                         {isConfirmLoading ? "Đang xác nhận..." : "Xác nhận"}
@@ -208,7 +205,7 @@ const InfoList = ({
                 {shouldShowEditButton && (
                     <button
                         type="button"
-                        className="h-10 rounded-xl bg-white text-gray-700 font-medium border border-gray-200 disabled:opacity-50"
+                        className="h-10 rounded-xl bg-white text-gray-700 font-medium border border-gray-200 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                         onClick={async () => {
                             await callApiByEvent(
                                 "edit_product",
@@ -217,7 +214,10 @@ const InfoList = ({
                             onEditClick?.();
                         }}
                         disabled={
-                            isConfirmLoading || isEditLoading || isCancelLoading
+                            isConfirmLoading ||
+                            isEditLoading ||
+                            isCancelLoading ||
+                            disable
                         }
                     >
                         {isEditLoading
@@ -228,7 +228,7 @@ const InfoList = ({
                 {shouldShowCancelButton && (
                     <button
                         type="button"
-                        className="h-10 rounded-xl bg-white text-[#F04438] border border-[#F04438] font-semibold disabled:opacity-50"
+                        className="h-10 rounded-xl bg-white text-[#F04438] border border-[#F04438] font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                         onClick={async () => {
                             await callApiByEvent(
                                 "cancel_product",
@@ -237,7 +237,10 @@ const InfoList = ({
                             onCancelClick?.();
                         }}
                         disabled={
-                            isConfirmLoading || isEditLoading || isCancelLoading
+                            isConfirmLoading ||
+                            isEditLoading ||
+                            isCancelLoading ||
+                            disable
                         }
                     >
                         {isCancelLoading ? "Đang hủy..." : "Hủy"}

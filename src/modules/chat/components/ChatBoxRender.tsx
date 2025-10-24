@@ -74,8 +74,6 @@ const ChatBoxRender = () => {
         }
     }, [isFeedback]);
 
-    console.log(massages);
-
     return (
         <div
             ref={containerRef}

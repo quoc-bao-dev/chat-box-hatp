@@ -1,11 +1,11 @@
+import Time from "@/core/components/common/Time";
+import { NoProductFound } from "@/core/components/ui";
+import { ProductItem, ProductOption } from "@/services/chatbot";
 import AssistantMessage from "./AssistantMessage";
 import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
-import UserMessage from "./UserMessage";
-import Time from "@/core/components/common/Time";
-import { ProductItem, ProductOption } from "@/services/chatbot";
 import ProductPanel from "./product-price-lookup/ProductPanel";
-import { NoProductFound } from "@/core/components/ui";
+import UserMessage from "./UserMessage";
 
 type ChatItemRenderProps = {
     id: number;
@@ -118,8 +118,6 @@ const ChatItemRender = ({
     }
 
     if (sendType === "feedback") {
-        console.log("feedback render", feedback);
-
         return <Feedback feedbackData={feedback} />;
     }
 

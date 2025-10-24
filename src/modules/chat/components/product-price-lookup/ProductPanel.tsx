@@ -15,8 +15,6 @@ const ProductPanel = ({
     products = [],
     options = [],
 }: ProductPanelProps) => {
-    console.log(options);
-
     const handleItemClick = (item: ProductItem) => {
         // placeholder: handle select product item
     };
@@ -32,8 +30,6 @@ const ProductPanel = ({
     const handleCancelClick = () => {
         // placeholder: handle cancel action
     };
-
-    console.log(products);
 
     return (
         <InfoProductList

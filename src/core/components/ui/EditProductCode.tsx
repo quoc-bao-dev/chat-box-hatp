@@ -90,7 +90,7 @@ const EditProductCode = ({
                                     !disable && onRemoveItem?.(item.id)
                                 }
                                 disabled={disable}
-                                className={`absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors p-1 ${
+                                className={`absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors p-1 cursor-pointer ${
                                     disable
                                         ? "opacity-50 cursor-not-allowed"
                                         : ""

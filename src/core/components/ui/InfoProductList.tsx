@@ -23,11 +23,11 @@ export type InfoListProps = {
     title: string;
     items: ProductItem[];
     options?: ProductOption[];
+    className?: string;
     onItemClick?: (item: ProductItem) => void;
     onConfirmClick?: () => void;
     onEditClick?: () => void;
     onCancelClick?: () => void;
-    className?: string;
 };
 
 const InfoList = ({
@@ -54,14 +54,11 @@ const InfoList = ({
     ) => {
         const option = options.find((opt) => opt.show_move_event === eventType);
         if (!option?.next) {
-            console.warn(`No API endpoint found for event: ${eventType}`);
             return;
         }
 
         setLoading(true);
         try {
-            console.log(`📍 API URL: ${option.next}`);
-
             const response = await axiosInstance.get(option.next, {
                 params: {
                     sp_session: getSession(),
@@ -70,41 +67,14 @@ const InfoList = ({
             const data = response.data;
             addMessage(createMessageFromResponse(data));
 
-            console.log(`✅ API Response for ${eventType}:`, data.data);
-            // setDisable(true);
+            const res = await axiosInstance.get(data.next, {
+                params: { sp_session: getSession() },
+            });
 
-            // Handle specific response based on event type
-            switch (eventType) {
-                case "confirm_product":
-                case "create_order":
-                case "save_edit_product":
-                    console.log("📦 Product confirmed/ordered:", data);
-                    const res = await axiosInstance.get(data.next, {
-                        params: { sp_session: getSession() },
-                    });
+            const dataNext = res.data;
 
-                    const dataNext = res.data;
-
-                    //  xử lí tiếp lên đơn huỷ đơn
-                    console.log(data.next);
-                    console.log(dataNext);
-
-                    // addMessage -> createMessageFromResponse
-
-                    // addMessage(createMessageFromResponse(data));
-                    // setDisable(true);
-                    break;
-                case "edit_product":
-                case "view_edit_product":
-                    console.log("✏️ Edit product action:", data);
-                    break;
-                case "cancel_edit_product":
-                case "cancel_product":
-                    console.log("❌ Product cancelled:", data);
-                    break;
-                default:
-                    console.log("🔄 Other action:", data);
-            }
+            addMessage(createMessageFromResponse(dataNext));
+            setDisable(true);
 
             return data;
         } catch (error) {

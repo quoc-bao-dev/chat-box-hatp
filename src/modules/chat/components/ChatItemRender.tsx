@@ -4,6 +4,7 @@ import { ProductItem, ProductOption } from "@/services/chatbot";
 import AssistantMessage from "./AssistantMessage";
 import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
+import EditProductCodePanel from "./product-price-lookup/EditProductCodePanel";
 import ProductPanel from "./product-price-lookup/ProductPanel";
 import UserMessage from "./UserMessage";
 
@@ -20,7 +21,8 @@ type ChatItemRenderProps = {
         | "time"
         | "wait_reply"
         | "products"
-        | "not-found-product";
+        | "not-found-product"
+        | "edit-product-code";
     options?: { id: string; content: string; next?: string }[];
     productOptions?: ProductOption[];
     products?: ProductItem[];
@@ -115,6 +117,17 @@ const ChatItemRender = ({
 
     if (sender === "user" && (sendType === "options" || sendType === "text")) {
         return <UserMessage content={content || ""} />;
+    }
+
+    if (sendType === "edit-product-code") {
+        return (
+            <div className="flex justify-end">
+                <EditProductCodePanel
+                    items={products || []}
+                    idChat={id.toString()}
+                />
+            </div>
+        );
     }
 
     if (sendType === "feedback") {

@@ -38,6 +38,7 @@ export const _Image = {
             emoji_3: "/image/icons/emoji/emoji-3.png",
             emoji_3_at: "/image/icons/emoji/emoji-3-at.png",
         },
+        icon_success: "/image/icons.success.png",
         avt_user: "/image/icons/avt-user.png",
     },
 };

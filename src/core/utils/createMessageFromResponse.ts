@@ -4,6 +4,23 @@ import { Message } from "@/store/chatBoxStore";
 export const createMessageFromResponse = (
     data: GetActiveRobotDetailResponse
 ): Message => {
+    // show edit product code
+    console.log(data);
+
+    if (
+        data.data.event_app === "event_order" &&
+        data.data.event_show === "select"
+    ) {
+        return {
+            id: Number(data.data.id),
+            sender: data.data.type_send === "1" ? "user" : "assistant",
+            content: data.data.message,
+            sendType: "edit-product-code",
+            options: data.data.options,
+            products: data.data.json_item,
+        };
+    }
+
     return {
         id: Number(data.data.id),
         sender: data.data.type_send === "1" ? "user" : "assistant",
@@ -25,6 +42,18 @@ export const createMessageFromHistoryResponse = (
         "2": "normal",
         "3": "good",
     };
+
+    // show edit product code
+    if (data.show_move_event == "view_edit_product") {
+        return {
+            id: Number(data.id),
+            sender: data.type_send === "1" ? "user" : "assistant",
+            content: data.message,
+            sendType: "edit-product-code",
+            products: data.json_item,
+            options: data.options,
+        };
+    }
 
     // show feedback
     if (data.event === "evaluate_support") {

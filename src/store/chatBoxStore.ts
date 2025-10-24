@@ -15,7 +15,9 @@ export type Message = {
         | "time"
         | "wait_reply"
         | "products"
-        | "not-found-product";
+        | "not-found-product"
+        | "edit-product-code";
+
     products?: ProductItem[];
     options?: {
         id: string;

@@ -1,11 +1,12 @@
+import Time from "@/core/components/common/Time";
+import { NoProductFound } from "@/core/components/ui";
+import { ProductItem, ProductOption } from "@/services/chatbot";
 import AssistantMessage from "./AssistantMessage";
 import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
-import UserMessage from "./UserMessage";
-import Time from "@/core/components/common/Time";
-import { ProductItem, ProductOption } from "@/services/chatbot";
+import EditProductCodePanel from "./product-price-lookup/EditProductCodePanel";
 import ProductPanel from "./product-price-lookup/ProductPanel";
-import { NoProductFound } from "@/core/components/ui";
+import UserMessage from "./UserMessage";
 
 type ChatItemRenderProps = {
     id: number;
@@ -20,7 +21,8 @@ type ChatItemRenderProps = {
         | "time"
         | "wait_reply"
         | "products"
-        | "not-found-product";
+        | "not-found-product"
+        | "edit-product-code";
     options?: { id: string; content: string; next?: string }[];
     productOptions?: ProductOption[];
     products?: ProductItem[];
@@ -30,6 +32,7 @@ type ChatItemRenderProps = {
         isEvaluated: boolean;
     };
     time?: string;
+    disableAction?: boolean;
 };
 
 const ChatItemRender = ({
@@ -42,6 +45,7 @@ const ChatItemRender = ({
     products,
     feedback,
     time,
+    disableAction = false,
 }: ChatItemRenderProps) => {
     if (sender === "assistant" && sendType === "select") {
         return (
@@ -117,8 +121,16 @@ const ChatItemRender = ({
         return <UserMessage content={content || ""} />;
     }
 
-    if (sender === "user") {
-        return <UserMessage content={content || ""} />;
+    if (sendType === "edit-product-code") {
+        return (
+            <div className="flex justify-end">
+                <EditProductCodePanel
+                    items={products || []}
+                    idChat={id.toString()}
+                    disable={disableAction}
+                />
+            </div>
+        );
     }
 
     if (sendType === "feedback") {
@@ -129,6 +141,9 @@ const ChatItemRender = ({
         return <Time time={time} />;
     }
 
+    if (sender === "user") {
+        return <UserMessage content={content || ""} />;
+    }
     return <div></div>;
 };
 

@@ -15,7 +15,9 @@ export type Message = {
         | "time"
         | "wait_reply"
         | "products"
-        | "not-found-product";
+        | "not-found-product"
+        | "edit-product-code";
+
     products?: ProductItem[];
     options?: {
         id: string;
@@ -29,6 +31,7 @@ export type Message = {
         isEvaluated: boolean;
     };
     time?: string;
+    disableAction?: boolean;
 };
 
 type ChatBoxState = {
@@ -134,6 +137,9 @@ const useChatBoxStore = create<ChatBoxStore>()(
                 sendType: "feedback",
                 feedback: feedbackData,
             };
+
+            console.log("feedbackMessage ", feedbackMessage);
+
             set((state) => ({
                 massages: [...state.massages, feedbackMessage],
             }));

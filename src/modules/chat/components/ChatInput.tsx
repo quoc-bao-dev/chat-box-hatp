@@ -15,8 +15,10 @@ const ChatInput = ({
     onSend,
 }: ChatInputProps) => {
     const handleSend = () => {
+        console.log("input text");
+
         const input = document.querySelector(
-            'input[type="text"]'
+            "#input-chat-box"
         ) as HTMLInputElement;
         if (input && input.value.trim() && onSend) {
             onSend(input.value.trim());
@@ -38,6 +40,7 @@ const ChatInput = ({
                     className="flex-1 outline-none pl-5 text-gray-800"
                     placeholder={placeholder}
                     onKeyPress={handleKeyPress}
+                    id="input-chat-box"
                 />
                 <div
                     className="p-2 md:p-3 rounded-full bg-[#00A76F] flex items-center justify-center cursor-pointer hover:bg-[#00A76F]/90 transition-colors"

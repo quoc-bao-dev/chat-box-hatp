@@ -40,14 +40,14 @@ export interface ListTagsResponse {
 
 // Product Item interface
 export interface ProductItem {
-    id: string;
+    id: number;
     id_item: string;
     code: string;
     name: string;
+    name_category: string;
     quantity: number;
     price: string;
     avatar: string | null;
-    name_category: string;
 }
 
 // Option interface for list products
@@ -94,4 +94,60 @@ export interface ListProductsResponse {
     result: boolean;
     data_array: ChatbotProductItem[];
     next: boolean;
+}
+
+// Edit Product Item types
+export interface EditProductItemRequest {
+    searchCode: string;
+}
+
+export interface EditProductItemParams {
+    id: string; // id của chi tiết sản phẩm
+    id_chat: string; // id tin nhắn đang sửa
+}
+
+export interface EditProductItemResponse {
+    result: boolean;
+    data?: {
+        id: string;
+        id_client: string;
+        is_read: string;
+        type_send: string;
+        event: string;
+        message: string;
+        file: string | null;
+        suport_items: string;
+        created_at: string;
+        updated_at: string;
+        id_robot_support: string;
+        id_robot_support_detail: string;
+        json_item: Array<{
+            id: string;
+            id_item: string;
+            code: string;
+            name: string;
+            name_category: string;
+            quantity: string;
+            price: string;
+            avatar: string | null;
+        }>;
+        show_move_event: string;
+        is_function: string;
+        session: string;
+        session_chat: string;
+        session_robot: string;
+    };
+    message?: string;
+}
+
+// Remove Item types
+export interface RemoveItemParams {
+    id: string; // id của chi tiết sản phẩm
+    id_chat: string; // id tin nhắn đang sửa
+}
+
+export interface RemoveItemResponse {
+    result: boolean;
+    data?: any;
+    message?: string;
 }

@@ -13,7 +13,7 @@ type BouncyButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-full transition-all duration-200 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none transition-all duration-200";
+    "cursor-pointer inline-flex items-center justify-center font-medium rounded-full transition-all duration-200 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none transition-all duration-200";
 
 // Normalize outer box for all variants; inner span carries padding
 const variantClasses: Record<BouncyButtonVariant, string> = {

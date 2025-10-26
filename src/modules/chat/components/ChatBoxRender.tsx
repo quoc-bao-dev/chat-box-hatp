@@ -2,13 +2,12 @@
 
 import { ProductOption } from "@/services/chatbot";
 import { useChatBoxState } from "@/store";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";
 import PaginationTrigger from "./PaginationTrigger";
 import ScrollToBottomButton from "./ScrollToBottomButton";
-import EditProductCode from "@/core/components/ui/EditProductCode";
 
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
@@ -35,19 +34,21 @@ const ChatBoxRender = () => {
         setShowScrollButton(!isAtBottom);
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const el = containerRef.current;
         if (!el) return;
 
         // Chỉ auto scroll nếu được phép
         if (canScrollToBottom) {
-            el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+            setTimeout(() => {
+                el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+            }, 300);
             // After auto-scroll, hide the button (we are at bottom)
         }
         setShowScrollButton(false);
     }, [massages, isAssistantTyping, canScrollToBottom]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const el = containerRef.current;
         if (!el) return;
         const onScroll = () => updateScrollButtonVisibility();
@@ -68,13 +69,11 @@ const ChatBoxRender = () => {
     };
 
     // show feedback
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (isFeedback) {
             scrollToBottom();
         }
     }, [isFeedback]);
-
-    console.log(massages);
 
     return (
         <div
@@ -97,6 +96,9 @@ const ChatBoxRender = () => {
                     time={message.time}
                     products={message.products}
                     productOptions={message.options as ProductOption[]}
+                    disableAction={
+                        message.disableAction && index !== massages.length - 1
+                    }
                 />
             ))}
             {isAssistantTyping && <AssistantTyping />}

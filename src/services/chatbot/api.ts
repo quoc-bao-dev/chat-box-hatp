@@ -5,6 +5,11 @@ import {
     EvaluateSupportParams,
     EvaluateSupportResponse,
     ListTagsResponse,
+    EditProductItemRequest,
+    EditProductItemParams,
+    EditProductItemResponse,
+    RemoveItemParams,
+    RemoveItemResponse,
 } from "./type";
 
 const chatbotApi = {
@@ -43,6 +48,34 @@ const chatbotApi = {
                     "Content-Type": "multipart/form-data",
                 },
             }
+        );
+        return res.data;
+    },
+
+    // Edit Product Item
+    editProductItem: async (
+        params: EditProductItemParams,
+        payload: EditProductItemRequest
+    ) => {
+        const formData = new FormData();
+        formData.append("searchCode", payload.searchCode);
+
+        const res = await axiosInstance.post<EditProductItemResponse>(
+            `/api_chatbot/editProductItem/${params.id}/${params.id_chat}`,
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+        return res.data;
+    },
+
+    // Remove Item
+    removeItem: async (params: RemoveItemParams) => {
+        const res = await axiosInstance.post<RemoveItemResponse>(
+            `/api_chatbot/removeItem/${params.id}/${params.id_chat}`
         );
         return res.data;
     },

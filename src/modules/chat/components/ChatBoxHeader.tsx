@@ -1,8 +1,15 @@
-import { LoginButton } from "@/core/components/ui";
+"use client";
+import { LoginButton } from "@/modules/auth";
 import { _Image } from "@/core/config";
+import { useGetSetting } from "@/services/setting";
+import { useAuth } from "@/core/hook/useAuth";
 import Image from "next/image";
+import Link from "next/link";
 
 const ChatBoxHeader = () => {
+    const { data: setting } = useGetSetting();
+    const { isLoggedIn } = useAuth();
+
     return (
         <div>
             {/* === header === */}
@@ -23,23 +30,30 @@ const ChatBoxHeader = () => {
                     </div>
                     {/* login */}
                     <div className="flex items-center gap-4">
-                        <div className="pr-3">
-                            <LoginButton />
-                        </div>
-                        <Image
-                            src={_Image.icon.zalo_gray}
-                            alt="zalo-gray"
-                            width={50}
-                            height={50}
-                            className="size-[42px]"
-                        />
-                        <Image
-                            src={_Image.icon.phone_gray}
-                            alt="phone-gray"
-                            width={50}
-                            height={50}
-                            className="size-[42px]"
-                        />
+                        {!isLoggedIn && (
+                            <div className="pr-3">
+                                <LoginButton />
+                            </div>
+                        )}
+                        <Link href={setting?.zalo_chatbot || ""}>
+                            <Image
+                                src={_Image.icon.zalo_gray}
+                                alt="zalo-gray"
+                                width={50}
+                                height={50}
+                                className="size-[42px]"
+                            />
+                        </Link>
+
+                        <Link href={setting?.phone_chatbot || ""}>
+                            <Image
+                                src={_Image.icon.phone_gray}
+                                alt="phone-gray"
+                                width={50}
+                                height={50}
+                                className="size-[42px]"
+                            />
+                        </Link>
                     </div>
                 </div>
             </div>

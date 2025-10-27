@@ -16,6 +16,13 @@ const ChatBoxRender = () => {
     const [canScrollToBottom, setCanScrollToBottom] = useState(true);
     const { startCountdownFeedback, setMode } = useChatBoxActions();
 
+    const [fistRender, setFistRender] = useState(true);
+    useEffect(() => {
+        if (fistRender) {
+            setFistRender(false);
+        }
+    }, [fistRender]);
+
     const [hasCheckShowFeedback, setHasCheckShowFeedback] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -46,8 +53,14 @@ const ChatBoxRender = () => {
         if (canScrollToBottom) {
             setTimeout(() => {
                 el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-            }, 400);
+            }, 100);
             // After auto-scroll, hide the button (we are at bottom)
+        }
+
+        if (fistRender) {
+            setTimeout(() => {
+                el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+            }, 500);
         }
 
         setShowScrollButton(false);
@@ -123,10 +136,7 @@ const ChatBoxRender = () => {
                     time={message.time}
                     products={message.products}
                     productOptions={message.options as ProductOption[]}
-                    disableAction={
-                        index < massages.length - 1 &&
-                        message.options?.length === 0
-                    }
+                    disableAction={index !== massages.length - 1}
                 />
             ))}
 

@@ -17,25 +17,26 @@ const ProductPanel = ({
     options = [],
     disable = false,
 }: ProductPanelProps) => {
-    const [disablePanel, setDisablePanel] = useState(disable);
+    // const [disablePanel, setDisablePanel] = useState(disable);
+
     const handleItemClick = (item: ProductItem) => {
         // placeholder: handle select product item
-        setDisablePanel(true);
+        // setDisablePanel(true);
     };
 
     const handleConfirmClick = () => {
         // placeholder: handle confirm selection
-        setDisablePanel(true);
+        // setDisablePanel(true);
     };
 
     const handleEditClick = () => {
         // placeholder: handle edit action
-        setDisablePanel(true);
+        // setDisablePanel(true);
     };
 
     const handleCancelClick = () => {
         // placeholder: handle cancel action
-        setDisablePanel(true);
+        // setDisablePanel(true);
     };
 
     return (
@@ -47,7 +48,7 @@ const ProductPanel = ({
             onConfirmClick={handleConfirmClick}
             onEditClick={handleEditClick}
             onCancelClick={handleCancelClick}
-            disable={disablePanel}
+            disable={disable}
         />
     );
 };

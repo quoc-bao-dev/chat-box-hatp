@@ -95,13 +95,15 @@ const ChatItemRender = ({
     }
 
     if (sender === "assistant" && sendType === "table-price") {
+        console.log("[options]", options);
+
         return (
             <AssistantMessage
                 content={
                     <ProductListDisplayPanel
                         items={products || []}
                         options={options || []}
-                        disable={disableAction}
+                        disable={disableAction || options?.length == 0}
                     />
                 }
             />

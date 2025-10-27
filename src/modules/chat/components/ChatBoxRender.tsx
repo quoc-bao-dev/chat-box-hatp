@@ -3,13 +3,13 @@
 import { ProductOption } from "@/services/chatbot";
 import { RobotOption } from "@/services/robot";
 import { useChatBoxActions, useChatBoxState } from "@/store";
+import { useChatInputStore } from "@/store/chatInputStore";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";
 import PaginationTrigger from "./PaginationTrigger";
 import ScrollToBottomButton from "./ScrollToBottomButton";
-import { useChatInputStore } from "@/store/chatInputStore";
 
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
@@ -98,7 +98,6 @@ const ChatBoxRender = () => {
             massages[massages.length - 1].sendType === "wait_reply"
         ) {
             setMode("chat");
-            setEvent(2);
             setHasCheckShowFeedback(false);
             // set input
         }

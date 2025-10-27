@@ -3,11 +3,13 @@
 import { _Image } from "@/core/config";
 import { useSidebar } from "@/store/sidebarStore";
 import { LoginButton } from "@/modules/auth";
+import { useAuth } from "@/core/hook/useAuth";
 import Icon from "./Icon";
 import { usePathname } from "next/navigation";
 
 const Header = () => {
     const { toggle } = useSidebar();
+    const { isLoggedIn } = useAuth();
 
     const pathname = usePathname();
 
@@ -44,9 +46,11 @@ const Header = () => {
             )}
 
             {/* button login */}
-            <div className="">
-                <LoginButton />
-            </div>
+            {!isLoggedIn && (
+                <div className="">
+                    <LoginButton />
+                </div>
+            )}
         </div>
     );
 };

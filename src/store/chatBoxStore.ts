@@ -2,21 +2,25 @@ import { ProductItem } from "@/services/chatbot";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
+export type SendType =
+    | "select"
+    | "options"
+    | "text"
+    | "feedback"
+    | "time"
+    | "wait_reply"
+    | "products"
+    | "not-found-product"
+    | "edit-product-code"
+    | "table-price"
+    | "start";
+
 export type Message = {
     id: number;
 
     sender: "user" | "assistant";
     content: string;
-    sendType:
-        | "select"
-        | "options"
-        | "text"
-        | "feedback"
-        | "time"
-        | "wait_reply"
-        | "products"
-        | "not-found-product"
-        | "edit-product-code";
+    sendType: SendType;
 
     products?: ProductItem[];
     options?: {

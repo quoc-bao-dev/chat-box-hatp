@@ -13,6 +13,7 @@ export interface RobotOption {
     event_app: string | null;
     show_move_event: string | null;
     next?: string;
+    disabled?: boolean;
 }
 
 export interface RobotData {
@@ -46,7 +47,7 @@ export interface RobotData {
 export interface GetActiveRobotDetailResponse {
     result: boolean;
     data: RobotData;
-    next: boolean;
+    next: boolean | string;
     is_chat: 1 | 2 | null; // 1 -> bat luon , 2 -> bat 1 lan , null -> khong bat
     send_chat: 1; // 1-> dừng lại nhập mã sản phẩm
     next_wait?: string;

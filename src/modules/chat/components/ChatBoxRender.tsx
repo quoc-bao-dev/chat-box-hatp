@@ -8,6 +8,7 @@ import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";
 import PaginationTrigger from "./PaginationTrigger";
 import ScrollToBottomButton from "./ScrollToBottomButton";
+import { RobotOption } from "@/services/robot";
 
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
@@ -91,14 +92,12 @@ const ChatBoxRender = () => {
                     sender={message.sender}
                     content={message.content}
                     sendType={message.sendType}
-                    options={message.options}
+                    options={message.options as RobotOption[]}
                     feedback={message.feedback}
                     time={message.time}
                     products={message.products}
                     productOptions={message.options as ProductOption[]}
-                    disableAction={
-                        message.disableAction && index !== massages.length - 1
-                    }
+                    disableAction={index !== massages.length - 1}
                 />
             ))}
             {isAssistantTyping && <AssistantTyping />}

@@ -1,11 +1,16 @@
 "use client";
 
 import EditProductCode from "@/core/components/ui/EditProductCode";
+import { axiosInstance } from "@/core/http";
+import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
+import { getSession } from "@/core/utils/session";
 import {
     ProductItem,
     useEditProductItem,
     useRemoveItem,
 } from "@/services/chatbot";
+import { GetActiveRobotDetailResponse, RobotOption } from "@/services/robot";
+import { useChatBoxActions } from "@/store";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -25,17 +30,22 @@ const convertApiResponseToProductItems = (jsonItems: any[]): ProductItem[] => {
 
 interface EditProductCodePanelProps {
     items: ProductItem[];
+    options: RobotOption[];
     idChat: string;
     disable?: boolean;
 }
 
 const EditProductCodePanel = ({
     items,
+    options,
     idChat,
     disable,
 }: EditProductCodePanelProps) => {
     const { mutateAsync: editProductItem } = useEditProductItem();
     const { mutateAsync: removeItem } = useRemoveItem();
+    const { addMessage } = useChatBoxActions();
+
+    const [disablePanel, setDisablePanel] = useState(disable);
 
     const [itemsEdited, setItemsEdited] = useState<ProductItem[]>(items);
     const [resetTriggers, setResetTriggers] = useState<Record<number, number>>(
@@ -102,8 +112,50 @@ const EditProductCodePanel = ({
         }
     };
 
-    const handleConfirmClick = () => {
+    const handleConfirmClick = async () => {
         // onProductsUpdate?.(itemsEdited);
+        console.log(options);
+
+        // lấy next link
+
+        const nextLink = options[0].next;
+        console.log(nextLink);
+
+        if (nextLink) {
+            try {
+                const res =
+                    await axiosInstance.get<GetActiveRobotDetailResponse>(
+                        nextLink,
+                        {
+                            params: {
+                                sp_session: getSession(),
+                            },
+                        }
+                    );
+
+                addMessage(createMessageFromResponse(res.data));
+                setDisablePanel(true);
+
+                const nextLinkTable = res.data.next as string;
+                if (nextLinkTable) {
+                    try {
+                        const resTable =
+                            await axiosInstance.get<GetActiveRobotDetailResponse>(
+                                nextLinkTable,
+                                {
+                                    params: {
+                                        sp_session: getSession(),
+                                    },
+                                }
+                            );
+
+                        addMessage(createMessageFromResponse(resTable.data));
+
+                        // addMessage(createMessageFromResponse(resTable.data));
+                    } catch (error) {}
+                }
+            } catch (error) {}
+        }
     };
 
     return (
@@ -114,7 +166,7 @@ const EditProductCodePanel = ({
             onRemoveItem={handleRemoveItem}
             onEditProductCode={handleEditProductCode}
             resetTriggers={resetTriggers}
-            disable={disable}
+            disable={disablePanel}
         />
     );
 };

@@ -4,6 +4,18 @@ import { Message } from "@/store/chatBoxStore";
 export const createMessageFromResponse = (
     data: GetActiveRobotDetailResponse
 ): Message => {
+    // show table
+    if (data.data.show_move_event === "tablePrice") {
+        return {
+            id: Number(data.data.id),
+            sender: data.data.type_send === "1" ? "user" : "assistant",
+            content: data.data.message,
+            sendType: "table-price",
+            options: data.data.options,
+            products: data.data.json_item,
+        };
+    }
+
     // show edit product code
 
     if (
@@ -41,6 +53,19 @@ export const createMessageFromHistoryResponse = (
         "2": "normal",
         "3": "good",
     };
+
+    // show table
+    if (data.show_move_event === "tablePrice") {
+        return {
+            id: Number(data.id),
+            sender: data.type_send === "1" ? "user" : "assistant",
+            content: data.message,
+            sendType: "table-price",
+            options: data.options,
+            products: data.json_item,
+            disableAction: true,
+        };
+    }
 
     // show edit product code
     if (data.show_move_event == "view_edit_product") {

@@ -17,7 +17,8 @@ const ChatInput = ({
     onSend,
 }: ChatInputProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const { stopCountdownFeedback } = useChatBoxActions();
+    const { stopCountdownFeedback, startCountdownFeedback } =
+        useChatBoxActions();
     const handleSend = () => {
         const input = document.querySelector(
             "#input-chat-box"
@@ -50,6 +51,7 @@ const ChatInput = ({
                     placeholder={placeholder}
                     onKeyPress={handleKeyPress}
                     onFocus={stopCountdownFeedback}
+                    onBlur={startCountdownFeedback}
                     id="input-chat-box"
                 />
                 <div

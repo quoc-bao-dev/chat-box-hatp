@@ -13,7 +13,8 @@ export type SendType =
     | "not-found-product"
     | "edit-product-code"
     | "table-price"
-    | "start";
+    | "start"
+    | "await-reply";
 
 export type Message = {
     id: number;

@@ -9,11 +9,13 @@ import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";
 import PaginationTrigger from "./PaginationTrigger";
 import ScrollToBottomButton from "./ScrollToBottomButton";
+import { useChatInputStore } from "@/store/chatInputStore";
 
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
     const [canScrollToBottom, setCanScrollToBottom] = useState(true);
-    const { startCountdownFeedback } = useChatBoxActions();
+    const { startCountdownFeedback, setMode } = useChatBoxActions();
+    const { setEvent } = useChatInputStore();
 
     const [hasCheckShowFeedback, setHasCheckShowFeedback] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -90,8 +92,20 @@ const ChatBoxRender = () => {
             startCountdownFeedback();
             setHasCheckShowFeedback(true);
         }
+
+        if (
+            massages.length > 0 &&
+            massages[massages.length - 1].sendType === "wait_reply"
+        ) {
+            setMode("chat");
+            setEvent(2);
+            setHasCheckShowFeedback(false);
+            // set input
+        }
     }, [massages]);
 
+    // check open input
+    useEffect(() => {}, []);
     return (
         <div
             ref={containerRef}

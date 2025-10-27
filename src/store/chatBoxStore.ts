@@ -1,6 +1,6 @@
 import { ProductItem } from "@/services/chatbot";
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 
 export type SendType =
     | "select"
@@ -71,139 +71,162 @@ type ChatBoxActions = {
 type ChatBoxStore = ChatBoxState & ChatBoxActions;
 
 const useChatBoxStore = create<ChatBoxStore>()(
-    devtools((set) => {
-        const setFirstOption = (firstOption: number | null) => {
-            set({ firstOption });
-        };
+    devtools(
+        persist(
+            (set) => {
+                const setFirstOption = (firstOption: number | null) => {
+                    set({ firstOption });
+                };
 
-        const setIsAssistantTyping = (isAssistantTyping: boolean) => {
-            set({ isAssistantTyping });
-        };
-        const setIsFeedback = (isFeedback: boolean) => {
-            set({ isFeedback });
-        };
+                const setIsAssistantTyping = (isAssistantTyping: boolean) => {
+                    set({ isAssistantTyping });
+                };
+                const setIsFeedback = (isFeedback: boolean) => {
+                    set({ isFeedback });
+                };
 
-        const startCountdownFeedback = () => {
-            set({ isCountdownFeedback: true });
-        };
+                const startCountdownFeedback = () => {
+                    set({ isCountdownFeedback: true });
+                };
 
-        const stopCountdownFeedback = () => {
-            set({ isCountdownFeedback: false });
-        };
+                const stopCountdownFeedback = () => {
+                    set({ isCountdownFeedback: false });
+                };
 
-        const setMode = (mode: "chat" | "click") => {
-            set({ mode });
-        };
+                const setMode = (mode: "chat" | "click") => {
+                    set({ mode });
+                };
 
-        const setSessionRobot = (sessionRobot: string | null) => {
-            set({ sessionRobot });
-        };
+                const setSessionRobot = (sessionRobot: string | null) => {
+                    set({ sessionRobot });
+                };
 
-        const addMessage = (message: Message) => {
-            set((state) => ({ massages: [...state.massages, message] }));
-        };
+                const addMessage = (message: Message) => {
+                    set((state) => ({
+                        massages: [...state.massages, message],
+                    }));
+                };
 
-        const addMessageToTop = (message: Message) => {
-            set((state) => ({ massages: [message, ...state.massages] }));
-        };
+                const addMessageToTop = (message: Message) => {
+                    set((state) => ({
+                        massages: [message, ...state.massages],
+                    }));
+                };
 
-        const disableOptionInMessage = (
-            messageId: number,
-            optionId: string
-        ) => {
-            set((state) => ({
-                massages: state.massages.map((message) => {
-                    if (message.id === messageId && message.options) {
-                        return {
-                            ...message,
-                            options: message.options.map((option) =>
-                                option.id === optionId
-                                    ? // toggle disable
-                                      { ...option, disabled: true }
-                                    : { ...option, disabled: true }
-                            ),
-                        };
-                    }
-                    return message;
+                const disableOptionInMessage = (
+                    messageId: number,
+                    optionId: string
+                ) => {
+                    set((state) => ({
+                        massages: state.massages.map((message) => {
+                            if (message.id === messageId && message.options) {
+                                return {
+                                    ...message,
+                                    options: message.options.map((option) =>
+                                        option.id === optionId
+                                            ? // toggle disable
+                                              { ...option, disabled: true }
+                                            : { ...option, disabled: true }
+                                    ),
+                                };
+                            }
+                            return message;
+                        }),
+                    }));
+                };
+
+                const addFeedbackMessage = (feedbackData: {
+                    rating: "good" | "normal" | "bad";
+                    tags: string[];
+                    isEvaluated: boolean;
+                }) => {
+                    const feedbackMessage: Message = {
+                        id: Date.now(),
+                        sender: "user",
+                        content: "",
+                        sendType: "feedback",
+                        feedback: feedbackData,
+                    };
+
+                    console.log("feedbackMessage ", feedbackMessage);
+
+                    set((state) => ({
+                        massages: [...state.massages, feedbackMessage],
+                    }));
+                };
+
+                const addTimeMessage = (time: string) => {
+                    const timeMessage: Message = {
+                        id: Date.now(),
+                        sender: "assistant",
+                        content: "",
+                        sendType: "time",
+                        time: time,
+                    };
+                    set((state) => ({
+                        massages: [...state.massages, timeMessage],
+                    }));
+                };
+
+                const addTimeToTopMessage = (time: string) => {
+                    const timeMessage: Message = {
+                        id: Date.now(),
+                        sender: "assistant",
+                        content: "",
+                        sendType: "time",
+                        time: time,
+                    };
+                    set((state) => ({
+                        massages: [timeMessage, ...state.massages],
+                    }));
+                };
+
+                return {
+                    // state
+                    firstOption: null,
+                    isAssistantTyping: false,
+                    isCountdownFeedback: false,
+                    isFeedback: false,
+                    mode: "click",
+                    massages: [],
+                    sessionRobot: null,
+
+                    setFirstOption,
+                    setIsAssistantTyping,
+                    setIsFeedback,
+                    startCountdownFeedback,
+                    stopCountdownFeedback,
+                    setMode,
+                    addMessage,
+                    addMessageToTop,
+                    setSessionRobot,
+                    disableOptionInMessage,
+                    addFeedbackMessage,
+                    addTimeMessage,
+                    addTimeToTopMessage,
+                };
+            },
+            {
+                name: "chatbox-storage",
+                storage: {
+                    getItem: (name: string) => {
+                        const str = sessionStorage.getItem(name);
+                        return str ? JSON.parse(str) : null;
+                    },
+                    setItem: (name: string, value: unknown) => {
+                        sessionStorage.setItem(name, JSON.stringify(value));
+                    },
+                    removeItem: (name: string) =>
+                        sessionStorage.removeItem(name),
+                },
+                partialize: (state) => ({
+                    isFeedback: state.isFeedback,
+                    sessionRobot: state.sessionRobot,
                 }),
-            }));
-        };
-
-        const addFeedbackMessage = (feedbackData: {
-            rating: "good" | "normal" | "bad";
-            tags: string[];
-            isEvaluated: boolean;
-        }) => {
-            const feedbackMessage: Message = {
-                id: Date.now(),
-                sender: "user",
-                content: "",
-                sendType: "feedback",
-                feedback: feedbackData,
-            };
-
-            console.log("feedbackMessage ", feedbackMessage);
-
-            set((state) => ({
-                massages: [...state.massages, feedbackMessage],
-            }));
-        };
-
-        const addTimeMessage = (time: string) => {
-            const timeMessage: Message = {
-                id: Date.now(),
-                sender: "assistant",
-                content: "",
-                sendType: "time",
-                time: time,
-            };
-            set((state) => ({
-                massages: [...state.massages, timeMessage],
-            }));
-        };
-
-        const addTimeToTopMessage = (time: string) => {
-            const timeMessage: Message = {
-                id: Date.now(),
-                sender: "assistant",
-                content: "",
-                sendType: "time",
-                time: time,
-            };
-            set((state) => ({
-                massages: [timeMessage, ...state.massages],
-            }));
-        };
-
-        return {
-            // state
-            firstOption: null,
-            isAssistantTyping: false,
-            isCountdownFeedback: false,
-            isFeedback: false,
-            mode: "click",
-            massages: [],
-            sessionRobot: null,
-            // awaitFeedback: false,
-            // action
-            // setAwaitFeedback: (awaitFeedback: boolean) => {
-            //     set({ awaitFeedback });
-            // },
-            setFirstOption,
-            setIsAssistantTyping,
-            setIsFeedback,
-            startCountdownFeedback,
-            stopCountdownFeedback,
-            setMode,
-            addMessage,
-            addMessageToTop,
-            setSessionRobot,
-            disableOptionInMessage,
-            addFeedbackMessage,
-            addTimeMessage,
-            addTimeToTopMessage,
-        };
-    })
+            }
+        ),
+        { name: "ChatBoxStore" }
+    )
 );
 
 export default useChatBoxStore;

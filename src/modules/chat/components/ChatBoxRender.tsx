@@ -1,19 +1,21 @@
 "use client";
 
 import { ProductOption } from "@/services/chatbot";
-import { useChatBoxState } from "@/store";
-import { useLayoutEffect, useRef, useState } from "react";
+import { RobotOption } from "@/services/robot";
+import { useChatBoxActions, useChatBoxState } from "@/store";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";
 import PaginationTrigger from "./PaginationTrigger";
 import ScrollToBottomButton from "./ScrollToBottomButton";
-import { RobotOption } from "@/services/robot";
 
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
     const [canScrollToBottom, setCanScrollToBottom] = useState(true);
+    const { startCountdownFeedback } = useChatBoxActions();
 
+    const [hasCheckShowFeedback, setHasCheckShowFeedback] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
 
@@ -43,9 +45,10 @@ const ChatBoxRender = () => {
         if (canScrollToBottom) {
             setTimeout(() => {
                 el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-            }, 300);
+            }, 400);
             // After auto-scroll, hide the button (we are at bottom)
         }
+
         setShowScrollButton(false);
     }, [massages, isAssistantTyping, canScrollToBottom]);
 
@@ -76,10 +79,23 @@ const ChatBoxRender = () => {
         }
     }, [isFeedback]);
 
+    useEffect(() => {
+        if (hasCheckShowFeedback) return;
+        if (
+            !hasCheckShowFeedback &&
+            massages.length > 0 &&
+            massages[massages.length - 1].sendType === "table-price" &&
+            !isFeedback
+        ) {
+            startCountdownFeedback();
+            setHasCheckShowFeedback(true);
+        }
+    }, [massages]);
+
     return (
         <div
             ref={containerRef}
-            className={`h-full space-y-3 overflow-y-scroll py-5 lg:px-4 relative [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
+            className={` h-full space-y-3 overflow-y-scroll py-5 lg:px-4 relative [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
         >
             {/* === trigger === */}
             <PaginationTrigger />
@@ -98,9 +114,10 @@ const ChatBoxRender = () => {
                     products={message.products}
                     productOptions={message.options as ProductOption[]}
                     disableAction={
-                        index !== massages.length - 1 ||
-                        isFeedback ||
-                        isAssistantTyping
+                        false
+                        // index !== massages.length - 1
+                        // isFeedback ||
+                        // isAssistantTyping
                     }
                 />
             ))}
@@ -108,13 +125,9 @@ const ChatBoxRender = () => {
             {isAssistantTyping && <AssistantTyping />}
 
             {/* === scroll bottom button === */}
-            <ScrollToBottomButton
-                show={showScrollButton}
-                onClick={scrollToBottom}
-            />
 
             {/* === feedback === */}
-            {isFeedback && (
+            {isFeedback && massages.length > 0 && (
                 <div className="pt-5">
                     <Feedback
                         onScrollToBottom={() =>
@@ -125,6 +138,10 @@ const ChatBoxRender = () => {
                     />
                 </div>
             )}
+            <ScrollToBottomButton
+                show={showScrollButton}
+                onClick={scrollToBottom}
+            />
         </div>
     );
 };

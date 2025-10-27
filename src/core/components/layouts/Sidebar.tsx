@@ -61,7 +61,6 @@ const Sidebar = () => {
     const { data: setting } = useGetSetting();
     const { userInfo, isLoggedIn, logout } = useAuth();
 
-    console.log(userInfo);
     const isActive = (href: string) => {
         if (href === "/") {
             return pathname === "/";
@@ -201,8 +200,8 @@ const Sidebar = () => {
                                     </div>
                                 )}
                                 <div className="flex flex-col flex-1 min-w-0">
-                                    <p className="font-semibold text-gray-600 truncate">{userInfo?.fullname_contacts}</p>
-                                    <p className="font-semibold text-gray-600 truncate">{userInfo?.fullname}</p>
+                                    <p className="font-semibold text-sm text-black truncate">{userInfo?.fullname_contacts}</p>
+                                    <p className="font-normal text-xs text-black truncate">{userInfo?.fullname}</p>
                                 </div>
                             </div>
                             <Image

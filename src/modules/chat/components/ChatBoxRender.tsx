@@ -15,7 +15,6 @@ const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
     const [canScrollToBottom, setCanScrollToBottom] = useState(true);
     const { startCountdownFeedback, setMode } = useChatBoxActions();
-    const { setEvent } = useChatInputStore();
 
     const [hasCheckShowFeedback, setHasCheckShowFeedback] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -126,7 +125,10 @@ const ChatBoxRender = () => {
                     time={message.time}
                     products={message.products}
                     productOptions={message.options as ProductOption[]}
-                    disableAction={index !== massages.length - 1}
+                    disableAction={
+                        index < massages.length - 1 &&
+                        message.options?.length === 0
+                    }
                 />
             ))}
 

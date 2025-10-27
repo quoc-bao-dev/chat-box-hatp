@@ -69,24 +69,28 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                             }}
                             className="size-[37px]"
                         />
-                        {/* === name === */}
-                        <div className="flex flex-col gap-0.5 flex-1">
-                            <p className="text-[#5E5E5E] font-bold text-sm">
-                                {item.name}
-                            </p>
-                            <p className="text-[#5E5E5E] font-semibold text-xs">
-                                {item.name_category}
-                            </p>
-                        </div>
-                        {/* === price === */}
-                        {item.price && (
-                            <div className="text-right">
-                                <p className="text-[#F04438] font-bold text-sm">
-                                    {Number(item.price).toLocaleString("vi-VN")}{" "}
-                                    ₫
+                        <div className="flex-1 flex lg:items-center lg:flex-row flex-col items-start gap-2">
+                            {/* === name === */}
+                            <div className="flex flex-col gap-0.5 flex-1">
+                                <p className="text-[#5E5E5E] font-bold text-sm">
+                                    {item.name}
+                                </p>
+                                <p className="text-[#5E5E5E] font-semibold text-xs">
+                                    {item.name_category}
                                 </p>
                             </div>
-                        )}
+                            {/* === price === */}
+                            {item.price && (
+                                <div className=" text-right ">
+                                    <p className="text-[#F04438] font-bold text-sm">
+                                        {Number(item.price).toLocaleString(
+                                            "vi-VN"
+                                        )}{" "}
+                                        ₫
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 ))}
             </div>

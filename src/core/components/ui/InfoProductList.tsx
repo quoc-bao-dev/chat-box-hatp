@@ -10,6 +10,7 @@ import { useChatBoxActions } from "@/store";
 import Image from "next/image";
 import { useState } from "react";
 import NoProductFound from "./NoProductFound";
+import { ActionButtons } from "./ActionButtons";
 
 export type InfoListItem = {
     id: string;
@@ -123,7 +124,7 @@ const InfoList = ({
                         key={item.id}
                         onClick={() => onItemClick?.(item)}
                         className={cn(
-                            ` px-4 py-3.5 rounded-xl bg-[#F8F8F8] hover:bg-gray-100 cursor-pointer flex items-center  gap-4 shadow-xl/4`
+                            ` px-4 py-3.5 rounded-xl bg-[#F8F8F8] hover:bg-gray-100 flex items-center  gap-4 shadow-xl/4`
                         )}
                     >
                         {/* === image === */}
@@ -151,77 +152,36 @@ const InfoList = ({
             </div>
 
             {/* === action button === */}
-            {(shouldShowCancelButton ||
-                shouldShowConfirmButton ||
-                shouldShowEditButton) && (
-                <div className="flex flex-col gap-2 mt-5">
-                    {shouldShowConfirmButton && (
-                        <button
-                            type="button"
-                            className=" h-10 rounded-xl bg-[#2FB06B] text-white font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
-                            onClick={async () => {
-                                await callApiByEvent(
-                                    "confirm_product",
-                                    setIsConfirmLoading
-                                );
-                                onConfirmClick?.();
-                            }}
-                            disabled={
-                                isConfirmLoading ||
-                                isEditLoading ||
-                                isCancelLoading ||
-                                disable
-                            }
-                        >
-                            {isConfirmLoading ? "Đang xác nhận..." : "Xác nhận"}
-                        </button>
-                    )}
-                    {shouldShowEditButton && (
-                        <button
-                            type="button"
-                            className="h-10 rounded-xl bg-white text-gray-700 font-medium border border-gray-200 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
-                            onClick={async () => {
-                                await callApiByEvent(
-                                    "edit_product",
-                                    setIsEditLoading
-                                );
-                                onEditClick?.();
-                            }}
-                            disabled={
-                                isConfirmLoading ||
-                                isEditLoading ||
-                                isCancelLoading ||
-                                disable
-                            }
-                        >
-                            {isEditLoading
-                                ? "Đang chỉnh sửa..."
-                                : "Tôi muốn chỉnh sửa mã sản phẩm"}
-                        </button>
-                    )}
-                    {shouldShowCancelButton && (
-                        <button
-                            type="button"
-                            className="h-10 rounded-xl bg-white text-[#F04438] border border-[#F04438] font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
-                            onClick={async () => {
-                                await callApiByEvent(
-                                    "cancel_product",
-                                    setIsCancelLoading
-                                );
-                                onCancelClick?.();
-                            }}
-                            disabled={
-                                isConfirmLoading ||
-                                isEditLoading ||
-                                isCancelLoading ||
-                                disable
-                            }
-                        >
-                            {isCancelLoading ? "Đang hủy..." : "Hủy"}
-                        </button>
-                    )}
-                </div>
-            )}
+            <ActionButtons
+                shouldShowConfirmButton={shouldShowConfirmButton}
+                shouldShowEditButton={shouldShowEditButton}
+                shouldShowCancelButton={shouldShowCancelButton}
+                isConfirmLoading={isConfirmLoading}
+                isEditLoading={isEditLoading}
+                isCancelLoading={isCancelLoading}
+                disable={disable}
+                onConfirmClick={async () => {
+                    await callApiByEvent(
+                        "confirm_product",
+                        setIsConfirmLoading
+                    );
+                    onConfirmClick?.();
+                }}
+                onEditClick={async () => {
+                    await callApiByEvent("edit_product", setIsEditLoading);
+                    onEditClick?.();
+                }}
+                onCancelClick={async () => {
+                    await callApiByEvent("cancel_product", setIsCancelLoading);
+                    onCancelClick?.();
+                }}
+                confirmText="Xác nhận"
+                editText="Tôi muốn chỉnh sửa mã sản phẩm"
+                cancelText="Hủy"
+                confirmLoadingText="Đang xác nhận..."
+                editLoadingText="Đang chỉnh sửa..."
+                cancelLoadingText="Đang hủy..."
+            />
         </div>
     );
 };

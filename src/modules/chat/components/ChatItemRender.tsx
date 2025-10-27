@@ -1,29 +1,22 @@
 import Time from "@/core/components/common/Time";
 import { NoProductFound } from "@/core/components/ui";
 import { ProductItem, ProductOption } from "@/services/chatbot";
+import { RobotOption } from "@/services/robot";
+import { SendType } from "@/store/chatBoxStore";
 import AssistantMessage from "./AssistantMessage";
 import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
 import EditProductCodePanel from "./product-price-lookup/EditProductCodePanel";
 import ProductPanel from "./product-price-lookup/ProductPanel";
 import UserMessage from "./UserMessage";
+import ProductListDisplayPanel from "./product-price-lookup/ProductListDisplayPanel";
 
 type ChatItemRenderProps = {
     id: number;
     sender: "user" | "assistant";
     content?: string;
-    sendType:
-        | "select"
-        | "options"
-        | "text"
-        | "start"
-        | "feedback"
-        | "time"
-        | "wait_reply"
-        | "products"
-        | "not-found-product"
-        | "edit-product-code";
-    options?: { id: string; content: string; next?: string }[];
+    sendType: SendType;
+    options?: RobotOption[];
     productOptions?: ProductOption[];
     products?: ProductItem[];
     feedback?: {
@@ -98,6 +91,20 @@ const ChatItemRender = ({
             />
         );
     }
+
+    if (sender === "assistant" && sendType === "table-price") {
+        return (
+            <AssistantMessage
+                content={
+                    <ProductListDisplayPanel
+                        items={products || []}
+                        options={options || []}
+                        disable={disableAction}
+                    />
+                }
+            />
+        );
+    }
     if (sender === "user" && sendType === "products") {
         return (
             <AssistantMessage
@@ -128,6 +135,7 @@ const ChatItemRender = ({
                     items={products || []}
                     idChat={id.toString()}
                     disable={disableAction}
+                    options={options || []}
                 />
             </div>
         );

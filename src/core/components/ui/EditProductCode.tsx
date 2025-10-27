@@ -11,6 +11,9 @@ export type EditProductCodeProps = {
     onConfirmClick?: () => void;
     onRemoveItem?: (itemId: number) => void;
     onEditProductCode?: (itemId: number, newCode: string) => void;
+
+    onHover?: () => void;
+    onLeave?: () => void;
     className?: string;
     disable?: boolean;
     resetTriggers?: Record<number, number>;
@@ -22,6 +25,8 @@ const EditProductCode = ({
     onConfirmClick,
     onRemoveItem,
     onEditProductCode,
+    onHover,
+    onLeave,
     className = "",
     disable = false,
     resetTriggers = {},
@@ -31,6 +36,8 @@ const EditProductCode = ({
     return (
         <div
             className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] min-w-[300px] lg:w-full ${className}`}
+            onMouseEnter={onHover}
+            onMouseLeave={onLeave}
         >
             {/* === title === */}
             <p className="text-[18px] font-semibold text-gray-900">{title}</p>

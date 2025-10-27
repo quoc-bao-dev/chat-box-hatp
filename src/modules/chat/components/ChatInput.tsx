@@ -1,7 +1,9 @@
 "use client";
 
 import { _Image } from "@/core/config";
+import { useChatBoxActions } from "@/store";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 
 interface ChatInputProps {
     placeholder?: string;
@@ -14,9 +16,9 @@ const ChatInput = ({
     className = "",
     onSend,
 }: ChatInputProps) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const { stopCountdownFeedback } = useChatBoxActions();
     const handleSend = () => {
-        console.log("input text");
-
         const input = document.querySelector(
             "#input-chat-box"
         ) as HTMLInputElement;
@@ -32,14 +34,22 @@ const ChatInput = ({
         }
     };
 
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [inputRef.current]);
+
     return (
         <div className={`${className}`}>
             <div className="bg-white p-1.5 rounded-full flex items-center border border-[#E2E8F0]">
                 <input
+                    ref={inputRef}
                     type="text"
                     className="flex-1 outline-none pl-5 text-gray-800"
                     placeholder={placeholder}
                     onKeyPress={handleKeyPress}
+                    onFocus={stopCountdownFeedback}
                     id="input-chat-box"
                 />
                 <div

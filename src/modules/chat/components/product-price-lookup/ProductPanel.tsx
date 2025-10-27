@@ -7,6 +7,7 @@ type ProductPanelProps = {
     content?: string;
     products?: ProductItem[];
     options?: ProductOption[];
+    disable?: boolean;
 };
 
 const ProductPanel = ({
@@ -14,6 +15,7 @@ const ProductPanel = ({
     content = "",
     products = [],
     options = [],
+    disable = false,
 }: ProductPanelProps) => {
     const handleItemClick = (item: ProductItem) => {
         // placeholder: handle select product item
@@ -40,6 +42,7 @@ const ProductPanel = ({
             onConfirmClick={handleConfirmClick}
             onEditClick={handleEditClick}
             onCancelClick={handleCancelClick}
+            disable={disable}
         />
     );
 };

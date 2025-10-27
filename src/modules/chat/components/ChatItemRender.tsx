@@ -49,6 +49,7 @@ const ChatItemRender = ({
                             title={content}
                             items={options}
                             messageId={id}
+                            disable={disableAction}
                         />
                     ) : (
                         content
@@ -86,6 +87,7 @@ const ChatItemRender = ({
                         content={content}
                         products={products}
                         options={productOptions}
+                        disable={disableAction}
                     />
                 }
             />

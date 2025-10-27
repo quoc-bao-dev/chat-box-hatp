@@ -18,7 +18,7 @@ const ProductListDisplayPanel = ({
     options,
     disable,
 }: ProductListDisplayPanelProps) => {
-    const [disablePanel, setDisablePanel] = useState(disable);
+    // const [disablePanel, setDisablePanel] = useState(disable);
 
     const { isAuthenticated } = useAuthStore();
     const { openFollowUp } = useFollowUpStore();
@@ -59,7 +59,7 @@ const ProductListDisplayPanel = ({
             onConfirmClick={handleConfirmClick}
             onEditClick={handleEditClick}
             onCancelClick={handleCancelClick}
-            disable={disablePanel}
+            disable={disable}
         />
     );
 };

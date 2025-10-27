@@ -61,7 +61,6 @@ const Sidebar = () => {
     const { data: setting } = useGetSetting();
     const { userInfo, isLoggedIn, logout } = useAuth();
 
-    console.log(userInfo);
     const isActive = (href: string) => {
         if (href === "/") {
             return pathname === "/";

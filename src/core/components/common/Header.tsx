@@ -2,7 +2,7 @@
 
 import { _Image } from "@/core/config";
 import { useSidebar } from "@/store/sidebarStore";
-import { LoginButton } from "../ui";
+import { LoginButton } from "@/modules/auth";
 import Icon from "./Icon";
 import { usePathname } from "next/navigation";
 

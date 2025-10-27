@@ -9,8 +9,8 @@ import { ProductItem, ProductOption } from "@/services/chatbot";
 import { useChatBoxActions } from "@/store";
 import Image from "next/image";
 import { useState } from "react";
-import NoProductFound from "./NoProductFound";
 import { ActionButtons } from "./ActionButtons";
+import NoProductFound from "./NoProductFound";
 
 export type InfoListItem = {
     id: string;
@@ -29,6 +29,7 @@ export type InfoListProps = {
     onConfirmClick?: () => void;
     onEditClick?: () => void;
     onCancelClick?: () => void;
+    disable?: boolean;
 };
 
 const InfoList = ({
@@ -40,14 +41,15 @@ const InfoList = ({
     onEditClick,
     onCancelClick,
     className = "",
+    disable = false,
 }: InfoListProps) => {
     const imageProdPlaceholder = _Image.icon.icon_product;
     const [isConfirmLoading, setIsConfirmLoading] = useState(false);
     const [isEditLoading, setIsEditLoading] = useState(false);
     const [isCancelLoading, setIsCancelLoading] = useState(false);
-    const [disable, setDisable] = useState(false);
 
-    const { addMessage } = useChatBoxActions();
+    const { addMessage, stopCountdownFeedback, startCountdownFeedback } =
+        useChatBoxActions();
     // Function to call API based on next URL with specific loading state
     const callApiByEvent = async (
         eventType: string,
@@ -76,7 +78,7 @@ const InfoList = ({
             const dataNext = res.data;
 
             addMessage(createMessageFromResponse(dataNext));
-            setDisable(true);
+            // setDisable(true);
 
             return data;
         } catch (error) {
@@ -84,6 +86,7 @@ const InfoList = ({
             throw error;
         } finally {
             setLoading(false);
+            startCountdownFeedback();
         }
     };
 
@@ -161,6 +164,7 @@ const InfoList = ({
                 isCancelLoading={isCancelLoading}
                 disable={disable}
                 onConfirmClick={async () => {
+                    stopCountdownFeedback();
                     await callApiByEvent(
                         "confirm_product",
                         setIsConfirmLoading
@@ -168,10 +172,12 @@ const InfoList = ({
                     onConfirmClick?.();
                 }}
                 onEditClick={async () => {
+                    stopCountdownFeedback();
                     await callApiByEvent("edit_product", setIsEditLoading);
                     onEditClick?.();
                 }}
                 onCancelClick={async () => {
+                    stopCountdownFeedback();
                     await callApiByEvent("cancel_product", setIsCancelLoading);
                     onCancelClick?.();
                 }}

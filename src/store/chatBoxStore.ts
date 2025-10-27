@@ -184,7 +184,11 @@ const useChatBoxStore = create<ChatBoxStore>()(
             mode: "click",
             massages: [],
             sessionRobot: null,
+            // awaitFeedback: false,
             // action
+            // setAwaitFeedback: (awaitFeedback: boolean) => {
+            //     set({ awaitFeedback });
+            // },
             setFirstOption,
             setIsAssistantTyping,
             setIsFeedback,
@@ -258,6 +262,12 @@ export const useChatBoxActions = () => {
     const addTimeToTopMessage = useChatBoxStore(
         (state) => state.addTimeToTopMessage
     );
+
+    const resetCountdownFeedback = async () => {
+        stopCountdownFeedback();
+        await new Promise((resolve) => setTimeout(resolve, 6000));
+        startCountdownFeedback();
+    };
     return {
         setFirstOption,
         setIsAssistantTyping,
@@ -272,5 +282,6 @@ export const useChatBoxActions = () => {
         addFeedbackMessage,
         addTimeMessage,
         addTimeToTopMessage,
+        resetCountdownFeedback,
     };
 };

@@ -5,7 +5,8 @@ import { useEffect, useRef } from "react";
 const CountdownFeedback = () => {
     const { isCountdownFeedback } = useChatBoxState();
 
-    const { stopCountdownFeedback, setIsFeedback } = useChatBoxActions();
+    const { stopCountdownFeedback, setIsFeedback, setMode } =
+        useChatBoxActions();
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -13,6 +14,7 @@ const CountdownFeedback = () => {
         timerRef.current = setTimeout(() => {
             stopCountdownFeedback();
             setIsFeedback(true);
+            setMode("click");
         }, botConfig.timeToFeedback);
 
         if (!isCountdownFeedback) {

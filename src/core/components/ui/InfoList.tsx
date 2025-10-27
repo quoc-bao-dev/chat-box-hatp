@@ -16,6 +16,7 @@ export type InfoListProps = {
     items: InfoListItem[];
     onItemClick?: (item: InfoListItem) => void;
     className?: string;
+    disable?: boolean;
 };
 
 const InfoList = ({
@@ -23,6 +24,7 @@ const InfoList = ({
     items,
     onItemClick,
     className = "",
+    disable = false,
 }: InfoListProps) => {
     return (
         <div
@@ -33,10 +35,10 @@ const InfoList = ({
                 {items.map((item) => (
                     <div
                         key={item.id}
-                        onClick={() => !item.disabled && onItemClick?.(item)}
+                        onClick={() => !disable && onItemClick?.(item)}
                         className={cn(
                             ` px-4 py-2 rounded-xl bg-gray-50/80 flex items-center justify-between ${
-                                item.disabled
+                                disable
                                     ? "opacity-50 cursor-not-allowed"
                                     : "cursor-pointer hover:bg-gray-100 "
                             }`
@@ -44,11 +46,12 @@ const InfoList = ({
                     >
                         <p
                             className={`text-[#00A76F] font-medium  ${
-                                item.disabled ? "text-gray-500" : ""
+                                disable ? "text-gray-500" : ""
                             }`}
                         >
                             <HtmlRenderer htmlContent={item.content} />
                         </p>
+
                         <Image
                             src={_Image.icon.icon_send_2}
                             alt="arrow-right"

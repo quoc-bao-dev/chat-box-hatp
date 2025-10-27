@@ -20,6 +20,7 @@ type InfoPanelProps = {
     title?: string;
     items?: InfoItem[];
     messageId?: number;
+    disable?: boolean;
 };
 
 const defaultItems: InfoItem[] = [
@@ -30,7 +31,12 @@ const defaultItems: InfoItem[] = [
     { id: "hotline", content: "Gọi hotline liên hệ tư vấn viên" },
 ];
 
-const InfoPanel = ({ title, items = [], messageId }: InfoPanelProps) => {
+const InfoPanel = ({
+    title,
+    items = [],
+    messageId,
+    disable = false,
+}: InfoPanelProps) => {
     const { isAssistantTyping } = useChatBoxState();
 
     const {
@@ -62,6 +68,7 @@ const InfoPanel = ({ title, items = [], messageId }: InfoPanelProps) => {
 
             addMessage(createMessageFromResponse(response.data));
             setIsAssistantTyping(false);
+            startCountdownFeedback();
 
             const nextRes = response.data.next;
             const nextWait = response.data.next_wait;
@@ -137,6 +144,7 @@ const InfoPanel = ({ title, items = [], messageId }: InfoPanelProps) => {
             title={title!}
             items={infoListItems}
             onItemClick={handleItemClick}
+            disable={disable}
         />
     );
 };

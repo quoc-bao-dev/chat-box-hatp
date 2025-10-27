@@ -204,6 +204,11 @@ const Feedback = ({ onScrollToBottom, feedbackData }: FeedbackProps) => {
                                     size="sm"
                                     onClick={() => toggleReason(tag.text)}
                                     disabled={isEvaluated}
+                                    className={cn(
+                                        !isEvaluated && "cursor-pointer",
+                                        isEvaluated &&
+                                            "cursor-not-allowed opacity-50"
+                                    )}
                                 >
                                     {tag.text}
                                 </BouncyButton>
@@ -257,8 +262,9 @@ const EmojiButton = ({
             onClick={onClick}
             disabled={disabled}
             className={cn(
-                "group outline-none cursor-pointer",
-                disabled && "cursor-not-allowed opacity-50"
+                "group outline-none",
+                disabled && "cursor-not-allowed opacity-50",
+                !disabled && "cursor-pointer"
             )}
             aria-pressed={isActive}
         >

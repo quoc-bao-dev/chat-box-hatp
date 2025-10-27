@@ -43,12 +43,8 @@ const EditProductCodePanel = ({
 }: EditProductCodePanelProps) => {
     const { mutateAsync: editProductItem } = useEditProductItem();
     const { mutateAsync: removeItem } = useRemoveItem();
-    const {
-        addMessage,
-        startCountdownFeedback,
-        stopCountdownFeedback,
-        resetCountdownFeedback,
-    } = useChatBoxActions();
+    const { addMessage, startCountdownFeedback, stopCountdownFeedback } =
+        useChatBoxActions();
 
     const [itemsEdited, setItemsEdited] = useState<ProductItem[]>(items);
     const [resetTriggers, setResetTriggers] = useState<Record<number, number>>(
@@ -56,7 +52,6 @@ const EditProductCodePanel = ({
     );
 
     const handleEditProductCode = async (itemId: number, newCode: string) => {
-        stopCountdownFeedback();
         const res = await editProductItem({
             params: { id: itemId.toString(), id_chat: idChat },
             payload: { searchCode: newCode },
@@ -83,11 +78,9 @@ const EditProductCodePanel = ({
         } else {
             toast.error(res.message || "Có lỗi xảy ra khi chỉnh sửa sản phẩm");
         }
-        startCountdownFeedback();
     };
 
     const handleRemoveItem = async (itemId: number) => {
-        stopCountdownFeedback();
         try {
             const res = await removeItem({
                 id: itemId.toString(),
@@ -112,7 +105,6 @@ const EditProductCodePanel = ({
             } else {
                 toast.error(res.message || "Có lỗi xảy ra khi xóa sản phẩm");
             }
-            startCountdownFeedback();
         } catch (error) {
             toast.error("Có lỗi xảy ra khi xóa sản phẩm");
             console.error("Remove item error:", error);
@@ -170,8 +162,6 @@ const EditProductCodePanel = ({
             onEditProductCode={handleEditProductCode}
             resetTriggers={resetTriggers}
             disable={disable}
-            onHover={stopCountdownFeedback}
-            onLeave={startCountdownFeedback}
         />
     );
 };

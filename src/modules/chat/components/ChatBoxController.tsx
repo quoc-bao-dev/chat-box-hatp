@@ -16,8 +16,7 @@ const ChatBoxController = () => {
     const { firstOption, massages } = useChatBoxState();
     const { setIsAssistantTyping, setFirstOption, setMode } =
         useChatBoxActions();
-    const { addMessage, setSessionRobot, startCountdownFeedback } =
-        useChatBoxActions();
+    const { addMessage, setSessionRobot } = useChatBoxActions();
 
     const { setEvent, setNextLink } = useChatInputStore();
 
@@ -61,8 +60,6 @@ const ChatBoxController = () => {
                                     }
                                 );
 
-                            // add message from response
-                            startCountdownFeedback();
                             addMessage(createMessageFromResponse(res.data));
 
                             //  handle event

@@ -67,7 +67,12 @@ const Feedback = ({ onScrollToBottom, feedbackData }: FeedbackProps) => {
             return;
         }
 
-        if (!sessionRobot || !rating) return;
+        if (!sessionRobot || !rating) {
+            console.log("sessionRobot", sessionRobot);
+            console.log("rating", rating);
+
+            return;
+        }
 
         // Map rating to API format
         const ratingMap = {

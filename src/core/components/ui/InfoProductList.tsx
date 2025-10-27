@@ -86,7 +86,6 @@ const InfoList = ({
             throw error;
         } finally {
             setLoading(false);
-            startCountdownFeedback();
         }
     };
 
@@ -170,6 +169,7 @@ const InfoList = ({
                         setIsConfirmLoading
                     );
                     onConfirmClick?.();
+                    startCountdownFeedback();
                 }}
                 onEditClick={async () => {
                     stopCountdownFeedback();

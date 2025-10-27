@@ -68,7 +68,6 @@ const InfoPanel = ({
 
             addMessage(createMessageFromResponse(response.data));
             setIsAssistantTyping(false);
-            startCountdownFeedback();
 
             const nextRes = response.data.next;
             const nextWait = response.data.next_wait;

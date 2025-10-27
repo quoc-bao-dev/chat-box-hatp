@@ -102,8 +102,6 @@ const ChatBoxRender = () => {
         }
     }, [massages]);
 
-    // check open input
-    useEffect(() => {}, []);
     return (
         <div
             ref={containerRef}

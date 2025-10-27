@@ -7,12 +7,7 @@ import { useChatInputStore } from "@/store/chatInputStore";
 import ChatInput from "./ChatInput";
 
 const ChatInputController = () => {
-    const {
-        addMessage,
-        setMode,
-        setIsAssistantTyping,
-        startCountdownFeedback,
-    } = useChatBoxActions();
+    const { addMessage, setMode, setIsAssistantTyping } = useChatBoxActions();
 
     const { event, nextLink, dataPost, setEvent, setNextLink, setDataPost } =
         useChatInputStore();
@@ -79,7 +74,6 @@ const ChatInputController = () => {
         } catch (error) {
             setIsAssistantTyping(false);
         } finally {
-            startCountdownFeedback();
         }
     };
     return <ChatInput onSend={handleSend} />;

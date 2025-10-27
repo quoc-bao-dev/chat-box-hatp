@@ -53,8 +53,8 @@ const ProductListDisplayPanel = ({
         <ProductListDisplay
             title="Danh sách sản phẩm"
             items={items}
-            shouldShowConfirmButton={true}
-            shouldShowCancelButton={true}
+            shouldShowConfirmButton={!!options[0]}
+            shouldShowCancelButton={!!options[1]}
             onItemClick={handleItemClick}
             onConfirmClick={handleConfirmClick}
             onEditClick={handleEditClick}

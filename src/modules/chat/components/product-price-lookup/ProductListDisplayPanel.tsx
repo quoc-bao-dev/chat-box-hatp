@@ -30,6 +30,7 @@ const ProductListDisplayPanel = ({
     const {
         addMessage,
         stopCountdownFeedback,
+        startCountdownFeedback,
         setIsAssistantTyping,
         setIsFeedback,
     } = useChatBoxActions();
@@ -72,6 +73,7 @@ const ProductListDisplayPanel = ({
             toast.success(res.data?.message!);
         }
         setIsAssistantTyping(false);
+        startCountdownFeedback();
     };
 
     // Hàm xử lý khi click edit

@@ -60,7 +60,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
             >
                 {/* Header Section */}
                 <div className="lg:text-center mb-2 lg:mb-6">
-                    <h2 className="text-xl font-bold text-[#454F5B] mb-2">
+                    <h2 className="lg:text-xl font-bold text-[#454F5B] mb-2">
                         {title}
                     </h2>
                     <div className="flex  lg:justify-center  flex-col gap-1 text-sm text-gray-600">
@@ -108,28 +108,28 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                     <table className="w-full min-w-[1000px] md:min-w-full border-collapse border border-gray-300">
                         <thead>
                             <tr style={{ background: "#B4EED9" }}>
-                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300">
+                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300 truncate">
                                     STT
                                 </th>
-                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300">
+                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300 truncate">
                                     Tên hàng
                                 </th>
-                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300">
+                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300 truncate">
                                     Đơn vị tính
                                 </th>
-                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300">
+                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300 truncate">
                                     Số lượng
                                 </th>
-                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300">
+                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300 truncate">
                                     Đơn giá
                                 </th>
-                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300">
+                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300 truncate">
                                     Thành tiền
                                 </th>
-                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300">
+                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300 truncate">
                                     Số tờ
                                 </th>
-                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300">
+                                <th className="px-2 py-2 md:px-4 md:py-4 text-center text-xs lg:text-base font-semibold text-[#5E5E5E] border border-gray-300 truncate">
                                     Số Kg
                                 </th>
                             </tr>
@@ -137,28 +137,28 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                         <tbody>
                             {items.map((item, index) => (
                                 <tr key={index}>
-                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center text-gray-700 border border-gray-300 ">
+                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center font-semibold text-gray-700 border border-gray-300 ">
                                         {item.stt}
                                     </td>
-                                    <td className="py-2 md:px-3 md:py-4 text-sm text-center text-gray-700 border border-gray-300">
+                                    <td className="py-2 md:px-3 md:py-4 text-sm text-center font-semibold text-gray-700 border border-gray-300">
                                         {item.name}
                                     </td>
-                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center text-gray-700 border border-gray-300">
+                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center font-semibold text-gray-700 border border-gray-300">
                                         {item.unit}
                                     </td>
-                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center text-gray-700 border border-gray-300">
+                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center font-semibold text-gray-700 border border-gray-300">
                                         {item.quantity}
                                     </td>
-                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center text-gray-700 border border-gray-300">
+                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center font-semibold text-gray-700 border border-gray-300">
                                         {item.unitPrice}
                                     </td>
-                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center text-gray-700 border border-gray-300">
+                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center font-semibold text-gray-700 border border-gray-300">
                                         {item.amount}
                                     </td>
-                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center text-gray-700 border border-gray-300">
+                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center font-semibold text-gray-700 border border-gray-300">
                                         {item.sheets}
                                     </td>
-                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center text-gray-700 border border-gray-300 truncate">
+                                    <td className="px-2 py-2 md:px-3 md:py-4 text-sm text-center font-semibold text-gray-700 border border-gray-300 truncate">
                                         {item.weight}
                                     </td>
                                 </tr>
@@ -169,7 +169,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                             <tr>
                                 <td
                                     colSpan={5}
-                                    className="px-3 py-3 text-sm font-semibold text-left text-red-600 border border-gray-300 truncate"
+                                    className="px-3 py-3 text-sm font-semibold text-center text-red-600 border border-gray-300 truncate"
                                 >
                                     Tổng Cộng
                                 </td>

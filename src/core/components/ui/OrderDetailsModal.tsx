@@ -187,7 +187,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                     </table>
                 </div>
                 <div className="pt-0  pb-3 lg:hidden">
-                    <div className="flex justify-between flex-col md:flex-row gap-2">
+                    <div className="flex justify-between flex-col md:flex-row gap-1">
                         <div className="flex items-center gap-2 text-sm">
                             <span className="font-medium text-gray-700 ">
                                 Tổng Cộng:
@@ -198,10 +198,10 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                         </div>
                         <div className="flex items-center gap-2 text-sm">
                             <span className="font-medium text-gray-700">
-                                Tổng Cộng:
+                                Tổng số Kg:
                             </span>
                             <span className="text-[#E93838] font-semibold">
-                                {totalAmount} VND
+                                {totalWeight} Kg
                             </span>
                         </div>
                     </div>

@@ -30,6 +30,7 @@ export const _Image = {
         icon_hand_wave: "/image/icon/hand-wave.json",
         icon_product: "/image/icons/image-product-placeholder.png",
         icon_product_not_found: "/image/icons/not-found.svg",
+        icon_cancel: "/image/icons/iconoir-cancel.svg",
         emoji: {
             emoji_1: "/image/icons/emoji/emoji-1.png",
             emoji_1_at: "/image/icons/emoji/emoji-1-at.png",
@@ -38,7 +39,7 @@ export const _Image = {
             emoji_3: "/image/icons/emoji/emoji-3.png",
             emoji_3_at: "/image/icons/emoji/emoji-3-at.png",
         },
-        icon_success: "/image/icons.success.png",
+        icon_success: "/image/icons/success.svg",
         avt_user: "/image/icons/avt-user.png",
         logout: "/image/icons/logout.png",
         setting: "/image/icons/setting.png",

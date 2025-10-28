@@ -4,6 +4,29 @@ import { Message } from "@/store/chatBoxStore";
 export const createMessageFromResponse = (
     data: GetActiveRobotDetailResponse
 ): Message => {
+    // show detail table
+    if (data.data.event === "show_detail_orders" && data.data.data_orders) {
+        return {
+            id: Number(data.data.id),
+            sender: data.data.type_send === "1" ? "user" : "assistant",
+            content: data.data.message,
+            sendType: "order-detail",
+            orderDetail: data.data.data_orders,
+        };
+    }
+
+    // show create order
+    if (data.data.show_move_event === "show_create_orders") {
+        return {
+            id: Number(data.data.id),
+            sender: data.data.type_send === "1" ? "user" : "assistant",
+            content: data.data.message,
+            sendType: "show-create-orders",
+            options: data.data.options,
+            products: data.data.json_item,
+        };
+    }
+
     // show table
     if (data.data.show_move_event === "tablePrice") {
         return {
@@ -54,15 +77,16 @@ export const createMessageFromHistoryResponse = (
         "3": "good",
     };
 
-    // if (data.event === "wait_reply") {
-    //     return {
-    //         id: Number(data.id),
-    //         sender: data.type_send === "1" ? "user" : "assistant",
-    //         content: data.message,
-    //         sendType: "await-reply",
-    //     };
-    // }
-
+    // show detail table
+    if (data.event === "show_detail_orders" && data.data_orders) {
+        return {
+            id: Number(data.id),
+            sender: data.type_send === "1" ? "user" : "assistant",
+            content: data.message,
+            sendType: "order-detail",
+            orderDetail: data.data_orders,
+        };
+    }
     // show table
     if (data.show_move_event === "tablePrice") {
         return {
@@ -73,6 +97,18 @@ export const createMessageFromHistoryResponse = (
             options: data.options,
             products: data.json_item,
             disableAction: true,
+        };
+    }
+
+    // show create order
+    if (data.show_move_event === "show_create_orders") {
+        return {
+            id: Number(data.id),
+            sender: data.type_send === "1" ? "user" : "assistant",
+            content: data.message,
+            sendType: "show-create-orders",
+            options: data.options,
+            products: data.json_item,
         };
     }
 

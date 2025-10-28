@@ -2,14 +2,21 @@ import { _Image } from "@/core/config";
 import Image from "next/image";
 import React from "react";
 import Message from "./Message";
+import { cn } from "@/core/utils/cn";
 
 type AssistantMessageProps = {
     avatar?: string;
     content: string | React.ReactNode;
     name?: string;
+    mode?: "content" | "panel";
 };
 
-const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
+const AssistantMessage = ({
+    content,
+    avatar,
+    name,
+    mode = "content",
+}: AssistantMessageProps) => {
     const defaultAvatar = _Image.icon.bot_avatar;
     const defaultName = "Chatbot HATP";
 
@@ -41,7 +48,7 @@ const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
                     </div>
                 )}
                 {/* === content === */}
-                <div className="relative">
+                <div className={cn("relative", mode === "panel" && "w-full")}>
                     {/* === name === */}
                     <div className="absolute -top-6 left-2 text-xs text-gray-500">
                         {name || defaultName}
@@ -49,7 +56,7 @@ const AssistantMessage = ({ content, avatar, name }: AssistantMessageProps) => {
 
                     {/* === message === */}
                     {React.isValidElement(content) ? (
-                        <> {content}</>
+                        <div className="w-full"> {content}</div>
                     ) : (
                         <div>
                             <div className="w-full">

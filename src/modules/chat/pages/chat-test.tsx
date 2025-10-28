@@ -3,7 +3,7 @@ import BottomBar from "../components/BottomBar";
 import BottomBarWrapper from "../components/BottomBarWrapper";
 import ChatBoxController from "../components/ChatBoxController";
 import ChatBoxHeader from "../components/ChatBoxHeader";
-import Feedback from "../components/Feedback";
+import OrderDetailsPanel from "../components/create-order/OrderDetailsPanel";
 
 const ChatTestPage = () => {
     return (
@@ -18,7 +18,9 @@ const ChatTestPage = () => {
                     {/* === chat scroll === */}
                     <ChatBoxContainer className="min-h-0 w-full flex-1">
                         {/* <ChatBoxRender /> */}
-                        <Feedback />
+                        {/* <Feedback /> */}
+
+                        {/* <OrderDetailsPanel /> */}
                     </ChatBoxContainer>
 
                     {/* === bottom content === */}

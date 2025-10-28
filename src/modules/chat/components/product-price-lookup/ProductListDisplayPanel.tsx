@@ -1,11 +1,15 @@
 "use client";
 
 import ProductListDisplay from "@/core/components/ui/ProductListDisplay";
+import { useAuth } from "@/core/hook/useAuth";
+import { axiosInstance } from "@/core/http";
+import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
 import { ProductItem } from "@/services/chatbot";
 import { RobotOption } from "@/services/robot";
-import { useAuthStore } from "@/store";
+import { useChatBoxActions } from "@/store";
 import { useFollowUpStore } from "@/store/followUpStore";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type ProductListDisplayPanelProps = {
     items: ProductItem[];
@@ -18,25 +22,56 @@ const ProductListDisplayPanel = ({
     options,
     disable,
 }: ProductListDisplayPanelProps) => {
-    const [disablePanel, setDisablePanel] = useState(disable);
-
-    const { isAuthenticated } = useAuthStore();
+    const { isLoggedIn } = useAuth();
     const { openFollowUp } = useFollowUpStore();
 
+    const [disableAction, setDisableAction] = useState(false);
+
+    const {
+        addMessage,
+        stopCountdownFeedback,
+        setIsAssistantTyping,
+        setIsFeedback,
+    } = useChatBoxActions();
+
     useEffect(() => {
-        if (isAuthenticated) {
-            openFollowUp();
+        if (!isLoggedIn) {
+            if (options.some((option) => option.is_login === 1)) {
+                openFollowUp();
+            }
         }
-    }, [isAuthenticated, openFollowUp]);
+    }, [isLoggedIn]);
 
     // Hàm xử lý khi click vào item
-    const handleItemClick = (item: ProductItem) => {
-        console.log("Item clicked:", item);
-    };
+    const handleItemClick = (item: ProductItem) => {};
 
     // Hàm xử lý khi click confirm
-    const handleConfirmClick = () => {
-        console.log("Confirm clicked");
+    const handleConfirmClick = async () => {
+        if (!isLoggedIn) {
+            toast.error("Vui lòng đăng nhập để lên đơn");
+            return;
+        }
+
+        stopCountdownFeedback();
+
+        setIsFeedback(false);
+        setDisableAction(true);
+
+        const res = await axiosInstance.get(options[0].next!);
+
+        // add message from response
+        addMessage(createMessageFromResponse(res.data));
+        setIsAssistantTyping(true);
+
+        const nextLink = res.data.next;
+
+        if (nextLink) {
+            const res = await axiosInstance.get(nextLink);
+
+            addMessage(createMessageFromResponse(res.data));
+            toast.success(res.data?.message!);
+        }
+        setIsAssistantTyping(false);
     };
 
     // Hàm xử lý khi click edit
@@ -59,7 +94,7 @@ const ProductListDisplayPanel = ({
             onConfirmClick={handleConfirmClick}
             onEditClick={handleEditClick}
             onCancelClick={handleCancelClick}
-            disable={disable}
+            disable={disable || disableAction}
         />
     );
 };

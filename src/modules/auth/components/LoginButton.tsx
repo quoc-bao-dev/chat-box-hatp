@@ -9,6 +9,7 @@ type LoginButtonProps = {
     className?: string;
     onClick?: () => void;
     children?: React.ReactNode;
+    showIcon?: boolean;
     onLoginSuccess?: (credentials: any) => void | Promise<void>;
     onOTPVerify?: (otp: string, phoneNumber: string) => void | Promise<void>;
     onLoginError?: (error: Error) => void;
@@ -19,6 +20,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
     className,
     onClick,
     children,
+    showIcon = true,
     onLoginSuccess,
     onOTPVerify,
     onLoginError,
@@ -80,31 +82,33 @@ const LoginButton: React.FC<LoginButtonProps> = ({
                     </span>
 
                     {/* === icon === */}
-                    <span
-                        className={cn(
-                            "flex items-center justify-center",
-                            "size-[24px] lg:size-[32px] rounded-full",
-                            "bg-white",
-                            "shadow-[0_6px_20px_rgba(53,194,130,0.35),inset_0_-8px_20px_rgba(0,0,0,0.08)]"
-                        )}
-                    >
-                        <svg
-                            width="64"
-                            height="64"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="text-[#1E9E64]"
+                    {showIcon && (
+                        <span
+                            className={cn(
+                                "flex items-center justify-center",
+                                "size-[24px] lg:size-[32px] rounded-full",
+                                "bg-white",
+                                "shadow-[0_6px_20px_rgba(53,194,130,0.35),inset_0_-8px_20px_rgba(0,0,0,0.08)]"
+                            )}
                         >
-                            <path
-                                d="M7 17L17 7M17 7H9M17 7V15"
-                                stroke="currentColor"
-                                strokeWidth="2.2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                        </svg>
-                    </span>
+                            <svg
+                                width="64"
+                                height="64"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="text-[#1E9E64]"
+                            >
+                                <path
+                                    d="M7 17L17 7M17 7H9M17 7V15"
+                                    stroke="currentColor"
+                                    strokeWidth="2.2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        </span>
+                    )}
                 </span>
             </button>
 
@@ -114,11 +118,6 @@ const LoginButton: React.FC<LoginButtonProps> = ({
                 onClose={closeLoginModal}
                 onLogin={handleLoginSuccess}
             />
-            {/* <FirstTimeLoginModal
-                isOpen={isLoginModalOpen}
-                onClose={closeLoginModal}
-                // onSubmit={handleLoginSuccess}
-            /> */}
 
             {/* OTP Modal */}
             <OTPModal

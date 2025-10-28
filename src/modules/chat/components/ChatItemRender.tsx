@@ -1,15 +1,18 @@
 import Time from "@/core/components/common/Time";
 import { NoProductFound } from "@/core/components/ui";
 import { ProductItem, ProductOption } from "@/services/chatbot";
+import { OrderDetail } from "@/services/order/type";
 import { RobotOption } from "@/services/robot";
 import { SendType } from "@/store/chatBoxStore";
 import AssistantMessage from "./AssistantMessage";
+import OrderDetailsPanel from "./create-order/OrderDetailsPanel";
+import OrderSuccessPanel from "./create-order/OrderSuccessPanel";
 import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
 import EditProductCodePanel from "./product-price-lookup/EditProductCodePanel";
+import ProductListDisplayPanel from "./product-price-lookup/ProductListDisplayPanel";
 import ProductPanel from "./product-price-lookup/ProductPanel";
 import UserMessage from "./UserMessage";
-import ProductListDisplayPanel from "./product-price-lookup/ProductListDisplayPanel";
 
 type ChatItemRenderProps = {
     id: number;
@@ -26,6 +29,7 @@ type ChatItemRenderProps = {
     };
     time?: string;
     disableAction?: boolean;
+    orderDetail?: OrderDetail;
 };
 
 const ChatItemRender = ({
@@ -37,12 +41,14 @@ const ChatItemRender = ({
     productOptions,
     products,
     feedback,
+    orderDetail,
     time,
     disableAction = false,
 }: ChatItemRenderProps) => {
     if (sender === "assistant" && sendType === "select") {
         return (
             <AssistantMessage
+                // mode="panel"
                 content={
                     options && options.length > 0 ? (
                         <InfoPanel
@@ -78,9 +84,41 @@ const ChatItemRender = ({
         return <AssistantMessage content={content || ""} />;
     }
 
+    if (sender === "assistant" && sendType === "show-create-orders") {
+        return (
+            <AssistantMessage
+                mode="panel"
+                content={
+                    <OrderSuccessPanel
+                        options={options || []}
+                        disable={disableAction || !options}
+                    />
+                }
+            />
+        );
+    }
+
+    if (sender === "assistant" && sendType === "order-detail") {
+        return (
+            <>
+                <div className=" hidden lg:block">
+                    <AssistantMessage
+                        content={
+                            <OrderDetailsPanel orderDetail={orderDetail!} />
+                        }
+                    />
+                </div>
+                <div className="lg:hidden">
+                    <OrderDetailsPanel orderDetail={orderDetail!} />
+                </div>
+            </>
+        );
+    }
+
     if (sender === "assistant" && sendType === "products") {
         return (
             <AssistantMessage
+                mode="panel"
                 content={
                     <ProductPanel
                         id={id}
@@ -95,10 +133,9 @@ const ChatItemRender = ({
     }
 
     if (sender === "assistant" && sendType === "table-price") {
-        console.log("[options]", options);
-
         return (
             <AssistantMessage
+                mode="panel"
                 content={
                     <ProductListDisplayPanel
                         items={products || []}

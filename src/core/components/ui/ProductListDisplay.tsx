@@ -73,23 +73,19 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                             {/* === name === */}
                             <div className="flex flex-col gap-0.5 flex-1">
                                 <p className="text-[#5E5E5E] font-bold text-sm">
-                                    {item.name}
+                                    {item.code}
                                 </p>
                                 <p className="text-[#5E5E5E] font-semibold text-xs">
                                     {item.name_category}
                                 </p>
                             </div>
                             {/* === price === */}
-                            {item.price && (
-                                <div className=" text-right ">
-                                    <p className="text-[#F04438] font-bold text-sm">
-                                        {Number(item.price).toLocaleString(
-                                            "vi-VN"
-                                        )}{" "}
-                                        ₫
-                                    </p>
-                                </div>
-                            )}
+                            <div className=" text-right ">
+                                <p className="text-[#F04438] font-bold text-sm">
+                                    {Number(item.price).toLocaleString("vi-VN")}{" "}
+                                    ₫
+                                </p>
+                            </div>
                         </div>
                     </div>
                 ))}

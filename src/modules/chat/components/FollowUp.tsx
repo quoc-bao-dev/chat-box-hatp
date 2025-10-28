@@ -23,7 +23,7 @@ const FollowUp = () => {
                 </p>
                 <LoginButton showIcon={false}>
                     {" "}
-                    đăng nhập ngay {"  "}
+                    Đăng nhập ngay {"  "}
                 </LoginButton>
                 <div className="pl-0" onClick={closeFollowUp}>
                     <Icon

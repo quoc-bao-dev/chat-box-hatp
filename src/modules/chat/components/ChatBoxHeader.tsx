@@ -35,7 +35,7 @@ const ChatBoxHeader = () => {
                                 <LoginButton />
                             </div>
                         )}
-                        <Link href={setting?.zalo_chatbot || ""}>
+                        <Link href={setting?.zalo_chatbot || ""} target="_blank">
                             <Image
                                 src={_Image.icon.zalo_gray}
                                 alt="zalo-gray"
@@ -45,7 +45,7 @@ const ChatBoxHeader = () => {
                             />
                         </Link>
 
-                        <Link href={setting?.phone_chatbot || ""}>
+                        <Link href={`tel:${setting?.phone_chatbot || ""}`} target="_blank">
                             <Image
                                 src={_Image.icon.phone_gray}
                                 alt="phone-gray"

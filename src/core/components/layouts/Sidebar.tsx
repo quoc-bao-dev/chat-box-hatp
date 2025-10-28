@@ -141,7 +141,8 @@ const Sidebar = () => {
             <div className="flex flex-col gap-3 p-5">
                 <Link
                     href={setting?.zalo_chatbot || ""}
-                    className="flex items-center gap-3"
+                    target="_blank"
+                    className="flex items-center gap-3 group"
                 >
                     <Image
                         src={_Image.icon.zalo}
@@ -149,11 +150,14 @@ const Sidebar = () => {
                         width={40}
                         height={40}
                     />
-                    <p className="font-semibold text-gray-600">Zalo</p>
+                    <p className="font-semibold text-gray-600 group-hover:text-blue-500">
+                        Zalo
+                    </p>
                 </Link>
                 <Link
-                    href={setting?.phone_chatbot || ""}
-                    className="flex items-center gap-3"
+                    href={`tel:${setting?.phone_chatbot || ""}`}
+                    target="_blank"
+                    className="flex items-center gap-3 group"
                 >
                     <Image
                         src={_Image.icon.phone}
@@ -161,7 +165,9 @@ const Sidebar = () => {
                         width={40}
                         height={40}
                     />
-                    <p className="font-semibold text-gray-600">Điện thoại</p>
+                    <p className="font-semibold text-gray-600 group-hover:text-green-700">
+                        Điện thoại
+                    </p>
                 </Link>
             </div>
 

@@ -53,14 +53,14 @@ const ChatBoxRender = () => {
         if (canScrollToBottom) {
             setTimeout(() => {
                 el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-            }, 100);
+            }, 0);
             // After auto-scroll, hide the button (we are at bottom)
         }
 
         if (fistRender) {
             setTimeout(() => {
                 el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-            }, 500);
+            }, 600);
         }
 
         setShowScrollButton(false);

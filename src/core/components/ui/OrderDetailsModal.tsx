@@ -169,17 +169,17 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                             <tr>
                                 <td
                                     colSpan={5}
-                                    className="px-3 py-3 text-sm font-semibold text-center text-red-600 border border-gray-300 truncate"
+                                    className="px-3 py-3 text-sm font-semibold text-center text-[#E93838] border border-gray-300 truncate"
                                 >
                                     Tổng Cộng
                                 </td>
                                 <td
                                     colSpan={2}
-                                    className="px-3 py-3 text-sm font-semibold text-center text-red-600 border border-gray-300 truncate"
+                                    className="px-3 py-3 text-sm font-semibold text-center text-[#E93838] border border-gray-300 truncate"
                                 >
                                     {totalAmount} VND
                                 </td>
-                                <td className="px-3 py-3 text-sm font-semibold text-center text-red-600 border border-gray-300 truncate">
+                                <td className="px-3 py-3 text-sm font-semibold text-center text-[#E93838] border border-gray-300 truncate">
                                     {totalWeight} Kg
                                 </td>
                             </tr>
@@ -192,7 +192,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                             <span className="font-medium text-gray-700 ">
                                 Tổng Cộng:
                             </span>
-                            <span className="text-red-600 font-semibold">
+                            <span className="text-[#E93838] font-semibold">
                                 {totalAmount} VND
                             </span>
                         </div>
@@ -200,7 +200,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                             <span className="font-medium text-gray-700">
                                 Tổng Cộng:
                             </span>
-                            <span className="text-red-600 font-semibold">
+                            <span className="text-[#E93838] font-semibold">
                                 {totalAmount} VND
                             </span>
                         </div>

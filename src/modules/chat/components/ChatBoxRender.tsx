@@ -3,13 +3,14 @@
 import { ProductOption } from "@/services/chatbot";
 import { RobotOption } from "@/services/robot";
 import { useChatBoxActions, useChatBoxState } from "@/store";
-import { useChatInputStore } from "@/store/chatInputStore";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
 import Feedback from "./Feedback";
 import PaginationTrigger from "./PaginationTrigger";
 import ScrollToBottomButton from "./ScrollToBottomButton";
+
+import styles from "@/core/styles/scrollbar.module.css";
 
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
@@ -52,15 +53,19 @@ const ChatBoxRender = () => {
         // Chỉ auto scroll nếu được phép
         if (canScrollToBottom) {
             setTimeout(() => {
-                el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+                requestAnimationFrame(() => {
+                    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+                });
             }, 0);
             // After auto-scroll, hide the button (we are at bottom)
         }
 
         if (fistRender) {
             setTimeout(() => {
-                el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-            }, 600);
+                requestAnimationFrame(() => {
+                    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+                });
+            }, 800);
         }
 
         setShowScrollButton(false);
@@ -118,7 +123,7 @@ const ChatBoxRender = () => {
     return (
         <div
             ref={containerRef}
-            className={` h-full space-y-3 overflow-y-scroll py-5 lg:px-4 relative [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
+            className={` h-full space-y-3 overflow-y-scroll py-5 lg:px-4 relative [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${styles.customScrollbar}-`}
         >
             {/* === trigger === */}
             <PaginationTrigger />

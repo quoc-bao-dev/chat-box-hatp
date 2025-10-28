@@ -16,6 +16,7 @@ const OrderSuccessPanel = ({
         stopCountdownFeedback,
         startCountdownFeedback,
         setIsAssistantTyping,
+        setIsFeedback,
     } = useChatBoxActions();
     const [isProcessing, setIsProcessing] = useState(false);
 
@@ -23,7 +24,7 @@ const OrderSuccessPanel = ({
         if (isProcessing) return;
         setIsProcessing(true);
         stopCountdownFeedback();
-
+        setIsFeedback(false);
         try {
             if (!options[0].next) {
                 return;
@@ -46,6 +47,7 @@ const OrderSuccessPanel = ({
     };
 
     const handlePlaceAnotherOrderClick = () => {
+        setIsFeedback(false);
         if (isProcessing) return;
         setIsProcessing(true);
         // TODO: implement action for placing another order

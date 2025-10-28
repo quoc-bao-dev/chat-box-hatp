@@ -54,6 +54,15 @@ export const createMessageFromHistoryResponse = (
         "3": "good",
     };
 
+    // if (data.event === "wait_reply") {
+    //     return {
+    //         id: Number(data.id),
+    //         sender: data.type_send === "1" ? "user" : "assistant",
+    //         content: data.message,
+    //         sendType: "await-reply",
+    //     };
+    // }
+
     // show table
     if (data.show_move_event === "tablePrice") {
         return {

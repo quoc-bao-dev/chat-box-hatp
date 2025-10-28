@@ -1,6 +1,8 @@
 "use client";
 
 import { _Image } from "@/core/config";
+import { useAuth } from "@/core/hook/useAuth";
+import { useGetSetting } from "@/services/setting";
 import { useSidebar } from "@/store";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,10 +32,9 @@ const SidebarItem = ({
                 flex items-center gap-3
                 transition-all duration-200 ease-in-out
                 cursor-pointer
-                ${
-                    isActive
-                        ? "bg-[#37C390] text-white hover:bg-[#2ea876]"
-                        : "text-gray-600 hover:bg-gray-100/70"
+                ${isActive
+                    ? "bg-[#37C390] text-white hover:bg-[#2ea876]"
+                    : "text-gray-600 hover:bg-gray-100/70"
                 }
             `}
         >
@@ -57,6 +58,8 @@ const SidebarItem = ({
 const Sidebar = () => {
     const { close } = useSidebar();
     const pathname = usePathname();
+    const { data: setting } = useGetSetting();
+    const { userInfo, isLoggedIn, logout } = useAuth();
 
     const isActive = (href: string) => {
         if (href === "/") {
@@ -67,7 +70,7 @@ const Sidebar = () => {
 
     return (
         <div
-            className="flex flex-col bg-white rounded-r-[24px] lg:rounded-l-[32px] lg:rounded-r-[32px] sticky top-5 h-full"
+            className="flex flex-col bg-white rounded-r-[24px] lg:rounded-l-[32px] lg:rounded-r-[32px] sticky top-5 h-full w-full"
             style={{ boxShadow: "0px 0px 40px 0px #00000011" }}
         >
             {/* close button */}
@@ -135,7 +138,7 @@ const Sidebar = () => {
 
             {/* === social === */}
             <div className="flex flex-col gap-3 p-5">
-                <div className="flex items-center gap-3">
+                <Link href={setting?.zalo_chatbot || ""} className="flex items-center gap-3">
                     <Image
                         src={_Image.icon.zalo}
                         alt="zalo"
@@ -143,8 +146,8 @@ const Sidebar = () => {
                         height={40}
                     />
                     <p className="font-semibold text-gray-600">Zalo</p>
-                </div>
-                <div className="flex items-center gap-3">
+                </Link>
+                <Link href={setting?.phone_chatbot || ""} className="flex items-center gap-3">
                     <Image
                         src={_Image.icon.phone}
                         alt="phone"
@@ -152,9 +155,68 @@ const Sidebar = () => {
                         height={40}
                     />
                     <p className="font-semibold text-gray-600">Điện thoại</p>
-                </div>
+                </Link>
             </div>
-        </div>
+
+            {isLoggedIn && (
+                <div className="flex flex-col gap-5 px-5 w-full">
+                    <div className="flex flex-col gap-2">
+                        <button className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-gray-100/70 transition-all duration-200 ease-in-out">
+                            <Icon
+                                src={_Image.icon.setting}
+                                size={20}
+                                alt="icon-bar"
+                            />
+                            <p className="font-normal text-sm text-black">Cài đặt</p>
+                        </button>
+                        <button
+                            onClick={logout}
+                            className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#FC5050]/10 transition-all duration-200 ease-in-out"
+                        >
+                            <Icon
+                                src={_Image.icon.logout}
+                                size={20}
+                                alt="icon-bar"
+                            />
+                            <p className="font-normal text-sm text-[#FC5050]">Đăng xuất</p>
+                        </button>
+                    </div>
+                    <div className="2xl:px-3 w-full min-w-0">
+                        <div className="w-full flex items-center gap-3 py-3 border-t border-[#F3F3F3]">
+                            <div className="flex items-center gap-2 flex-1 min-w-0">
+                                {userInfo?.profile_image ? (
+                                    <Image
+                                        src={userInfo.profile_image}
+                                        alt="avatar"
+                                        width={40}
+                                        height={40}
+                                        className="size-[40px] rounded-full shrink-0"
+                                    />
+                                ) : (
+                                    <div className="size-[40px] shrink-0 rounded-full bg-[#37C390] flex items-center justify-center">
+                                        <span className="text-white font-semibold text-lg">
+                                            {userInfo?.fullname_contacts?.charAt(0)?.toUpperCase() || userInfo?.fullname?.charAt(0)?.toUpperCase() || "U"}
+                                        </span>
+                                    </div>
+                                )}
+                                <div className="flex flex-col flex-1 min-w-0">
+                                    <p className="font-semibold text-sm text-black truncate">{userInfo?.fullname_contacts}</p>
+                                    <p className="font-normal text-xs text-black truncate">{userInfo?.fullname}</p>
+                                </div>
+                            </div>
+                            <Image
+                                src={_Image.icon.icon_arrow_left}
+                                alt="icon-bar"
+                                className="rotate-180 shrink-0"
+                                width={20}
+                                height={20}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )
+            }
+        </div >
     );
 };
 

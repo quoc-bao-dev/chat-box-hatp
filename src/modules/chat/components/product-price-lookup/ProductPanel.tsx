@@ -1,6 +1,6 @@
 import InfoProductList from "@/core/components/ui/InfoProductList";
-import React from "react";
 import { ProductItem, ProductOption } from "@/services/chatbot";
+import { useState } from "react";
 
 type ProductPanelProps = {
     id: number;
@@ -17,20 +17,26 @@ const ProductPanel = ({
     options = [],
     disable = false,
 }: ProductPanelProps) => {
+    // const [disablePanel, setDisablePanel] = useState(disable);
+
     const handleItemClick = (item: ProductItem) => {
         // placeholder: handle select product item
+        // setDisablePanel(true);
     };
 
     const handleConfirmClick = () => {
         // placeholder: handle confirm selection
+        // setDisablePanel(true);
     };
 
     const handleEditClick = () => {
         // placeholder: handle edit action
+        // setDisablePanel(true);
     };
 
     const handleCancelClick = () => {
         // placeholder: handle cancel action
+        // setDisablePanel(true);
     };
 
     return (

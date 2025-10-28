@@ -3,6 +3,7 @@
 import { ProductOption } from "@/services/chatbot";
 import { RobotOption } from "@/services/robot";
 import { useChatBoxActions, useChatBoxState } from "@/store";
+import { useChatInputStore } from "@/store/chatInputStore";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
@@ -13,7 +14,14 @@ import ScrollToBottomButton from "./ScrollToBottomButton";
 const ChatBoxRender = () => {
     const { isAssistantTyping, massages, isFeedback } = useChatBoxState();
     const [canScrollToBottom, setCanScrollToBottom] = useState(true);
-    const { startCountdownFeedback } = useChatBoxActions();
+    const { startCountdownFeedback, setMode } = useChatBoxActions();
+
+    const [fistRender, setFistRender] = useState(true);
+    useEffect(() => {
+        if (fistRender) {
+            setFistRender(false);
+        }
+    }, [fistRender]);
 
     const [hasCheckShowFeedback, setHasCheckShowFeedback] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -45,8 +53,14 @@ const ChatBoxRender = () => {
         if (canScrollToBottom) {
             setTimeout(() => {
                 el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-            }, 400);
+            }, 100);
             // After auto-scroll, hide the button (we are at bottom)
+        }
+
+        if (fistRender) {
+            setTimeout(() => {
+                el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+            }, 500);
         }
 
         setShowScrollButton(false);
@@ -90,6 +104,15 @@ const ChatBoxRender = () => {
             startCountdownFeedback();
             setHasCheckShowFeedback(true);
         }
+
+        if (
+            massages.length > 0 &&
+            massages[massages.length - 1].sendType === "wait_reply"
+        ) {
+            setMode("chat");
+            setHasCheckShowFeedback(false);
+            // set input
+        }
     }, [massages]);
 
     return (
@@ -113,12 +136,7 @@ const ChatBoxRender = () => {
                     time={message.time}
                     products={message.products}
                     productOptions={message.options as ProductOption[]}
-                    disableAction={
-                        false
-                        // index !== massages.length - 1
-                        // isFeedback ||
-                        // isAssistantTyping
-                    }
+                    disableAction={index !== massages.length - 1}
                 />
             ))}
 

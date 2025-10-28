@@ -6,7 +6,7 @@ import axios, {
 } from "axios";
 import { envConfig } from "../config";
 
-const TOKEN_KEY = "token-key";
+const TOKEN_KEY = "token_account";
 const SP_SESSION_KEY = "sp_session";
 
 // Utility function to get cookie value
@@ -47,6 +47,16 @@ axiosInstance.interceptors.request.use(
         // Add token to headers if available
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        // Get session from sessionStorage and add to headers
+        const session =
+            typeof window !== "undefined"
+                ? sessionStorage.getItem(SP_SESSION_KEY)
+                : null;
+
+        if (session && config.headers) {
+            config.headers["sp_session"] = session;
         }
 
         // Inject language into request body for write methods (POST/PUT/PATCH/DELETE)

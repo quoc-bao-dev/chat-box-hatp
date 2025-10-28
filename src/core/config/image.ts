@@ -40,5 +40,7 @@ export const _Image = {
         },
         icon_success: "/image/icons.success.png",
         avt_user: "/image/icons/avt-user.png",
+        logout: "/image/icons/logout.png",
+        setting: "/image/icons/setting.png",
     },
 };

@@ -112,7 +112,7 @@ const Sidebar = () => {
                             />
                         </svg>
                     }
-                    text="Chat chat hỗ trợ"
+                    text="Chat hỗ trợ"
                     href="/chat"
                     isActive={isActive("/chat")}
                     onClick={close}

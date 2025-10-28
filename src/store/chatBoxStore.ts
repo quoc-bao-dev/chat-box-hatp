@@ -1,4 +1,5 @@
 import { ProductItem } from "@/services/chatbot";
+import { OrderDetail } from "@/services/order/type";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -14,7 +15,9 @@ export type SendType =
     | "edit-product-code"
     | "table-price"
     | "start"
-    | "await-reply";
+    | "await-reply"
+    | "show-create-orders"
+    | "order-detail";
 
 export type Message = {
     id: number;
@@ -35,6 +38,8 @@ export type Message = {
         tags: string[];
         isEvaluated: boolean;
     };
+
+    orderDetail?: OrderDetail;
     time?: string;
     disableAction?: boolean;
 };

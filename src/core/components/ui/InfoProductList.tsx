@@ -48,8 +48,12 @@ const InfoList = ({
     const [isEditLoading, setIsEditLoading] = useState(false);
     const [isCancelLoading, setIsCancelLoading] = useState(false);
 
-    const { addMessage, stopCountdownFeedback, startCountdownFeedback } =
-        useChatBoxActions();
+    const {
+        addMessage,
+        stopCountdownFeedback,
+        startCountdownFeedback,
+        setIsAssistantTyping,
+    } = useChatBoxActions();
     // Function to call API based on next URL with specific loading state
     const callApiByEvent = async (
         eventType: string,
@@ -70,6 +74,7 @@ const InfoList = ({
             });
             const data = response.data;
             addMessage(createMessageFromResponse(data));
+            setIsAssistantTyping(true);
 
             const res = await axiosInstance.get(data.next, {
                 params: { sp_session: getSession() },
@@ -77,8 +82,8 @@ const InfoList = ({
 
             const dataNext = res.data;
 
+            setIsAssistantTyping(false);
             addMessage(createMessageFromResponse(dataNext));
-            // setDisable(true);
 
             return data;
         } catch (error) {

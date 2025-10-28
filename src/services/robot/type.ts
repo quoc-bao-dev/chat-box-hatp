@@ -1,5 +1,7 @@
 // Request/response types for robot
 
+import { OrderDetail } from "../order/type";
+
 export interface RobotOption {
     id: string;
     id_robot_support: string;
@@ -14,6 +16,7 @@ export interface RobotOption {
     show_move_event: string | null;
     next?: string;
     disabled?: boolean;
+    is_login: 0 | 1; // 0 -> không cần đăng nhập, 1 -> cần đăng nhập
 }
 
 export interface RobotData {
@@ -31,7 +34,9 @@ export interface RobotData {
         | "options"
         | "start"
         | "evaluate_support"
-        | "wait_reply"; // select -> option , text
+        | "wait_reply"
+        | "show_create_orders"
+        | "show_detail_orders"; // select -> option , text
     file: string | null; // file đính kèm (hình ảnh)
     suport_items: number;
     json_item: any | null;
@@ -42,6 +47,7 @@ export interface RobotData {
     event_show: string;
     options: RobotOption[];
     session_robot: string;
+    data_orders?: OrderDetail;
 }
 
 export interface GetActiveRobotDetailResponse {

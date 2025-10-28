@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import { userStorage, UserInfo } from "@/core/utils/userStorage";
 
 export const useAuth = () => {
-    const [userInfo, setUserInfo] = useState<UserInfo | null>(userStorage.getUserInfo());
+    const [userInfo, setUserInfo] = useState<UserInfo | null>(
+        userStorage.getUserInfo()
+    );
     const [isLoggedIn, setIsLoggedIn] = useState(userStorage.isLoggedIn());
     const [isLoading, setIsLoading] = useState(false);
 
@@ -12,20 +14,20 @@ export const useAuth = () => {
         const handleStorageChange = () => {
             const newUserInfo = userStorage.getUserInfo();
             const newIsLoggedIn = userStorage.isLoggedIn();
-            
+
             setUserInfo(newUserInfo);
             setIsLoggedIn(newIsLoggedIn);
         };
 
         // Listen for storage events (cross-tab)
-        window.addEventListener('storage', handleStorageChange);
-        
+        window.addEventListener("storage", handleStorageChange);
+
         // Listen for custom events (same-tab)
-        window.addEventListener('userInfoUpdated', handleStorageChange);
+        window.addEventListener("userInfoUpdated", handleStorageChange);
 
         return () => {
-            window.removeEventListener('storage', handleStorageChange);
-            window.removeEventListener('userInfoUpdated', handleStorageChange);
+            window.removeEventListener("storage", handleStorageChange);
+            window.removeEventListener("userInfoUpdated", handleStorageChange);
         };
     }, []);
 
@@ -55,7 +57,7 @@ export const useAuth = () => {
     const refreshUserData = () => {
         const newUserInfo = userStorage.getUserInfo();
         const newIsLoggedIn = userStorage.isLoggedIn();
-        
+
         setUserInfo(newUserInfo);
         setIsLoggedIn(newIsLoggedIn);
     };

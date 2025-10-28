@@ -136,6 +136,7 @@ const ChatBoxRender = () => {
                     time={message.time}
                     products={message.products}
                     productOptions={message.options as ProductOption[]}
+                    orderDetail={message.orderDetail}
                     disableAction={index !== massages.length - 1}
                 />
             ))}

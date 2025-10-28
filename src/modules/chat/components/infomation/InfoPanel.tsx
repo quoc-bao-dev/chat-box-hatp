@@ -23,14 +23,6 @@ type InfoPanelProps = {
     disable?: boolean;
 };
 
-const defaultItems: InfoItem[] = [
-    { id: "return", content: "Thông tin về quy trình trả hàng" },
-    { id: "payment", content: "Quy trình trình thanh toán" },
-    { id: "debt", content: "Số ngày công nợ" },
-    { id: "invoice", content: "Quy trình xuất hoá đơn" },
-    { id: "hotline", content: "Gọi hotline liên hệ tư vấn viên" },
-];
-
 const InfoPanel = ({
     title,
     items = [],

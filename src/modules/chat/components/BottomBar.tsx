@@ -1,7 +1,9 @@
 "use client";
 
+import { useAuth } from "@/core/hook/useAuth";
 import BottomButton from "@/modules/home/components/BottomButton";
 import { useCartItemEffect } from "@/store/cartItemEffect";
+import { useFollowUpStore } from "@/store/followUpStore";
 import { PropsWithChildren, useEffect, useState } from "react";
 import ChatInputController from "./ChatInputController";
 import FaqToggleList from "./FaqToggleList";
@@ -13,6 +15,9 @@ type BottomBarProps = {
 
 const BottomBar = ({ type }: BottomBarProps) => {
     const [isShow, setIsShow] = useState(false);
+
+    const { isFollowUp } = useFollowUpStore();
+    const { isLoggedIn } = useAuth();
 
     // side effect
     const { forceClose, resetForceClose } = useCartItemEffect();
@@ -27,9 +32,11 @@ const BottomBar = ({ type }: BottomBarProps) => {
     const BottomContent = ({ children }: PropsWithChildren) => {
         return (
             <div>
-                {/* <div className="pb-2">
-                    <FollowUp />
-                </div> */}
+                {!isLoggedIn && isFollowUp && (
+                    <div className="pb-2">
+                        <FollowUp />
+                    </div>
+                )}
                 <FaqToggleList
                     isShow={isShow}
                     onToggle={() => setIsShow(!isShow)}

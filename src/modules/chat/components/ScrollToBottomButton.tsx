@@ -17,7 +17,7 @@ const ScrollToBottomButton = ({
             type="button"
             onClick={onClick}
             className={
-                "sticky left-1/2 bottom-5 -translate-x-1/2 z-20 inline-flex items-center justify-center rounded-full bg-white text-gray-700  border border-gray-200 hover:shadow-[0_10px_28px_rgba(0,0,0,0.1)] hover:bg-gray-50 transition-all duration-200 size-10 " +
+                "sticky left-1/2 bottom-0 -translate-x-1/2 z-20 inline-flex items-center justify-center rounded-full bg-white text-gray-700  border border-gray-200 hover:shadow-[0_10px_28px_rgba(0,0,0,0.1)] hover:bg-gray-50 transition-all duration-200 size-10 " +
                 (className || "")
             }
             aria-label="Scroll to bottom"

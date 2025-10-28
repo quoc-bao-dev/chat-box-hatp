@@ -32,9 +32,10 @@ const SidebarItem = ({
                 flex items-center gap-3
                 transition-all duration-200 ease-in-out
                 cursor-pointer
-                ${isActive
-                    ? "bg-[#37C390] text-white hover:bg-[#2ea876]"
-                    : "text-gray-600 hover:bg-gray-100/70"
+                ${
+                    isActive
+                        ? "bg-[#37C390] text-white hover:bg-[#2ea876]"
+                        : "text-gray-600 hover:bg-gray-100/70"
                 }
             `}
         >
@@ -111,12 +112,12 @@ const Sidebar = () => {
                             />
                         </svg>
                     }
-                    text="Chat"
+                    text="Chat chat hỗ trợ"
                     href="/chat"
                     isActive={isActive("/chat")}
                     onClick={close}
                 />
-                <SidebarItem
+                {/* <SidebarItem
                     icon={
                         <svg
                             width="20"
@@ -133,12 +134,15 @@ const Sidebar = () => {
                     }
                     text="Điện thoại"
                     isActive={isActive("/phone")}
-                />
+                /> */}
             </div>
 
             {/* === social === */}
             <div className="flex flex-col gap-3 p-5">
-                <Link href={setting?.zalo_chatbot || ""} className="flex items-center gap-3">
+                <Link
+                    href={setting?.zalo_chatbot || ""}
+                    className="flex items-center gap-3"
+                >
                     <Image
                         src={_Image.icon.zalo}
                         alt="zalo"
@@ -147,7 +151,10 @@ const Sidebar = () => {
                     />
                     <p className="font-semibold text-gray-600">Zalo</p>
                 </Link>
-                <Link href={setting?.phone_chatbot || ""} className="flex items-center gap-3">
+                <Link
+                    href={setting?.phone_chatbot || ""}
+                    className="flex items-center gap-3"
+                >
                     <Image
                         src={_Image.icon.phone}
                         alt="phone"
@@ -167,7 +174,9 @@ const Sidebar = () => {
                                 size={20}
                                 alt="icon-bar"
                             />
-                            <p className="font-normal text-sm text-black">Cài đặt</p>
+                            <p className="font-normal text-sm text-black">
+                                Cài đặt
+                            </p>
                         </button>
                         <button
                             onClick={logout}
@@ -178,7 +187,9 @@ const Sidebar = () => {
                                 size={20}
                                 alt="icon-bar"
                             />
-                            <p className="font-normal text-sm text-[#FC5050]">Đăng xuất</p>
+                            <p className="font-normal text-sm text-[#FC5050]">
+                                Đăng xuất
+                            </p>
                         </button>
                     </div>
                     <div className="2xl:px-3 w-full min-w-0">
@@ -195,13 +206,23 @@ const Sidebar = () => {
                                 ) : (
                                     <div className="size-[40px] shrink-0 rounded-full bg-[#37C390] flex items-center justify-center">
                                         <span className="text-white font-semibold text-lg">
-                                            {userInfo?.fullname_contacts?.charAt(0)?.toUpperCase() || userInfo?.fullname?.charAt(0)?.toUpperCase() || "U"}
+                                            {userInfo?.fullname_contacts
+                                                ?.charAt(0)
+                                                ?.toUpperCase() ||
+                                                userInfo?.fullname
+                                                    ?.charAt(0)
+                                                    ?.toUpperCase() ||
+                                                "U"}
                                         </span>
                                     </div>
                                 )}
                                 <div className="flex flex-col flex-1 min-w-0">
-                                    <p className="font-semibold text-sm text-black truncate">{userInfo?.fullname_contacts}</p>
-                                    <p className="font-normal text-xs text-black truncate">{userInfo?.fullname}</p>
+                                    <p className="font-semibold text-sm text-black truncate">
+                                        {userInfo?.fullname_contacts}
+                                    </p>
+                                    <p className="font-normal text-xs text-black truncate">
+                                        {userInfo?.fullname}
+                                    </p>
                                 </div>
                             </div>
                             <Image
@@ -214,9 +235,8 @@ const Sidebar = () => {
                         </div>
                     </div>
                 </div>
-            )
-            }
-        </div >
+            )}
+        </div>
     );
 };
 

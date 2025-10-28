@@ -75,7 +75,7 @@ const FaqToggleList = ({
                             alt="icon-question"
                         />
                         <p className="text-sm font-medium text-gray-900">
-                            Vấn để cần hỗ trợ
+                            Vấn đề cần hỗ trợ
                         </p>
                     </div>
                 </div>

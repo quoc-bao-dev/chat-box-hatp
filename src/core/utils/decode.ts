@@ -4,3 +4,10 @@ export const decodeHtmlEntities = (text: string): string => {
     textarea.innerHTML = text;
     return textarea.value;
 };
+
+// Hàm decode HTML (loại bỏ thẻ và decode entities) về text thuần
+export const decodeHtml = (html: string): string => {
+    const container = document.createElement("div");
+    container.innerHTML = html;
+    return container.textContent || (container as HTMLElement).innerText || "";
+};

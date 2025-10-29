@@ -1,5 +1,6 @@
 import { _Image } from "@/core/config";
 import { decodeHtmlEntities } from "@/core/utils/decode";
+import HtmlRenderer from "@/modules/chat/components/HtmlRenderer";
 import Image from "next/image";
 
 type CancelSuccessProps = {
@@ -13,7 +14,13 @@ const CancelSuccess = ({ content }: CancelSuccessProps) => {
                 Hủy thành công!
             </h2>
 
-            <p className="text-[#454F5B]">{decodeHtmlEntities(content)}</p>
+            <p className="text-[#454F5B]">
+                <HtmlRenderer
+                    htmlContent={content}
+                    className="text-[#454F5B]! font-normal!"
+                />
+                {/* {decodeHtmlEntities(content)} */}
+            </p>
 
             <Image
                 src={_Image.icon.icon_checked}

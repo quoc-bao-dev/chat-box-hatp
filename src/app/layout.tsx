@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
     title: "Giấy Hoàng Anh Hỗ Trợ",
     description:
-        "Chatbox Giấy Hoàng Anh giúp bạn tra cứu giá, mã sản phẩm, tìm hiểu quy trình mua hàng và kết nối tư vấn viên một cách nhanh chóng, tiện lợi.",
+        "Kênh tư vấn và tra cứu sản phẩm của Giấy Hoàng Anh giúp khách hàng xem giá, mã sản phẩm và hướng dẫn mua hàng một cách nhanh chóng, tiện lợi.",
     icons: {
         icon: "/favicon/logo.png",
     },

@@ -5,6 +5,8 @@ import { useGetSetting } from "@/services/setting";
 import { useAuth } from "@/core/hook/useAuth";
 import Image from "next/image";
 import Link from "next/link";
+import ZaloIcon from "@/core/components/icons/zalo";
+import PhoneIcon from "@/core/components/icons/phone";
 
 const ChatBoxHeader = () => {
     const { data: setting } = useGetSetting();
@@ -36,23 +38,11 @@ const ChatBoxHeader = () => {
                             </div>
                         )}
                         <Link href={setting?.zalo_chatbot || ""} target="_blank">
-                            <Image
-                                src={_Image.icon.zalo_gray}
-                                alt="zalo-gray"
-                                width={50}
-                                height={50}
-                                className="size-[42px]"
-                            />
+                            <ZaloIcon className="size-[42px] text-[#6D6D6D] hover:text-[#0168FF] transition-all duration-300" />
                         </Link>
 
-                        <Link href={`tel:${setting?.phone_chatbot || ""}`} target="_blank">
-                            <Image
-                                src={_Image.icon.phone_gray}
-                                alt="phone-gray"
-                                width={50}
-                                height={50}
-                                className="size-[42px]"
-                            />
+                        <Link href={`tel:${setting?.phone_chatbot || ""}`}>
+                            <PhoneIcon className="text-[#6D6D6D] size-[42px] hover:text-[#1BD4BA] transition-all duration-300" />
                         </Link>
                     </div>
                 </div>

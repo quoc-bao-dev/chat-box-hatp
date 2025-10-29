@@ -138,11 +138,11 @@ const Sidebar = () => {
             </div>
 
             {/* === social === */}
-            <div className="flex flex-col gap-3 p-5">
+            <div className="flex flex-col gap-1 p-3">
                 <Link
                     href={setting?.zalo_chatbot || ""}
                     target="_blank"
-                    className="flex items-center gap-3 group"
+                    className="flex items-center gap-3 group p-2 hover:bg-blue-50 rounded-lg transition-all duration-200 ease-in-out cursor-pointer"
                 >
                     <Image
                         src={_Image.icon.zalo}
@@ -156,8 +156,7 @@ const Sidebar = () => {
                 </Link>
                 <Link
                     href={`tel:${setting?.phone_chatbot || ""}`}
-                    target="_blank"
-                    className="flex items-center gap-3 group"
+                    className="flex items-center gap-3 group p-2 hover:bg-green-50 rounded-lg transition-all duration-200 ease-in-out cursor-pointer"
                 >
                     <Image
                         src={_Image.icon.phone}

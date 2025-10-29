@@ -22,7 +22,9 @@ const HomeCardList = () => {
                 id: Number(chatbot.id),
                 iconSrc: chatbot.avatar || "/image/icons/icon-01.png", // fallback icon
                 title: chatbot.name,
-                description: chatbot.content,
+                description:
+                    chatbot.content ||
+                    "Craft compelling text for ads and emails.",
                 disabled: chatbot.disabled === "1",
             }))
             .sort((a) => (a.disabled ? 1 : -1));

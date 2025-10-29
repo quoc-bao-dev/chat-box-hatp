@@ -137,8 +137,8 @@ const Sidebar = () => {
             </div>
 
             {/* === social === */}
-            <div className="flex flex-col gap-3 p-5">
-                <Link href={setting?.zalo_chatbot || ""} target="_blank" className="flex items-center gap-3 group">
+            <div className="flex flex-col gap-1 p-3">
+                <Link href={setting?.zalo_chatbot || ""} target="_blank" className="flex items-center gap-3 group p-2 hover:bg-blue-50 rounded-lg transition-all duration-200 ease-in-out cursor-pointer">
                     <Image
                         src={_Image.icon.zalo}
                         alt="zalo"
@@ -147,7 +147,7 @@ const Sidebar = () => {
                     />
                     <p className="font-semibold text-gray-600 group-hover:text-blue-500">Zalo</p>
                 </Link>
-                <Link href={`tel:${setting?.phone_chatbot || ""}`} target="_blank" className="flex items-center gap-3 group">
+                <Link href={`tel:${setting?.phone_chatbot || ""}`} className="flex items-center gap-3 group p-2 hover:bg-green-50 rounded-lg transition-all duration-200 ease-in-out cursor-pointer">
                     <Image
                         src={_Image.icon.phone}
                         alt="phone"

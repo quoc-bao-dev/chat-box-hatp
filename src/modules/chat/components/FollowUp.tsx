@@ -1,7 +1,6 @@
 "use client";
 
 import { Icon } from "@/core/components/common";
-import { BouncyButton, Button } from "@/core/components/ui";
 import { _Image } from "@/core/config";
 import { LoginButton } from "@/modules/auth";
 import { useFollowUpStore } from "@/store/followUpStore";

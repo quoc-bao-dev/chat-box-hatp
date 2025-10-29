@@ -5,6 +5,7 @@ export interface ChatbotItem {
     name: string;
     avatar: string;
     next: string;
+    content: string;
     disabled: "0" | "1";
 }
 

@@ -37,7 +37,10 @@ const ChatBoxHeader = () => {
                                 <LoginButton />
                             </div>
                         )}
-                        <Link href={setting?.zalo_chatbot || ""} target="_blank">
+                        <Link
+                            href={setting?.zalo_chatbot || ""}
+                            target="_blank"
+                        >
                             <ZaloIcon className="size-[42px] text-[#6D6D6D] hover:text-[#0168FF] transition-all duration-300" />
                         </Link>
 

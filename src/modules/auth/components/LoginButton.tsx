@@ -71,7 +71,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
             >
                 <span
                     className={cn(
-                        "inline-flex items-center gap-3 px-1 lg:px-2 py-1.5 lg:py-2 rounded-full",
+                        "inline-flex items-center gap-3 px-0.5 lg:px-2 py-1.5 lg:py-1.5 rounded-full",
                         // inner background gradient (green)
                         "bg-[linear-gradient(90deg,#00A76F_50.96%,#A1EBD2_93.27%)]",
                         "shadow-[inset_0_-6px_14px_rgba(0,0,0,0.12)]"
@@ -86,7 +86,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
                         <span
                             className={cn(
                                 "flex items-center justify-center",
-                                "size-[24px] lg:size-[32px] rounded-full",
+                                "size-[24px] lg:size-[30px] rounded-full",
                                 "bg-white",
                                 "shadow-[0_6px_20px_rgba(53,194,130,0.35),inset_0_-8px_20px_rgba(0,0,0,0.08)]"
                             )}

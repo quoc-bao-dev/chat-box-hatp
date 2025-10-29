@@ -127,7 +127,7 @@ const EditProductCode = ({
                 <div className="pt-5">
                     <button
                         type="button"
-                        className="w-full h-10 rounded-xl bg-[#00A76F] text-white font-semibold hover:bg-[#28a05a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full h-10 rounded-xl bg-[#00A76F] text-white font-semibold hover:bg-[#28a05a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none disabled:bg-[#00A76F]"
                         disabled={items.length === 0 || disable}
                         onClick={onConfirmClick}
                     >

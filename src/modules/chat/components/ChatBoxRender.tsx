@@ -142,7 +142,9 @@ const ChatBoxRender = () => {
                     products={message.products}
                     productOptions={message.options as ProductOption[]}
                     orderDetail={message.orderDetail}
-                    disableAction={index !== massages.length - 1}
+                    disableAction={
+                        index !== massages.length - 1 || isAssistantTyping
+                    }
                 />
             ))}
 

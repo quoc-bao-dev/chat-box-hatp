@@ -20,46 +20,36 @@ const OrderSuccessPanel = ({
     } = useChatBoxActions();
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const handleViewDetailsClick = async () => {
-        if (isProcessing) return;
+    const handleOptionClick = async (option: RobotOption) => {
+        if (isProcessing || option.disabled) return;
         setIsProcessing(true);
         stopCountdownFeedback();
         setIsFeedback(false);
         try {
-            if (!options[0].next) {
+            if (!option.next) {
                 return;
             }
-            const res = await axiosInstance.get(options[0].next!);
-
+            const res = await axiosInstance.get(option.next);
             addMessage(createMessageFromResponse(res.data));
             setIsAssistantTyping(true);
 
-            const nextLink = res.data.next;
+            const nextLink = res.data?.next;
+            if (nextLink) {
+                const nextRes = await axiosInstance.get(nextLink);
+                addMessage(createMessageFromResponse(nextRes.data));
+            }
 
-            const nextRes = await axiosInstance.get(nextLink!);
-
-            addMessage(createMessageFromResponse(nextRes.data));
             startCountdownFeedback();
             setIsAssistantTyping(false);
         } finally {
             setIsProcessing(false);
         }
     };
-
-    const handlePlaceAnotherOrderClick = () => {
-        setIsFeedback(false);
-        if (isProcessing) return;
-        setIsProcessing(true);
-        // TODO: implement action for placing another order
-        setTimeout(() => {
-            setIsProcessing(false);
-        }, 800);
-    };
     return (
         <OrderSuccessModal
+            options={options}
             disable={disable || isProcessing}
-            onViewDetailsClick={handleViewDetailsClick}
-            onPlaceAnotherOrderClick={handlePlaceAnotherOrderClick}
+            onOptionClick={handleOptionClick}
         />
     );
 };

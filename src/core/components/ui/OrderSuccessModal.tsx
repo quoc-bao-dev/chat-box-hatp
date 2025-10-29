@@ -1,16 +1,17 @@
 import { _Image } from "@/core/config";
+import { RobotOption } from "@/services/robot";
 import { Icon } from "../common";
 
 interface OrderSuccessModalProps {
-    onViewDetailsClick?: () => void;
-    onPlaceAnotherOrderClick?: () => void;
+    options: RobotOption[];
+    onOptionClick: (option: RobotOption) => void;
     className?: string;
     disable?: boolean;
 }
 
 const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
-    onViewDetailsClick,
-    onPlaceAnotherOrderClick,
+    options,
+    onOptionClick,
     className = "",
     disable = false,
 }) => {
@@ -33,54 +34,36 @@ const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
                 alt="success"
                 className="mb-4"
             />
-            {/* Action Buttons */}
-            <button
-                type="button"
-                className={`w-full px-4 py-2 rounded-xl bg-gray-50/80 flex items-center justify-between mb-2 ${
-                    disable
-                        ? "opacity-50 cursor-not-allowed pointer-events-none"
-                        : "cursor-pointer hover:bg-gray-100"
-                }`}
-                onClick={() => !disable && onViewDetailsClick?.()}
-                aria-disabled={disable}
-            >
-                <p
-                    className={`font-medium ${
-                        disable ? "text-gray-500" : "text-[#00A76F]"
-                    }`}
-                >
-                    Xem chi tiết đơn
-                </p>
-                <Icon
-                    src={_Image.icon.icon_send_2}
-                    size={20}
-                    alt="arrow right"
-                />
-            </button>
-
-            <button
-                type="button"
-                className={`w-full px-4 py-2 rounded-xl bg-gray-50/80 flex items-center justify-between ${
-                    disable
-                        ? "opacity-50 cursor-not-allowed pointer-events-none"
-                        : "cursor-pointer hover:bg-gray-100"
-                }`}
-                onClick={() => !disable && onPlaceAnotherOrderClick?.()}
-                aria-disabled={disable}
-            >
-                <p
-                    className={`font-medium ${
-                        disable ? "text-gray-500" : "text-[#00A76F]"
-                    }`}
-                >
-                    Lên đơn khác
-                </p>
-                <Icon
-                    src={_Image.icon.icon_send_2}
-                    size={20}
-                    alt="arrow right"
-                />
-            </button>
+            {/* Action Buttons - dynamic from options */}
+            {options?.map((option) => {
+                const isDisabled = disable || option.disabled === true;
+                return (
+                    <button
+                        key={option.id}
+                        type="button"
+                        className={`w-full px-4 py-2 rounded-xl bg-gray-50/80 flex items-center justify-between ${
+                            isDisabled
+                                ? "opacity-50 cursor-not-allowed pointer-events-none"
+                                : "cursor-pointer hover:bg-gray-100"
+                        } ${"mb-2"}`}
+                        onClick={() => !isDisabled && onOptionClick(option)}
+                        aria-disabled={isDisabled}
+                    >
+                        <p
+                            className={`font-medium ${
+                                isDisabled ? "text-gray-500" : "text-[#00A76F]"
+                            }`}
+                        >
+                            {option.name}
+                        </p>
+                        <Icon
+                            src={_Image.icon.icon_send_2}
+                            size={20}
+                            alt="arrow right"
+                        />
+                    </button>
+                );
+            })}
         </div>
     );
 };

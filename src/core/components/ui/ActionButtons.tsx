@@ -21,7 +21,11 @@ export const ConfirmButton: React.FC<BaseButtonProps> = ({
     return (
         <button
             type="button"
-            className={`h-10 rounded-xl bg-[#2FB06B] text-white font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed transition-all duration-200 hover:bg-[#28A05A] hover:shadow-md active:scale-95 ${className}`}
+            className={`h-10 rounded-xl bg-[#2FB06B] text-white font-semibold disabled:opacity-50 transition-all duration-200 ${
+                disabled
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer hover:bg-[#28A05A] hover:shadow-md active:scale-95"
+            } ${className}`}
             onClick={onClick}
             disabled={disabled}
         >
@@ -42,7 +46,11 @@ export const EditButton: React.FC<BaseButtonProps> = ({
     return (
         <button
             type="button"
-            className={`h-10 rounded-xl bg-white text-gray-700 font-medium border border-gray-200 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md active:scale-95 ${className}`}
+            className={`h-10 rounded-xl bg-white text-gray-700 font-medium border border-gray-200 disabled:opacity-50 transition-all duration-200 ${
+                disabled
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer hover:bg-gray-50 hover:border-gray-300 hover:shadow-md active:scale-95"
+            } ${className}`}
             onClick={onClick}
             disabled={disabled}
         >
@@ -63,7 +71,11 @@ export const CancelButton: React.FC<BaseButtonProps> = ({
     return (
         <button
             type="button"
-            className={`h-10 rounded-xl bg-white text-[#F04438] border border-[#F04438] font-semibold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed transition-all duration-200 hover:bg-red-50 hover:border-red-400 hover:shadow-md active:scale-95 ${className}`}
+            className={`h-10 rounded-xl bg-white text-[#F04438] border border-[#F04438] font-semibold disabled:opacity-50 transition-all duration-200 ${
+                disabled
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer hover:bg-red-50 hover:border-red-400 hover:shadow-md active:scale-95"
+            } ${className}`}
             onClick={onClick}
             disabled={disabled}
         >

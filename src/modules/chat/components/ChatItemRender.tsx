@@ -1,5 +1,6 @@
 import Time from "@/core/components/common/Time";
 import { NoProductFound } from "@/core/components/ui";
+import CancelSuccess from "@/core/components/ui/CancelSuccess";
 import { ProductItem, ProductOption } from "@/services/chatbot";
 import { OrderDetail } from "@/services/order/type";
 import { RobotOption } from "@/services/robot";
@@ -45,6 +46,15 @@ const ChatItemRender = ({
     time,
     disableAction = false,
 }: ChatItemRenderProps) => {
+    if (sender === "assistant" && sendType === "cancel-product") {
+        return (
+            <AssistantMessage
+                // mode="panel"
+                content={<CancelSuccess content={content || ""} />}
+            />
+        );
+    }
+
     if (sender === "assistant" && sendType === "select") {
         return (
             <AssistantMessage

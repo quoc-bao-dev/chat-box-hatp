@@ -4,6 +4,16 @@ import { Message } from "@/store/chatBoxStore";
 export const createMessageFromResponse = (
     data: GetActiveRobotDetailResponse
 ): Message => {
+    // show cancel product
+    if (data.data.event === "cancel_product") {
+        return {
+            id: Number(data.data.id),
+            sender: data.data.type_send === "1" ? "user" : "assistant",
+            content: data.data.message,
+            sendType: "cancel-product",
+        };
+    }
+
     // show detail table
     if (data.data.event === "show_detail_orders" && data.data.data_orders) {
         return {
@@ -76,6 +86,16 @@ export const createMessageFromHistoryResponse = (
         "2": "normal",
         "3": "good",
     };
+
+    // show cancel product
+    if (data.event === "cancel_product") {
+        return {
+            id: Number(data.id),
+            sender: data.type_send === "1" ? "user" : "assistant",
+            content: data.message,
+            sendType: "cancel-product",
+        };
+    }
 
     // show detail table
     if (data.event === "show_detail_orders" && data.data_orders) {

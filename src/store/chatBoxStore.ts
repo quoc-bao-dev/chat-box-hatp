@@ -17,7 +17,8 @@ export type SendType =
     | "start"
     | "await-reply"
     | "show-create-orders"
-    | "order-detail";
+    | "order-detail"
+    | "cancel-product";
 
 export type Message = {
     id: number;
@@ -153,8 +154,6 @@ const useChatBoxStore = create<ChatBoxStore>()(
                         sendType: "feedback",
                         feedback: feedbackData,
                     };
-
-                    console.log("feedbackMessage ", feedbackMessage);
 
                     set((state) => ({
                         massages: [...state.massages, feedbackMessage],

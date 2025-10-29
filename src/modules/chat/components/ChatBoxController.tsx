@@ -36,8 +36,7 @@ const ChatBoxController = () => {
     useEffect(() => {
         if (firstOption) {
             new Promise((resolve) => {
-                setIsAssistantTyping(true);
-                setTimeout(resolve, botConfig.typingDelay);
+                setTimeout(resolve, 0 * botConfig.typingDelay);
             }).then(() =>
                 fetchRobotDetail({
                     option_id: firstOption,
@@ -49,7 +48,11 @@ const ChatBoxController = () => {
                         const typeEvent = data.data.event;
 
                         // luồng tra cứu giá sản phẩm
-                        if (typeEvent === "start" && data.next) {
+                        if (data.next) {
+                            setIsAssistantTyping(true);
+                            await new Promise((resolve) =>
+                                setTimeout(resolve, botConfig.typingDelay)
+                            );
                             const res =
                                 await axiosInstance.get<GetActiveRobotDetailResponse>(
                                     data.next as unknown as string,

@@ -31,9 +31,9 @@ const ChatBoxHeader = () => {
                         </h1>
                     </div>
                     {/* login */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                         {!isLoggedIn && (
-                            <div className="pr-3">
+                            <div className="pr-2">
                                 <LoginButton />
                             </div>
                         )}
@@ -41,11 +41,11 @@ const ChatBoxHeader = () => {
                             href={setting?.zalo_chatbot || ""}
                             target="_blank"
                         >
-                            <ZaloIcon className="size-[42px] text-[#6D6D6D] hover:text-[#0168FF] transition-all duration-300" />
+                            <ZaloIcon className="size-[36px] text-[#6D6D6D] hover:text-[#0168FF] transition-all duration-300" />
                         </Link>
 
                         <Link href={`tel:${setting?.phone_chatbot || ""}`}>
-                            <PhoneIcon className="text-[#6D6D6D] size-[42px] hover:text-[#1BD4BA] transition-all duration-300" />
+                            <PhoneIcon className="text-[#6D6D6D] size-[36px] hover:text-[#1BD4BA] transition-all duration-300" />
                         </Link>
                     </div>
                 </div>

@@ -1,12 +1,11 @@
 "use client";
 
+import { NoProductFound } from "@/core/components/ui";
 import ProductListDisplay from "@/core/components/ui/ProductListDisplay";
+import { useButtonEventHandlers } from "@/core/hook";
 import { useAuth } from "@/core/hook/useAuth";
-import { axiosInstance } from "@/core/http";
-import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
 import { ProductItem } from "@/services/chatbot";
 import { RobotOption } from "@/services/robot";
-import { useChatBoxActions } from "@/store";
 import { useFollowUpStore } from "@/store/followUpStore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -27,13 +26,14 @@ const ProductListDisplayPanel = ({
 
     const [disableAction, setDisableAction] = useState(false);
 
+    // Use shared hook for button event handling
     const {
-        addMessage,
-        stopCountdownFeedback,
-        startCountdownFeedback,
-        setIsAssistantTyping,
-        setIsFeedback,
-    } = useChatBoxActions();
+        loadingStates,
+        handleConfirmClick,
+        handleEditClick,
+        handleCancelClick,
+        actionButtonConfigs,
+    } = useButtonEventHandlers({ options });
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -47,56 +47,39 @@ const ProductListDisplayPanel = ({
     const handleItemClick = (item: ProductItem) => {};
 
     // Hàm xử lý khi click confirm
-    const handleConfirmClick = async () => {
+    const handleConfirm = async () => {
         if (!isLoggedIn) {
             toast.error("Vui lòng đăng nhập để lên đơn");
             return;
         }
-
-        stopCountdownFeedback();
-
-        setIsFeedback(false);
         setDisableAction(true);
-
-        const res = await axiosInstance.get(options[0].next!);
-
-        // add message from response
-        addMessage(createMessageFromResponse(res.data));
-        setIsAssistantTyping(true);
-
-        const nextLink = res.data.next;
-
-        if (nextLink) {
-            const res = await axiosInstance.get(nextLink);
-
-            addMessage(createMessageFromResponse(res.data));
-            toast.success(res.data?.message!);
-        }
-        setIsAssistantTyping(false);
-        startCountdownFeedback();
+        await handleConfirmClick();
+        setDisableAction(false);
     };
 
     // Hàm xử lý khi click edit
-    const handleEditClick = () => {
-        console.log("Edit clicked");
+    const handleEdit = async () => {
+        await handleEditClick();
     };
 
     // Hàm xử lý khi click cancel
-    const handleCancelClick = () => {
-        console.log("Cancel clicked");
+    const handleCancel = async () => {
+        await handleCancelClick();
     };
 
     return (
         <ProductListDisplay
             title="Danh sách sản phẩm"
             items={items}
-            shouldShowConfirmButton={!!options[0]}
-            shouldShowCancelButton={!!options[1]}
             onItemClick={handleItemClick}
-            onConfirmClick={handleConfirmClick}
-            onEditClick={handleEditClick}
-            onCancelClick={handleCancelClick}
+            onConfirmClick={handleConfirm}
+            onEditClick={handleEdit}
+            onCancelClick={handleCancel}
             disable={disable || disableAction}
+            isConfirmLoading={loadingStates.confirm}
+            isEditLoading={loadingStates.edit}
+            isCancelLoading={loadingStates.cancel}
+            actionButtonConfigs={actionButtonConfigs}
         />
     );
 };

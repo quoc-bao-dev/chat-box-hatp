@@ -20,7 +20,7 @@ const FaqToggleList = ({
 }: FaqToggleListProps) => {
     const [isAnimatingOut, setIsAnimatingOut] = useState(defaultShow);
     const prevIsShowRef = useRef(defaultShow);
-    const { setFirstOption, setIsFeedback, stopCountdownFeedback } =
+    const { setFirstOption, setIsFeedback, stopCountdownFeedback, setMode } =
         useChatBoxActions();
 
     const { data } = useGetChatbotList();
@@ -82,7 +82,7 @@ const FaqToggleList = ({
             )}
 
             {/* === close button === */}
-            {/* {!showButton && (
+            {!showButton && (
                 <button
                     onClick={onToggle}
                     className="absolute -top-10 right-0 w-[35px] h-[35px] rounded-full bg-white/80 hover:bg-white transition-all duration-300 ease-out flex items-center justify-center"
@@ -94,7 +94,7 @@ const FaqToggleList = ({
                         className="mr-1"
                     />
                 </button>
-            )} */}
+            )}
 
             {/* === list items with slide-in from left === */}
             <div
@@ -121,6 +121,7 @@ const FaqToggleList = ({
                                 setFirstOption(c.id!);
                                 setIsFeedback(false);
                                 stopCountdownFeedback();
+                                setMode("click");
                             }}
                             disabled={c.disabled}
                         />

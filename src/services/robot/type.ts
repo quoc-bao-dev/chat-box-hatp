@@ -36,7 +36,8 @@ export interface RobotData {
         | "evaluate_support"
         | "wait_reply"
         | "show_create_orders"
-        | "show_detail_orders"; // select -> option , text
+        | "show_detail_orders"
+        | "cancel_product"; // select -> option , text
     file: string | null; // file đính kèm (hình ảnh)
     suport_items: number;
     json_item: any | null;

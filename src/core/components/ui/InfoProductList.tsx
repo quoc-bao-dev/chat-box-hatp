@@ -1,14 +1,9 @@
 "use client";
 
 import { _Image } from "@/core/config";
-import { axiosInstance } from "@/core/http/axiosClient";
 import { cn } from "@/core/utils/cn";
-import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
-import { getSession } from "@/core/utils/session";
 import { ProductItem, ProductOption } from "@/services/chatbot";
-import { useChatBoxActions } from "@/store";
 import Image from "next/image";
-import { useState } from "react";
 import { ActionButtons } from "./ActionButtons";
 import NoProductFound from "./NoProductFound";
 
@@ -30,6 +25,14 @@ export type InfoListProps = {
     onEditClick?: () => void;
     onCancelClick?: () => void;
     disable?: boolean;
+    isConfirmLoading?: boolean;
+    isEditLoading?: boolean;
+    isCancelLoading?: boolean;
+    actionButtonConfigs?: Array<{
+        eventType: string;
+        label: string;
+        type: "confirm" | "edit" | "cancel";
+    }>;
 };
 
 const InfoList = ({
@@ -42,74 +45,21 @@ const InfoList = ({
     onCancelClick,
     className = "",
     disable = false,
+    isConfirmLoading = false,
+    isEditLoading = false,
+    isCancelLoading = false,
+    actionButtonConfigs = [],
 }: InfoListProps) => {
     const imageProdPlaceholder = _Image.icon.icon_product;
-    const [isConfirmLoading, setIsConfirmLoading] = useState(false);
-    const [isEditLoading, setIsEditLoading] = useState(false);
-    const [isCancelLoading, setIsCancelLoading] = useState(false);
 
-    const {
-        addMessage,
-        stopCountdownFeedback,
-        startCountdownFeedback,
-        setIsAssistantTyping,
-    } = useChatBoxActions();
-    // Function to call API based on next URL with specific loading state
-    const callApiByEvent = async (
-        eventType: string,
-        setLoading: (loading: boolean) => void
-    ) => {
-        const option = options.find((opt) => opt.show_move_event === eventType);
-        if (!option?.next) {
-            console.warn(`No API endpoint found for event: ${eventType}`);
-            return;
-        }
+    // Render buttons based on actionButtonConfigs with their types
+    const confirmConfig = actionButtonConfigs.find((c) => c.type === "confirm");
+    const editConfig = actionButtonConfigs.find((c) => c.type === "edit");
+    const cancelConfig = actionButtonConfigs.find((c) => c.type === "cancel");
 
-        setLoading(true);
-        try {
-            const response = await axiosInstance.get(option.next, {
-                params: {
-                    sp_session: getSession(),
-                },
-            });
-            const data = response.data;
-            addMessage(createMessageFromResponse(data));
-            setIsAssistantTyping(true);
-
-            const res = await axiosInstance.get(data.next, {
-                params: { sp_session: getSession() },
-            });
-
-            const dataNext = res.data;
-
-            setIsAssistantTyping(false);
-            addMessage(createMessageFromResponse(dataNext));
-
-            return data;
-        } catch (error) {
-            console.error(`❌ API Error for ${eventType}:`, error);
-            throw error;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Conditional rendering logic for action buttons using show_move_event
-    const moveEvents = options
-        .map((opt) => opt.show_move_event)
-        .filter((v): v is string => Boolean(v));
-
-    const shouldShowConfirmButton = moveEvents.some((event) =>
-        ["confirm_product", "create_order", "save_edit_product"].includes(event)
-    );
-
-    const shouldShowEditButton = moveEvents.some((event) =>
-        ["edit_product", "view_edit_product"].includes(event)
-    );
-
-    const shouldShowCancelButton = moveEvents.some((event) =>
-        ["cancel_edit_product", "cancel_product"].includes(event)
-    );
+    const shouldShowConfirmButton = !!confirmConfig;
+    const shouldShowEditButton = !!editConfig;
+    const shouldShowCancelButton = !!cancelConfig;
 
     // Empty state when no products are available
     if (!items || items.length === 0) {
@@ -167,28 +117,12 @@ const InfoList = ({
                 isEditLoading={isEditLoading}
                 isCancelLoading={isCancelLoading}
                 disable={disable}
-                onConfirmClick={async () => {
-                    stopCountdownFeedback();
-                    await callApiByEvent(
-                        "confirm_product",
-                        setIsConfirmLoading
-                    );
-                    onConfirmClick?.();
-                    startCountdownFeedback();
-                }}
-                onEditClick={async () => {
-                    stopCountdownFeedback();
-                    await callApiByEvent("edit_product", setIsEditLoading);
-                    onEditClick?.();
-                }}
-                onCancelClick={async () => {
-                    stopCountdownFeedback();
-                    await callApiByEvent("cancel_product", setIsCancelLoading);
-                    onCancelClick?.();
-                }}
-                confirmText="Xác nhận"
-                editText="Tôi muốn chỉnh sửa mã sản phẩm"
-                cancelText="Hủy"
+                onConfirmClick={onConfirmClick}
+                onEditClick={onEditClick}
+                onCancelClick={onCancelClick}
+                confirmText={confirmConfig?.label || "Xác nhận"}
+                editText={editConfig?.label || "Tôi muốn chỉnh sửa mã sản phẩm"}
+                cancelText={cancelConfig?.label || "Hủy"}
                 confirmLoadingText="Đang xác nhận..."
                 editLoadingText="Đang chỉnh sửa..."
                 cancelLoadingText="Đang hủy..."

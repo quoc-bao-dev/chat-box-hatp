@@ -9,9 +9,6 @@ interface ProductListDisplayProps {
     title: string;
     items: ProductItem[];
     className?: string;
-    shouldShowConfirmButton?: boolean;
-    shouldShowEditButton?: boolean;
-    shouldShowCancelButton?: boolean;
     isConfirmLoading?: boolean;
     isEditLoading?: boolean;
     isCancelLoading?: boolean;
@@ -20,15 +17,17 @@ interface ProductListDisplayProps {
     onConfirmClick?: () => void;
     onEditClick?: () => void;
     onCancelClick?: () => void;
+    actionButtonConfigs?: Array<{
+        eventType: string;
+        label: string;
+        type: "confirm" | "edit" | "cancel";
+    }>;
 }
 
 const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
     title,
     items,
     className = "",
-    shouldShowConfirmButton = false,
-    shouldShowEditButton = false,
-    shouldShowCancelButton = false,
     isConfirmLoading = false,
     isEditLoading = false,
     isCancelLoading = false,
@@ -37,8 +36,18 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
     onConfirmClick,
     onEditClick,
     onCancelClick,
+    actionButtonConfigs = [],
 }) => {
     const imageProdPlaceholder = _Image.icon.icon_product;
+
+    // Derive button visibility and labels from actionButtonConfigs
+    const confirmConfig = actionButtonConfigs.find((c) => c.type === "confirm");
+    const editConfig = actionButtonConfigs.find((c) => c.type === "edit");
+    const cancelConfig = actionButtonConfigs.find((c) => c.type === "cancel");
+
+    const shouldShowConfirmButton = !!confirmConfig;
+    const shouldShowEditButton = !!editConfig;
+    const shouldShowCancelButton = !!cancelConfig;
 
     return (
         <div
@@ -82,8 +91,11 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                             {/* === price === */}
                             <div className=" text-right ">
                                 <p className="text-[#F04438] font-bold text-sm">
-                                    {Number(item.price).toLocaleString("vi-VN")}{" "}
-                                    ₫
+                                    {Number(item.price) > 0
+                                        ? Number(item.price).toLocaleString(
+                                              "vi-VN"
+                                          ) + " ₫"
+                                        : "Liên hệ"}
                                 </p>
                             </div>
                         </div>
@@ -92,24 +104,24 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
             </div>
 
             {/* === action button === */}
-            {!disable && (
-                <ActionButtons
-                    shouldShowConfirmButton={shouldShowConfirmButton}
-                    shouldShowEditButton={shouldShowEditButton}
-                    shouldShowCancelButton={shouldShowCancelButton}
-                    isConfirmLoading={isConfirmLoading}
-                    isEditLoading={isEditLoading}
-                    isCancelLoading={isCancelLoading}
-                    disable={disable}
-                    onConfirmClick={onConfirmClick}
-                    onEditClick={onEditClick}
-                    onCancelClick={onCancelClick}
-                    confirmText="Lên đơn"
-                    cancelText="Hủy"
-                    confirmLoadingText="Đang xử lý..."
-                    cancelLoadingText="Đang hủy..."
-                />
-            )}
+            <ActionButtons
+                shouldShowConfirmButton={shouldShowConfirmButton}
+                shouldShowEditButton={shouldShowEditButton}
+                shouldShowCancelButton={shouldShowCancelButton}
+                isConfirmLoading={isConfirmLoading}
+                isEditLoading={isEditLoading}
+                isCancelLoading={isCancelLoading}
+                disable={disable}
+                onConfirmClick={onConfirmClick}
+                onEditClick={onEditClick}
+                onCancelClick={onCancelClick}
+                confirmText={confirmConfig?.label || "Lên đơn"}
+                editText={editConfig?.label || "Chỉnh sửa"}
+                cancelText={cancelConfig?.label || "Hủy"}
+                confirmLoadingText="Đang xử lý..."
+                editLoadingText="Đang chỉnh sửa..."
+                cancelLoadingText="Đang hủy..."
+            />
         </div>
     );
 };

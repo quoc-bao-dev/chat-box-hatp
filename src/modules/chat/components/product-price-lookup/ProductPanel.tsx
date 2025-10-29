@@ -1,6 +1,6 @@
 import InfoProductList from "@/core/components/ui/InfoProductList";
+import { useButtonEventHandlers } from "@/core/hook";
 import { ProductItem, ProductOption } from "@/services/chatbot";
-import { useState } from "react";
 
 type ProductPanelProps = {
     id: number;
@@ -17,25 +17,25 @@ const ProductPanel = ({
     options = [],
     disable = false,
 }: ProductPanelProps) => {
-    // const [disablePanel, setDisablePanel] = useState(disable);
+    // Use the button event handlers hook
+    const {
+        loadingStates,
+        handleConfirmClick,
+        handleEditClick,
+        handleCancelClick,
+        actionButtonConfigs, // Lấy actionButtonConfigs từ hook
+    } = useButtonEventHandlers({
+        options,
+        onSuccess: (eventType) => {
+            console.log(`${eventType} action completed`);
+        },
+        onError: (eventType, error) => {
+            console.error(`${eventType} action failed:`, error);
+        },
+    });
 
     const handleItemClick = (item: ProductItem) => {
         // placeholder: handle select product item
-        // setDisablePanel(true);
-    };
-
-    const handleConfirmClick = () => {
-        // placeholder: handle confirm selection
-        // setDisablePanel(true);
-    };
-
-    const handleEditClick = () => {
-        // placeholder: handle edit action
-        // setDisablePanel(true);
-    };
-
-    const handleCancelClick = () => {
-        // placeholder: handle cancel action
         // setDisablePanel(true);
     };
 
@@ -49,6 +49,10 @@ const ProductPanel = ({
             onEditClick={handleEditClick}
             onCancelClick={handleCancelClick}
             disable={disable}
+            isConfirmLoading={loadingStates.confirm}
+            isEditLoading={loadingStates.edit}
+            isCancelLoading={loadingStates.cancel}
+            actionButtonConfigs={actionButtonConfigs}
         />
     );
 };

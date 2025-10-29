@@ -8,6 +8,7 @@ import { getSession } from "@/core/utils/session";
 import { useChatBoxActions, useChatBoxState } from "@/store";
 import { useCartItemEffect } from "@/store/cartItemEffect";
 import { useChatInputStore } from "@/store/chatInputStore";
+import { useState } from "react";
 
 type InfoItem = {
     id: string;
@@ -30,6 +31,8 @@ const InfoPanel = ({
     disable = false,
 }: InfoPanelProps) => {
     const { isAssistantTyping } = useChatBoxState();
+
+    const [disableAction, setDisableAction] = useState(false);
 
     const {
         addMessage,
@@ -103,11 +106,13 @@ const InfoPanel = ({
             }
         } catch (error) {
             setIsAssistantTyping(false);
+            setDisableAction(false);
         }
     };
 
     const handleItemClick = (item: InfoListItem) => {
         setIsFeedback(false);
+        setDisableAction(true);
         setMode("click");
         const infoItem = items.find((i) => i.id === item.id);
         if (infoItem?.next) {
@@ -135,7 +140,7 @@ const InfoPanel = ({
             title={title!}
             items={infoListItems}
             onItemClick={handleItemClick}
-            disable={disable}
+            disable={disable || disableAction}
         />
     );
 };

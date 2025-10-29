@@ -9,7 +9,7 @@ const ChatPage = () => {
     return (
         <>
             <ChatBoxController />
-            <div className="flex flex-col h-[calc(100svh-40px)] lg:h-[calc(100svh-40px)] gap-5">
+            <div className="flex flex-col h-[calc(100svh-40px)] lg:h-[calc(100svh-40px)] gap-3">
                 {/* === header === */}
                 <ChatBoxHeader />
 

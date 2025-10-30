@@ -73,6 +73,7 @@ const ChatInputController = () => {
             });
         } catch (error) {
             setIsAssistantTyping(false);
+            console.log("send message error", error);
         } finally {
         }
     };

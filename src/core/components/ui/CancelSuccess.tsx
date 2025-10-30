@@ -1,5 +1,4 @@
 import { _Image } from "@/core/config";
-import { decodeHtmlEntities } from "@/core/utils/decode";
 import HtmlRenderer from "@/modules/chat/components/HtmlRenderer";
 import Image from "next/image";
 
@@ -19,7 +18,6 @@ const CancelSuccess = ({ content }: CancelSuccessProps) => {
                     htmlContent={content}
                     className="text-[#454F5B]! font-normal!"
                 />
-                {/* {decodeHtmlEntities(content)} */}
             </p>
 
             <Image

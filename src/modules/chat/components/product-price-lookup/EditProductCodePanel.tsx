@@ -47,6 +47,7 @@ const EditProductCodePanel = ({
         useChatBoxActions();
 
     const [disableAction, setDisableAction] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [itemsEdited, setItemsEdited] = useState<ProductItem[]>(items);
     const [resetTriggers, setResetTriggers] = useState<Record<number, number>>(
@@ -115,12 +116,14 @@ const EditProductCodePanel = ({
 
     const handleConfirmClick = async () => {
         // lấy next link
-        setDisableAction(true);
+
         stopCountdownFeedback();
         const nextLink = options[0].next;
 
         if (nextLink) {
             try {
+                setIsLoading(true);
+
                 const res =
                     await axiosInstance.get<GetActiveRobotDetailResponse>(
                         nextLink,
@@ -132,6 +135,9 @@ const EditProductCodePanel = ({
                     );
 
                 addMessage(createMessageFromResponse(res.data));
+
+                setIsLoading(false);
+                setDisableAction(true);
 
                 const nextLinkTable = res.data.next as string;
                 if (nextLinkTable) {
@@ -164,6 +170,7 @@ const EditProductCodePanel = ({
             onEditProductCode={handleEditProductCode}
             resetTriggers={resetTriggers}
             disable={disable || disableAction}
+            isLoading={isLoading}
         />
     );
 };

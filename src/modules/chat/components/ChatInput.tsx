@@ -44,11 +44,15 @@ const ChatInput = ({
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Tab") {
+            // console.log("handleKeyDown", suggestText);
+
             const current = inputRef.current?.value || "";
+
             const remainder = getSuggestionRemainder(
                 current,
                 suggestText || ""
             );
+
             if (remainder) {
                 e.preventDefault();
                 onAcceptSuggestion && onAcceptSuggestion();

@@ -1,6 +1,7 @@
 "use client";
 
 import { _Image } from "@/core/config";
+import { useDevice } from "@/core/hook";
 import { useChatBoxActions } from "@/store";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -26,7 +27,18 @@ const ChatInput = ({
 }: ChatInputProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const { stopCountdownFeedback } = useChatBoxActions();
-    const [isMobile, setIsMobile] = useState(false);
+
+    // const [canSuggest, setCanSuggest] = useState(true);
+
+    // useEffect(() => {
+    //     if (!canSuggest) {
+    //         setTimeout(() => {
+    //             setCanSuggest(true);
+    //         }, 100);
+    //     }
+    // }, [canSuggest]);
+
+    const { isMobile } = useDevice();
     const handleSend = () => {
         const input = document.querySelector(
             "#input-chat-box"
@@ -46,6 +58,7 @@ const ChatInput = ({
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Tab") {
             // console.log("handleKeyDown", suggestText);
+            // setCanSuggest(false);
 
             const current = inputRef.current?.value || "";
 
@@ -67,13 +80,6 @@ const ChatInput = ({
             inputRef.current.focus();
         }
     }, [inputRef.current]);
-
-    useEffect(() => {
-        const check = () => setIsMobile(window.innerWidth <= 768);
-        check();
-        window.addEventListener("resize", check);
-        return () => window.removeEventListener("resize", check);
-    }, []);
 
     const remainder = getSuggestionRemainder(value ?? "", suggestText ?? "");
 

@@ -9,7 +9,7 @@ type UseInlineSuggestionOptions = {
 
 export function useInlineSuggestion(
     inputValue: string,
-    setInputValue: (value: string) => void,
+    setInputValue: (value: string) => void, // nên là setState nội bộ input component
     options?: UseInlineSuggestionOptions
 ) {
     const [isSuggesting, setIsSuggesting] = useState(false);

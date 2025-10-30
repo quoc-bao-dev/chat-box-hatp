@@ -21,31 +21,29 @@ const ChatInput = ({
     className = "",
     onSend,
     onChange,
-    value,
+    value: valueProp,
     suggestText,
     onAcceptSuggestion,
 }: ChatInputProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const { stopCountdownFeedback } = useChatBoxActions();
-
-    // const [canSuggest, setCanSuggest] = useState(true);
-
-    // useEffect(() => {
-    //     if (!canSuggest) {
-    //         setTimeout(() => {
-    //             setCanSuggest(true);
-    //         }, 100);
-    //     }
-    // }, [canSuggest]);
-
     const { isMobile } = useDevice();
+
+    // LOCAL STATE FOR INPUT VALUE (fix race condition)
+    const [value, setValue] = useState(valueProp ?? "");
+
+    // Always sync prop value (when external reset), but avoid on typing
+    useEffect(() => {
+        if (typeof valueProp === "string" && valueProp !== value) {
+            setValue(valueProp);
+        }
+    }, [valueProp]);
+
     const handleSend = () => {
-        const input = document.querySelector(
-            "#input-chat-box"
-        ) as HTMLInputElement;
-        if (input && input.value.trim() && onSend) {
-            onSend(input.value.trim());
-            input.value = "";
+        if (inputRef.current && value.trim() && onSend) {
+            onSend(value.trim());
+            setValue("");
+            onChange && onChange("");
         }
     };
 
@@ -55,24 +53,19 @@ const ChatInput = ({
         }
     };
 
+    // CHẶN SỰ KIỆN TAB NGAY ĐẦU, GỌI acceptSuggestion LUÔN
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Tab") {
-            // console.log("handleKeyDown", suggestText);
-            // setCanSuggest(false);
-
-            const current = inputRef.current?.value || "";
-
+            e.preventDefault();
+            const current = value || "";
             const remainder = getSuggestionRemainder(
                 current,
                 suggestText || ""
             );
-
-            if (remainder) {
-                e.preventDefault();
-                onAcceptSuggestion && onAcceptSuggestion();
+            if (remainder && onAcceptSuggestion) {
+                onAcceptSuggestion(); // chú ý hàm này phải update giá trị local!
             }
         }
-        inputRef.current?.focus();
     };
 
     useEffect(() => {
@@ -81,7 +74,23 @@ const ChatInput = ({
         }
     }, [inputRef.current]);
 
+    // Make remainder dùng giá trị local (state)
     const remainder = getSuggestionRemainder(value ?? "", suggestText ?? "");
+
+    // Accept Suggestion update value local và sync với cha nếu có
+    const handleAcceptSuggestion = () => {
+        if (!suggestText) return;
+        const idx = value.lastIndexOf(",");
+        let newValue: string;
+        if (idx >= 0) {
+            const before = value.slice(0, idx + 1).replace(/\s*$/, " ");
+            newValue = before + suggestText + ", ";
+        } else {
+            newValue = suggestText + ", ";
+        }
+        setValue(newValue);
+        onChange && onChange(newValue);
+    };
 
     return (
         <div className={`${className}`}>
@@ -114,7 +123,10 @@ const ChatInput = ({
                         onKeyPress={handleKeyPress}
                         onKeyDown={handleKeyDown}
                         onFocus={stopCountdownFeedback}
-                        onChange={(e) => onChange && onChange(e.target.value)}
+                        onChange={(e) => {
+                            setValue(e.target.value);
+                            onChange && onChange(e.target.value);
+                        }}
                         value={value}
                         id="input-chat-box"
                     />
@@ -122,7 +134,7 @@ const ChatInput = ({
                     {!!remainder && !!value && isMobile && (
                         <button
                             type="button"
-                            onClick={onAcceptSuggestion}
+                            onClick={handleAcceptSuggestion}
                             tabIndex={0}
                             className="absolute right-2 top-1/2 -translate-y-1/2 ml-2 text-xs px-2 py-1 rounded-full bg-[#00A76F] text-white active:scale-95 transition md:hidden"
                             style={{ zIndex: 60 }}

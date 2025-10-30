@@ -1,14 +1,11 @@
-import { useDebounce } from "@/core/hook";
+import { useInlineSuggestion } from "@/core/hook";
 import { axiosInstance } from "@/core/http";
 import { createMessage } from "@/core/utils/createMessageFromResponse";
 import { getSession } from "@/core/utils/session";
-import {
-    ListProductsResponse,
-    useSearchProductSuggestion,
-} from "@/services/chatbot";
+import { ListProductsResponse } from "@/services/chatbot";
 import { useChatBoxActions } from "@/store";
 import { useChatInputStore } from "@/store/chatInputStore";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import ChatInput from "./ChatInput";
 
 const ChatInputController = () => {
@@ -18,20 +15,12 @@ const ChatInputController = () => {
         useChatInputStore();
 
     const [inputValue, setInputValue] = useState("");
-    const lastToken = useMemo(() => {
-        const parts = inputValue.split(",");
-        return (parts[parts.length - 1] || "").trim();
-    }, [inputValue]);
 
-    const debouncedToken = useDebounce(lastToken, 200);
-
-    const { data: suggestion } = useSearchProductSuggestion(debouncedToken);
-
-    const suggestText = useMemo(() => {
-        return suggestion?.code || "";
-    }, [suggestion]);
-
-    console.log(suggestText);
+    const { suggestText, acceptSuggestion } = useInlineSuggestion(
+        inputValue,
+        setInputValue,
+        { debounceMs: 200, field: "code" }
+    );
 
     const handleSend = async (message: string) => {
         addMessage(
@@ -95,18 +84,8 @@ const ChatInputController = () => {
             });
         } catch (error) {
             setIsAssistantTyping(false);
+            console.log("send message error", error);
         } finally {
-        }
-    };
-
-    const handleAcceptSuggestion = () => {
-        if (!suggestText) return;
-        const idx = inputValue.lastIndexOf(",");
-        if (idx >= 0) {
-            const before = inputValue.slice(0, idx + 1).replace(/\s*$/, " ");
-            setInputValue(before + suggestText + ", ");
-        } else {
-            setInputValue(suggestText + ", ");
         }
     };
 
@@ -116,7 +95,7 @@ const ChatInputController = () => {
             onChange={setInputValue}
             value={inputValue}
             suggestText={suggestText}
-            onAcceptSuggestion={handleAcceptSuggestion}
+            onAcceptSuggestion={acceptSuggestion}
         />
     );
 };

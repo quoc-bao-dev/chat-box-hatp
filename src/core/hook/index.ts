@@ -4,3 +4,6 @@ export { default as useLoginFlow } from "./useLoginFlow";
 export { default as useDevice } from "./useDevice";
 export { useButtonEventHandlers } from "./useButtonEventHandlers";
 export { default as useDebounce } from "./useDebounce";
+export { default as useInlineSuggestion } from "./useInlineSuggestion";
+export { useInlineSuggestion as createInlineSuggestionHook } from "./useInlineSuggestion";
+export { default as useSinglelineSuggestion } from "./useSinglelineSuggestion";

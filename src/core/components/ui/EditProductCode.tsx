@@ -67,7 +67,7 @@ const EditProductCode = ({
                                 onError={(e) => {
                                     e.currentTarget.src = imageProdPlaceholder;
                                 }}
-                                className="size-[37px]"
+                                className="size-[37px] object-cover rounded-md"
                             />
 
                             {/* === product info === */}

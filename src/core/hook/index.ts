@@ -6,3 +6,4 @@ export { useButtonEventHandlers } from "./useButtonEventHandlers";
 export { default as useDebounce } from "./useDebounce";
 export { default as useInlineSuggestion } from "./useInlineSuggestion";
 export { useInlineSuggestion as createInlineSuggestionHook } from "./useInlineSuggestion";
+export { default as useSinglelineSuggestion } from "./useSinglelineSuggestion";

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSinglelineSuggestion } from "@/core/hook";
 
 export type ProductCodeInputProps = {
     placeholder?: string;
@@ -26,6 +27,21 @@ const ProductCodeInput = ({
         }
     }, [resetTrigger]);
 
+    const { suggestText, acceptSuggestion } = useSinglelineSuggestion(
+        value,
+        setValue,
+        { field: "code" }
+    );
+
+    const getRemainder = (value: string, suggestText: string) => {
+        if (!suggestText) return "";
+        const v = (value || "").toLowerCase();
+        const s = suggestText.toLowerCase();
+        if (s.startsWith(v)) return suggestText.slice(value.length);
+        return ` (${suggestText})`;
+    };
+    const remainder = getRemainder(value, suggestText);
+
     const handleSubmit = () => {
         if (value.trim() && onSubmit && !disable) {
             onSubmit(value.trim());
@@ -44,14 +60,36 @@ const ProductCodeInput = ({
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Tab") {
+            if (remainder) {
+                e.preventDefault();
+                acceptSuggestion();
+            }
+        }
+    };
+
     return (
         <div className={`relative w-[250px] mt-3 ${className}`}>
+            {/* Ghost suggestion overlay */}
+            {!!suggestText && !!value && (
+                <div
+                    className="absolute text-sm  inset-0 pointer-events-none z-10 pl-2 text-gray-400 flex items-center"
+                    style={{ whiteSpace: "pre" }}
+                >
+                    <span className="invisible" style={{ whiteSpace: "pre" }}>
+                        {value}
+                    </span>
+                    <span style={{ whiteSpace: "pre" }}>{remainder}</span>
+                </div>
+            )}
             <input
                 type="text"
                 placeholder={placeholder}
                 value={value}
                 onChange={(e) => !disable && setValue(e.target.value)}
                 onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyDown}
                 disabled={disable}
                 className={`pl-2 pr-12 py-2 text-gray-900 text-sm w-full border border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-[#00A76F] focus:border-transparent ${
                     disable ? "opacity-50 cursor-not-allowed bg-gray-100" : ""

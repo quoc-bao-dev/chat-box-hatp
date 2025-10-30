@@ -10,6 +10,9 @@ interface ChatInputProps {
     className?: string;
     onSend?: (message: string) => void;
     onChange?: (value: string) => void;
+    value?: string;
+    suggestText?: string;
+    onAcceptSuggestion?: () => void;
 }
 
 const ChatInput = ({
@@ -17,6 +20,9 @@ const ChatInput = ({
     className = "",
     onSend,
     onChange,
+    value,
+    suggestText,
+    onAcceptSuggestion,
 }: ChatInputProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const { stopCountdownFeedback } = useChatBoxActions();
@@ -36,25 +42,57 @@ const ChatInput = ({
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Tab") {
+            const current = inputRef.current?.value || "";
+            const remainder = getSuggestionRemainder(
+                current,
+                suggestText || ""
+            );
+            if (remainder) {
+                e.preventDefault();
+                onAcceptSuggestion && onAcceptSuggestion();
+            }
+        }
+    };
+
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current.focus();
         }
     }, [inputRef.current]);
 
+    const remainder = getSuggestionRemainder(value ?? "", suggestText ?? "");
+
+    console.log(suggestText);
+    console.log(remainder);
+
     return (
         <div className={`${className}`}>
             <div className="bg-white p-1.5 rounded-full flex items-center border border-[#E2E8F0]">
-                <input
-                    ref={inputRef}
-                    type="text"
-                    className="flex-1 outline-none pl-5 text-gray-800"
-                    placeholder={placeholder}
-                    onKeyPress={handleKeyPress}
-                    onFocus={stopCountdownFeedback}
-                    onChange={(e) => onChange && onChange(e.target.value)}
-                    id="input-chat-box"
-                />
+                <div className="relative flex-1">
+                    {/* Ghost text overlay */}
+                    {suggestText ? (
+                        <div className="absolute inset-0 z-10 pointer-events-none pl-5 text-gray-400">
+                            <span className="invisible">{value ?? ""}</span>
+                            <span>{remainder}</span>
+                        </div>
+                    ) : null}
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        className="w-full outline-none pl-5 text-gray-800 bg-transparent"
+                        placeholder={
+                            remainder ? ` (${suggestText})` : placeholder
+                        }
+                        onKeyPress={handleKeyPress}
+                        onKeyDown={handleKeyDown}
+                        onFocus={stopCountdownFeedback}
+                        onChange={(e) => onChange && onChange(e.target.value)}
+                        value={value}
+                        id="input-chat-box"
+                    />
+                </div>
                 <div
                     className="p-2 md:p-3 rounded-full bg-[#00A76F] flex items-center justify-center cursor-pointer hover:bg-[#00A76F]/90 transition-colors"
                     onClick={handleSend}
@@ -73,3 +111,12 @@ const ChatInput = ({
 };
 
 export default ChatInput;
+
+function getSuggestionRemainder(value: string, suggestText: string) {
+    if (!value || !suggestText) return "";
+    const v = value.toLowerCase();
+    const s = suggestText.toLowerCase();
+    if (s.startsWith(v)) return suggestText.slice(value.length);
+    // Không khớp prefix: hiển thị toàn bộ gợi ý trong ngoặc đơn
+    return ` (${suggestText})`;
+}

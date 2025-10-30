@@ -26,6 +26,8 @@ const ChatInputController = () => {
         return suggestion?.code || "";
     }, [suggestion]);
 
+    console.log(suggestText);
+
     const handleSend = async (message: string) => {
         addMessage(
             createMessage({
@@ -92,7 +94,19 @@ const ChatInputController = () => {
         }
     };
 
-    return <ChatInput onSend={handleSend} onChange={setInputValue} />;
+    const handleAcceptSuggestion = () => {
+        if (suggestText) setInputValue(suggestText);
+    };
+
+    return (
+        <ChatInput
+            onSend={handleSend}
+            onChange={setInputValue}
+            value={inputValue}
+            suggestText={suggestText}
+            onAcceptSuggestion={handleAcceptSuggestion}
+        />
+    );
 };
 
 export default ChatInputController;

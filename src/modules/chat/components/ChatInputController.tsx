@@ -1,9 +1,14 @@
+import { useDebounce } from "@/core/hook";
 import { axiosInstance } from "@/core/http";
 import { createMessage } from "@/core/utils/createMessageFromResponse";
 import { getSession } from "@/core/utils/session";
-import { ListProductsResponse } from "@/services/chatbot";
+import {
+    ListProductsResponse,
+    useSearchProductSuggestion,
+} from "@/services/chatbot";
 import { useChatBoxActions } from "@/store";
 import { useChatInputStore } from "@/store/chatInputStore";
+import { useMemo, useState } from "react";
 import ChatInput from "./ChatInput";
 
 const ChatInputController = () => {
@@ -11,6 +16,16 @@ const ChatInputController = () => {
 
     const { event, nextLink, dataPost, setEvent, setNextLink, setDataPost } =
         useChatInputStore();
+
+    const [inputValue, setInputValue] = useState("");
+    const debouncedValue = useDebounce(inputValue, 200);
+
+    const { data: suggestion } = useSearchProductSuggestion(debouncedValue);
+
+    const suggestText = useMemo(() => {
+        return suggestion?.code || "";
+    }, [suggestion]);
+
     const handleSend = async (message: string) => {
         addMessage(
             createMessage({
@@ -76,7 +91,8 @@ const ChatInputController = () => {
         } finally {
         }
     };
-    return <ChatInput onSend={handleSend} />;
+
+    return <ChatInput onSend={handleSend} onChange={setInputValue} />;
 };
 
 export default ChatInputController;

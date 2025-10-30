@@ -9,12 +9,14 @@ interface ChatInputProps {
     placeholder?: string;
     className?: string;
     onSend?: (message: string) => void;
+    onChange?: (value: string) => void;
 }
 
 const ChatInput = ({
     placeholder = "Nhập tin nhắn...",
     className = "",
     onSend,
+    onChange,
 }: ChatInputProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const { stopCountdownFeedback } = useChatBoxActions();
@@ -50,6 +52,7 @@ const ChatInput = ({
                     placeholder={placeholder}
                     onKeyPress={handleKeyPress}
                     onFocus={stopCountdownFeedback}
+                    onChange={(e) => onChange && onChange(e.target.value)}
                     id="input-chat-box"
                 />
                 <div

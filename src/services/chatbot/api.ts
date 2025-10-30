@@ -10,6 +10,7 @@ import {
     EditProductItemResponse,
     RemoveItemParams,
     RemoveItemResponse,
+    SearchProductResponse,
 } from "./type";
 
 const chatbotApi = {
@@ -76,6 +77,15 @@ const chatbotApi = {
     removeItem: async (params: RemoveItemParams) => {
         const res = await axiosInstance.post<RemoveItemResponse>(
             `/api_chatbot/removeItem/${params.id}/${params.id_chat}`
+        );
+        return res.data;
+    },
+
+    // Search Product
+    searchProduct: async (search: string) => {
+        const res = await axiosInstance.get<SearchProductResponse>(
+            "/api_chatbot/search_product",
+            { params: { search } }
         );
         return res.data;
     },

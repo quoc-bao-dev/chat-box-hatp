@@ -64,15 +64,12 @@ const ChatInput = ({
 
     const remainder = getSuggestionRemainder(value ?? "", suggestText ?? "");
 
-    console.log(suggestText);
-    console.log(remainder);
-
     return (
         <div className={`${className}`}>
             <div className="bg-white p-1.5 rounded-full flex items-center border border-[#E2E8F0]">
                 <div className="relative flex-1">
                     {/* Ghost text overlay */}
-                    {suggestText ? (
+                    {!!suggestText && !!value ? (
                         <div className="absolute inset-0 z-10 pointer-events-none pl-5 text-gray-400">
                             <span className="invisible">{value ?? ""}</span>
                             <span>{remainder}</span>
@@ -83,7 +80,7 @@ const ChatInput = ({
                         type="text"
                         className="w-full outline-none pl-5 text-gray-800 bg-transparent"
                         placeholder={
-                            remainder ? ` (${suggestText})` : placeholder
+                            suggestText ? ` (${suggestText})` : placeholder
                         }
                         onKeyPress={handleKeyPress}
                         onKeyDown={handleKeyDown}
@@ -113,10 +110,12 @@ const ChatInput = ({
 export default ChatInput;
 
 function getSuggestionRemainder(value: string, suggestText: string) {
-    if (!value || !suggestText) return "";
-    const v = value.toLowerCase();
+    if (!suggestText) return "";
+    const parts = (value || "").split(",");
+    const last = (parts[parts.length - 1] || "").trim();
+    if (!last) return `(${suggestText})`;
+    const v = last.toLowerCase();
     const s = suggestText.toLowerCase();
-    if (s.startsWith(v)) return suggestText.slice(value.length);
-    // Không khớp prefix: hiển thị toàn bộ gợi ý trong ngoặc đơn
+    if (s.startsWith(v)) return suggestText.slice(last.length);
     return ` (${suggestText})`;
 }

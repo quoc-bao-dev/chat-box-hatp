@@ -18,9 +18,14 @@ const ChatInputController = () => {
         useChatInputStore();
 
     const [inputValue, setInputValue] = useState("");
-    const debouncedValue = useDebounce(inputValue, 200);
+    const lastToken = useMemo(() => {
+        const parts = inputValue.split(",");
+        return (parts[parts.length - 1] || "").trim();
+    }, [inputValue]);
 
-    const { data: suggestion } = useSearchProductSuggestion(debouncedValue);
+    const debouncedToken = useDebounce(lastToken, 200);
+
+    const { data: suggestion } = useSearchProductSuggestion(debouncedToken);
 
     const suggestText = useMemo(() => {
         return suggestion?.code || "";
@@ -95,7 +100,14 @@ const ChatInputController = () => {
     };
 
     const handleAcceptSuggestion = () => {
-        if (suggestText) setInputValue(suggestText);
+        if (!suggestText) return;
+        const idx = inputValue.lastIndexOf(",");
+        if (idx >= 0) {
+            const before = inputValue.slice(0, idx + 1).replace(/\s*$/, " ");
+            setInputValue(before + suggestText + ", ");
+        } else {
+            setInputValue(suggestText + ", ");
+        }
     };
 
     return (

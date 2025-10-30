@@ -4,6 +4,7 @@ import { cn } from "@/core/utils/cn";
 import { _Image } from "@/core/config";
 import { ProductItem } from "@/services/chatbot";
 import { ActionButtons } from "./ActionButtons";
+import styles from "@/core/styles/scrollbar.module.css";
 
 interface ProductListDisplayProps {
     title: string;
@@ -51,20 +52,22 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
 
     return (
         <div
-            className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] w-full lg:w-[460px] ${className}`}
+            className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] min-w-[300px] ${className}`}
         >
             {/* === title === */}
             <p className="text-[18px] font-semibold text-gray-900">{title}</p>
 
             {/* === list items === */}
-            <div className="pt-3 flex flex-col gap-2 w-full">
+            <div
+                className={`pt-3 flex flex-col gap-2 max-h-[50vh] overflow-y-auto -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
+            >
                 {/* === item === */}
                 {items.map((item) => (
                     <div
                         key={item.id}
                         onClick={() => onItemClick?.(item)}
                         className={cn(
-                            ` w-full px-4 py-3.5 rounded-xl bg-[#F8F8F8] hover:bg-gray-100 flex items-center  gap-4 shadow-xl/4`
+                            ` w-full px-4 py-3.5 rounded-xl bg-[#F8F8F8] hover:bg-gray-100 flex items-center gap-4 shadow-xl/4`
                         )}
                     >
                         {/* === image === */}

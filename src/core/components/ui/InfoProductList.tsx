@@ -6,6 +6,7 @@ import { ProductItem, ProductOption } from "@/services/chatbot";
 import Image from "next/image";
 import { ActionButtons } from "./ActionButtons";
 import NoProductFound from "./NoProductFound";
+import styles from "@/core/styles/scrollbar.module.css";
 
 export type InfoListItem = {
     id: string;
@@ -74,7 +75,9 @@ const InfoList = ({
             <p className="text-[18px] font-semibold text-gray-900">{title}</p>
 
             {/* === list items === */}
-            <div className="pt-3 flex flex-col gap-2">
+            <div
+                className={`pt-3 flex flex-col gap-2 max-h-[50vh] overflow-y-auto -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
+            >
                 {/* === item === */}
                 {items.map((item) => (
                     <div
@@ -93,7 +96,7 @@ const InfoList = ({
                             onError={(e) => {
                                 e.currentTarget.src = imageProdPlaceholder;
                             }}
-                            className="size-[37px]"
+                            className="size-[37px] object-cover"
                         />
                         {/* === name === */}
                         <div className="flex flex-col gap-0.5">

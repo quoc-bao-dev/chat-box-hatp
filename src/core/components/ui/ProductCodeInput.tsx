@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSinglelineSuggestion } from "@/core/hook";
+import { useSinglelineSuggestion, useDevice } from "@/core/hook";
 
 export type ProductCodeInputProps = {
     placeholder?: string;
@@ -19,6 +19,7 @@ const ProductCodeInput = ({
     resetTrigger,
 }: ProductCodeInputProps) => {
     const [value, setValue] = useState("");
+    const { isMobile } = useDevice();
 
     // Reset input when resetTrigger changes
     useEffect(() => {
@@ -70,8 +71,8 @@ const ProductCodeInput = ({
     };
 
     return (
-        <div className={`relative w-[250px] mt-3 ${className}`}>
-            {/* Ghost suggestion overlay */}
+        <div className={`relative w-[290px] mt-3 ${className}`}>
+            {/* Ghost suggestion overlay và nút mobile */}
             {!!suggestText && !!value && (
                 <div
                     className="absolute text-sm  inset-0 pointer-events-none z-10 pl-2 text-gray-400 flex items-center"
@@ -80,7 +81,12 @@ const ProductCodeInput = ({
                     <span className="invisible" style={{ whiteSpace: "pre" }}>
                         {value}
                     </span>
-                    <span style={{ whiteSpace: "pre" }}>{remainder}</span>
+                    <span style={{ whiteSpace: "pre" }}>
+                        {remainder}
+                        {!!remainder && !isMobile && (
+                            <span className="text-[12px]"> (Tab)</span>
+                        )}
+                    </span>
                 </div>
             )}
             <input
@@ -95,9 +101,24 @@ const ProductCodeInput = ({
                     disable ? "opacity-50 cursor-not-allowed bg-gray-100" : ""
                 }`}
             />
+
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                {/* Nút chọn gợi ý trên mobile */}
+                {!!remainder && !!value && isMobile && (
+                    <button
+                        type="button"
+                        onClick={acceptSuggestion}
+                        tabIndex={0}
+                        disabled={disable}
+                        className="ml-2 text-xs px-2 py-1 rounded-full bg-[#00A76F] text-white active:scale-95 transition md:hidden"
+                        style={{ zIndex: 60 }}
+                    >
+                        Chọn
+                    </button>
+                )}
                 {value && (
                     <button
+                        tabIndex={-1}
                         type="button"
                         onClick={handleClear}
                         disabled={disable}

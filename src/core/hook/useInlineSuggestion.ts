@@ -41,12 +41,16 @@ export function useInlineSuggestion(
         if (idx >= 0) {
             const before = inputValue.slice(0, idx + 1).replace(/\s*$/, " ");
             setInputValue(before + suggestText + ", ");
+
+            console.log("[1]", before + suggestText + ", ");
         } else {
             setInputValue(suggestText + ", ");
+
+            console.log("[2]", suggestText + ", ");
         }
         setTimeout(() => {
             setIsSuggesting(false);
-        }, 200);
+        }, 0);
     };
 
     return { suggestText, lastToken, acceptSuggestion };

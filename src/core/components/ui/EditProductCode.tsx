@@ -18,6 +18,7 @@ export type EditProductCodeProps = {
     className?: string;
     disable?: boolean;
     resetTriggers?: Record<number, number>;
+    isLoading?: boolean;
 };
 
 const EditProductCode = ({
@@ -31,6 +32,7 @@ const EditProductCode = ({
     className = "",
     disable = false,
     resetTriggers = {},
+    isLoading = false,
 }: EditProductCodeProps) => {
     const imageProdPlaceholder = _Image.icon.icon_product;
 
@@ -131,10 +133,10 @@ const EditProductCode = ({
                     <button
                         type="button"
                         className="w-full h-10 rounded-xl bg-[#00A76F] text-white font-semibold hover:bg-[#28a05a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none disabled:bg-[#00A76F]"
-                        disabled={items.length === 0 || disable}
+                        disabled={items.length === 0 || disable || isLoading}
                         onClick={onConfirmClick}
                     >
-                        Xác nhận
+                        {isLoading ? "Đang xử lý..." : "Xác nhận"}
                     </button>
                 </div>
             )}

@@ -3,3 +3,4 @@ export { default as useLoginModal } from "./useLoginModal";
 export { default as useLoginFlow } from "./useLoginFlow";
 export { default as useDevice } from "./useDevice";
 export { useButtonEventHandlers } from "./useButtonEventHandlers";
+export { default as useDebounce } from "./useDebounce";

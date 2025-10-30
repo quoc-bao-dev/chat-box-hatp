@@ -24,3 +24,23 @@ export const useEvaluateSupportMutation = () =>
             payload: EvaluateSupportRequest;
         }) => chatbotApi.evaluateSupport(params, payload),
     });
+
+export const useSearchProduct = (search: string, enabled = true) =>
+    useQuery({
+        queryKey: ["chatbot", "search_product", search],
+        queryFn: () => chatbotApi.searchProduct(search),
+        enabled: Boolean(search) && enabled,
+    });
+
+export const useSearchProductSuggestion = (search: string, enabled = true) => {
+    const fetchData = async () => {
+        const res = await chatbotApi.searchProduct(search);
+        return res.data[0];
+    };
+
+    return useQuery({
+        queryKey: ["chatbot", "search_product_suggestion", search],
+        queryFn: fetchData,
+        enabled: Boolean(search) && enabled,
+    });
+};

@@ -46,6 +46,8 @@ const EditProductCodePanel = ({
     const { addMessage, startCountdownFeedback, stopCountdownFeedback } =
         useChatBoxActions();
 
+    const [disableAction, setDisableAction] = useState(false);
+
     const [itemsEdited, setItemsEdited] = useState<ProductItem[]>(items);
     const [resetTriggers, setResetTriggers] = useState<Record<number, number>>(
         {}
@@ -113,7 +115,7 @@ const EditProductCodePanel = ({
 
     const handleConfirmClick = async () => {
         // lấy next link
-
+        setDisableAction(true);
         stopCountdownFeedback();
         const nextLink = options[0].next;
 
@@ -161,7 +163,7 @@ const EditProductCodePanel = ({
             onRemoveItem={handleRemoveItem}
             onEditProductCode={handleEditProductCode}
             resetTriggers={resetTriggers}
-            disable={disable}
+            disable={disable || disableAction}
         />
     );
 };

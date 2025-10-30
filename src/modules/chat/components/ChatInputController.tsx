@@ -1,9 +1,14 @@
+import { useDebounce } from "@/core/hook";
 import { axiosInstance } from "@/core/http";
 import { createMessage } from "@/core/utils/createMessageFromResponse";
 import { getSession } from "@/core/utils/session";
-import { ListProductsResponse } from "@/services/chatbot";
+import {
+    ListProductsResponse,
+    useSearchProductSuggestion,
+} from "@/services/chatbot";
 import { useChatBoxActions } from "@/store";
 import { useChatInputStore } from "@/store/chatInputStore";
+import { useMemo, useState } from "react";
 import ChatInput from "./ChatInput";
 
 const ChatInputController = () => {
@@ -11,6 +16,23 @@ const ChatInputController = () => {
 
     const { event, nextLink, dataPost, setEvent, setNextLink, setDataPost } =
         useChatInputStore();
+
+    const [inputValue, setInputValue] = useState("");
+    const lastToken = useMemo(() => {
+        const parts = inputValue.split(",");
+        return (parts[parts.length - 1] || "").trim();
+    }, [inputValue]);
+
+    const debouncedToken = useDebounce(lastToken, 200);
+
+    const { data: suggestion } = useSearchProductSuggestion(debouncedToken);
+
+    const suggestText = useMemo(() => {
+        return suggestion?.code || "";
+    }, [suggestion]);
+
+    console.log(suggestText);
+
     const handleSend = async (message: string) => {
         addMessage(
             createMessage({
@@ -77,7 +99,27 @@ const ChatInputController = () => {
         } finally {
         }
     };
-    return <ChatInput onSend={handleSend} />;
+
+    const handleAcceptSuggestion = () => {
+        if (!suggestText) return;
+        const idx = inputValue.lastIndexOf(",");
+        if (idx >= 0) {
+            const before = inputValue.slice(0, idx + 1).replace(/\s*$/, " ");
+            setInputValue(before + suggestText + ", ");
+        } else {
+            setInputValue(suggestText + ", ");
+        }
+    };
+
+    return (
+        <ChatInput
+            onSend={handleSend}
+            onChange={setInputValue}
+            value={inputValue}
+            suggestText={suggestText}
+            onAcceptSuggestion={handleAcceptSuggestion}
+        />
+    );
 };
 
 export default ChatInputController;

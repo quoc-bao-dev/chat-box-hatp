@@ -152,3 +152,15 @@ export interface RemoveItemResponse {
     data?: any;
     message?: string;
 }
+
+// Search Product types
+export interface SearchProductItem {
+    name: string;
+    code: string;
+    avatar: string;
+}
+
+export interface SearchProductResponse {
+    result: boolean;
+    data: SearchProductItem[];
+}

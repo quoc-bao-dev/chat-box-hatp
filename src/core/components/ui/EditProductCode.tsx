@@ -4,6 +4,7 @@ import { _Image } from "@/core/config";
 import { ProductItem } from "@/services/chatbot";
 import Image from "next/image";
 import ProductCodeInput from "./ProductCodeInput";
+import styles from "@/core/styles/scrollbar.module.css";
 
 export type EditProductCodeProps = {
     title: string;
@@ -43,7 +44,9 @@ const EditProductCode = ({
             <p className="text-[18px] font-semibold text-gray-900">{title}</p>
 
             {/* === list items === */}
-            <div className="pt-3 flex flex-col gap-2">
+            <div
+                className={`pt-3 flex flex-col gap-2 max-h-[50vh] overflow-y-auto -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
+            >
                 {items.length === 0 && (
                     <p className="text-gray-500 text-sm">
                         Không có sản phẩm nào để chỉnh sửa

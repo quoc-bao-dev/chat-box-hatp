@@ -1,5 +1,5 @@
 import { useSearchProductSuggestion } from "@/services/chatbot";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import useDebounce from "./useDebounce";
 
 type UseInlineSuggestionOptions = {
@@ -12,6 +12,8 @@ export function useInlineSuggestion(
     setInputValue: (value: string) => void,
     options?: UseInlineSuggestionOptions
 ) {
+    const [isSuggesting, setIsSuggesting] = useState(false);
+
     const { debounceMs = 200, field = "code" } = options || {};
 
     const lastToken = useMemo(() => {
@@ -33,7 +35,8 @@ export function useInlineSuggestion(
     }, [suggestion, field]);
 
     const acceptSuggestion = () => {
-        if (!suggestText) return;
+        if (!suggestText || isSuggesting) return;
+        setIsSuggesting(true);
         const idx = inputValue.lastIndexOf(",");
         if (idx >= 0) {
             const before = inputValue.slice(0, idx + 1).replace(/\s*$/, " ");
@@ -41,6 +44,9 @@ export function useInlineSuggestion(
         } else {
             setInputValue(suggestText + ", ");
         }
+        setTimeout(() => {
+            setIsSuggesting(false);
+        }, 200);
     };
 
     return { suggestText, lastToken, acceptSuggestion };

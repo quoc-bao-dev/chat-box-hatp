@@ -3,7 +3,7 @@
 import { _Image } from "@/core/config";
 import { useChatBoxActions } from "@/store";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ChatInputProps {
     placeholder?: string;
@@ -26,6 +26,7 @@ const ChatInput = ({
 }: ChatInputProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const { stopCountdownFeedback } = useChatBoxActions();
+    const [isMobile, setIsMobile] = useState(false);
     const handleSend = () => {
         const input = document.querySelector(
             "#input-chat-box"
@@ -67,6 +68,13 @@ const ChatInput = ({
         }
     }, [inputRef.current]);
 
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth <= 768);
+        check();
+        window.addEventListener("resize", check);
+        return () => window.removeEventListener("resize", check);
+    }, []);
+
     const remainder = getSuggestionRemainder(value ?? "", suggestText ?? "");
 
     return (
@@ -79,7 +87,15 @@ const ChatInput = ({
                             <span className="invisible whitespace-pre">
                                 {value ?? ""}
                             </span>
-                            <span>{remainder}</span>
+                            <span>
+                                {remainder}{" "}
+                                {!isMobile && (
+                                    <span className="text-xs">
+                                        {" "}
+                                        (Tab để chọn)
+                                    </span>
+                                )}
+                            </span>
                         </div>
                     ) : null}
                     <input
@@ -96,6 +112,18 @@ const ChatInput = ({
                         value={value}
                         id="input-chat-box"
                     />
+                    {/* Nút chọn cho mobile (hiện bên trong relative) */}
+                    {!!remainder && !!value && isMobile && (
+                        <button
+                            type="button"
+                            onClick={onAcceptSuggestion}
+                            tabIndex={0}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 ml-2 text-xs px-2 py-1 rounded-full bg-[#00A76F] text-white active:scale-95 transition md:hidden"
+                            style={{ zIndex: 60 }}
+                        >
+                            Chọn
+                        </button>
+                    )}
                 </div>
                 <div
                     className="p-2 md:p-3 rounded-full bg-[#00A76F] flex items-center justify-center cursor-pointer hover:bg-[#00A76F]/90 transition-colors"

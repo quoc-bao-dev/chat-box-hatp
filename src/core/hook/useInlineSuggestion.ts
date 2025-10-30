@@ -46,7 +46,7 @@ export function useInlineSuggestion(
         }
         setTimeout(() => {
             setIsSuggesting(false);
-        }, 200);
+        }, 100);
     };
 
     return { suggestText, lastToken, acceptSuggestion };

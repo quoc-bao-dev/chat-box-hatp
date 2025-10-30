@@ -54,6 +54,7 @@ const ChatInput = ({
                 onAcceptSuggestion && onAcceptSuggestion();
             }
         }
+        inputRef.current?.focus();
     };
 
     useEffect(() => {
@@ -70,8 +71,10 @@ const ChatInput = ({
                 <div className="relative flex-1">
                     {/* Ghost text overlay */}
                     {!!suggestText && !!value ? (
-                        <div className="absolute inset-0 z-10 pointer-events-none pl-5 text-gray-400">
-                            <span className="invisible">{value ?? ""}</span>
+                        <div className=" absolute inset-0 z-10 pointer-events-none pl-5 text-gray-400">
+                            <span className="invisible whitespace-pre">
+                                {value ?? ""}
+                            </span>
                             <span>{remainder}</span>
                         </div>
                     ) : null}

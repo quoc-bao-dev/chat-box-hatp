@@ -79,7 +79,7 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                             onError={(e) => {
                                 e.currentTarget.src = imageProdPlaceholder;
                             }}
-                            className="size-[37px]"
+                            className="size-[37px] object-cover rounded-md"
                         />
                         <div className="flex-1 flex lg:items-center lg:flex-row flex-col items-start gap-2">
                             {/* === name === */}

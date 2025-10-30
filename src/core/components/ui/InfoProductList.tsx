@@ -96,7 +96,7 @@ const InfoList = ({
                             onError={(e) => {
                                 e.currentTarget.src = imageProdPlaceholder;
                             }}
-                            className="size-[37px] object-cover"
+                            className="size-[37px] object-cover rounded-md"
                         />
                         {/* === name === */}
                         <div className="flex flex-col gap-0.5">

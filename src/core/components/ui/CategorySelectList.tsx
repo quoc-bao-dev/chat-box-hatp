@@ -44,7 +44,11 @@ const CategorySelectList = ({
                     return (
                         <label
                             key={opt.id}
-                            className="px-4 py-3.5  flex items-center gap-3 cursor-pointer border-t border-gray-50"
+                            className={`px-4 py-3.5 flex items-center gap-3 border-t border-gray-50 group ${
+                                disable
+                                    ? "cursor-not-allowed"
+                                    : "cursor-pointer hover:bg-gray-50"
+                            }`}
                         >
                             {/* native checkbox (hidden) */}
                             <input
@@ -59,7 +63,11 @@ const CategorySelectList = ({
                                 className={`inline-flex size-5 items-center justify-center rounded-md border text-white transition-colors duration-150 ${
                                     checked
                                         ? "bg-[#2FB06B] border-[#2FB06B]"
-                                        : "bg-white border-gray-300"
+                                        : `bg-white border-gray-300 ${
+                                              disable
+                                                  ? ""
+                                                  : "group-hover:border-gray-400"
+                                          }`
                                 } ${disable ? "opacity-60" : ""}`}
                             >
                                 {/* check icon */}

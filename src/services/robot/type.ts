@@ -2,6 +2,10 @@
 
 import { OrderDetail } from "../order/type";
 
+export interface CategoryOption {
+    id: string;
+    category: string;
+}
 export interface RobotOption {
     id: string;
     id_robot_support: string;
@@ -49,6 +53,7 @@ export interface RobotData {
     options: RobotOption[];
     session_robot: string;
     data_orders?: OrderDetail;
+    options_category?: CategoryOption[];
 }
 
 export interface GetActiveRobotDetailResponse {

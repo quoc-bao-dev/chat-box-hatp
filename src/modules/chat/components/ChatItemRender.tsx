@@ -3,13 +3,14 @@ import { NoProductFound } from "@/core/components/ui";
 import CancelSuccess from "@/core/components/ui/CancelSuccess";
 import { ProductItem, ProductOption } from "@/services/chatbot";
 import { OrderDetail } from "@/services/order/type";
-import { RobotOption } from "@/services/robot";
+import { CategoryOption, RobotOption } from "@/services/robot";
 import { SendType } from "@/store/chatBoxStore";
 import AssistantMessage from "./AssistantMessage";
 import OrderDetailsPanel from "./create-order/OrderDetailsPanel";
 import OrderSuccessPanel from "./create-order/OrderSuccessPanel";
 import Feedback from "./Feedback";
 import InfoPanel from "./infomation/InfoPanel";
+import CategoryPanel from "./product-price-lookup/CategoryPanel";
 import EditProductCodePanel from "./product-price-lookup/EditProductCodePanel";
 import ProductListDisplayPanel from "./product-price-lookup/ProductListDisplayPanel";
 import ProductPanel from "./product-price-lookup/ProductPanel";
@@ -28,9 +29,11 @@ type ChatItemRenderProps = {
         tags: string[];
         isEvaluated: boolean;
     };
+
     time?: string;
     disableAction?: boolean;
     orderDetail?: OrderDetail;
+    optionsCategory?: CategoryOption[];
 };
 
 const ChatItemRender = ({
@@ -45,6 +48,7 @@ const ChatItemRender = ({
     orderDetail,
     time,
     disableAction = false,
+    optionsCategory,
 }: ChatItemRenderProps) => {
     if (sender === "assistant" && sendType === "cancel-product") {
         return (
@@ -70,6 +74,20 @@ const ChatItemRender = ({
                     ) : (
                         content
                     )
+                }
+            />
+        );
+    }
+
+    if (sender === "assistant" && sendType === "select-category") {
+        return (
+            <AssistantMessage
+                content={
+                    <CategoryPanel
+                        title={content || ""}
+                        optionsCategory={optionsCategory || []}
+                        disable={disableAction}
+                    />
                 }
             />
         );

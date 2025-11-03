@@ -8,6 +8,7 @@ import { getSession } from "@/core/utils/session";
 import { useChatBoxActions, useChatBoxState } from "@/store";
 import { useCartItemEffect } from "@/store/cartItemEffect";
 import { useChatInputStore } from "@/store/chatInputStore";
+import { useNextEventActions } from "@/store/nextEventStore";
 import { useState } from "react";
 
 type InfoItem = {
@@ -48,7 +49,7 @@ const InfoPanel = ({
     const { setEvent, setNextLink, setDataPost } = useChatInputStore();
 
     const { triggerForceClose } = useCartItemEffect();
-
+    const { setNextLink: setNextLinkNextEvent } = useNextEventActions();
     // xử lí kịch bản ở đây
     const handleNext = (next: string) => async () => {
         if (!next) return;
@@ -61,6 +62,13 @@ const InfoPanel = ({
                 sp_session: getSession(),
             });
 
+            if (response.data.data.show_move_event === "select_category") {
+                setNextLinkNextEvent(response.data.next);
+                addMessage(createMessageFromResponse(response.data));
+                setIsAssistantTyping(false);
+                return;
+            }
+
             addMessage(createMessageFromResponse(response.data));
             setIsAssistantTyping(false);
 
@@ -71,6 +79,7 @@ const InfoPanel = ({
             setSessionRobot(sessionRobot);
 
             // luồng thông tin HATP
+
             if (nextRes) {
                 setIsAssistantTyping(true);
                 await new Promise((resolve) =>
@@ -82,7 +91,6 @@ const InfoPanel = ({
             else if (nextWait) {
                 // lấy data post từ response gửi kèm message
                 const dataPost = response.data.data.data_post;
-
                 //  [Handle Event]
 
                 // [is_chat == 1] mở input chat luôn
@@ -111,6 +119,8 @@ const InfoPanel = ({
     };
 
     const handleItemClick = (item: InfoListItem) => {
+        console.log("handleItemClick", item);
+
         setIsFeedback(false);
         setDisableAction(true);
         setMode("click");

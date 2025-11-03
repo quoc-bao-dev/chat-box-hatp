@@ -1,5 +1,6 @@
 import { ProductItem } from "@/services/chatbot";
 import { OrderDetail } from "@/services/order/type";
+import { CategoryOption } from "@/services/robot";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -18,7 +19,8 @@ export type SendType =
     | "await-reply"
     | "show-create-orders"
     | "order-detail"
-    | "cancel-product";
+    | "cancel-product"
+    | "select-category";
 
 export type Message = {
     id: number;
@@ -43,6 +45,7 @@ export type Message = {
     orderDetail?: OrderDetail;
     time?: string;
     disableAction?: boolean;
+    optionsCategory?: CategoryOption[];
 };
 
 type ChatBoxState = {
@@ -73,6 +76,7 @@ type ChatBoxActions = {
     }) => void;
     addTimeMessage: (time: string) => void;
     addTimeToTopMessage: (time: string) => void;
+    resetStore: () => void;
 };
 
 type ChatBoxStore = ChatBoxState & ChatBoxActions;
@@ -185,6 +189,17 @@ const useChatBoxStore = create<ChatBoxStore>()(
                         massages: [timeMessage, ...state.massages],
                     }));
                 };
+                const resetStore = () => {
+                    set({
+                        firstOption: null,
+                        isAssistantTyping: false,
+                        isCountdownFeedback: false,
+                        isFeedback: false,
+                        mode: "click",
+                        massages: [],
+                        sessionRobot: null,
+                    });
+                };
 
                 return {
                     // state
@@ -209,6 +224,7 @@ const useChatBoxStore = create<ChatBoxStore>()(
                     addFeedbackMessage,
                     addTimeMessage,
                     addTimeToTopMessage,
+                    resetStore,
                 };
             },
             {
@@ -296,6 +312,8 @@ export const useChatBoxActions = () => {
         await new Promise((resolve) => setTimeout(resolve, 6000));
         startCountdownFeedback();
     };
+
+    const resetStore = useChatBoxStore((state) => state.resetStore);
     return {
         setFirstOption,
         setIsAssistantTyping,
@@ -311,5 +329,6 @@ export const useChatBoxActions = () => {
         addTimeMessage,
         addTimeToTopMessage,
         resetCountdownFeedback,
+        resetStore,
     };
 };

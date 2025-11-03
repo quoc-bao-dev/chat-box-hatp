@@ -1,8 +1,12 @@
 "use client";
 
 import { axiosInstance } from "@/core/http";
-import { getSession as getSessionStorage } from "@/core/utils/session";
+import {
+    getSession as getSessionStorage,
+    setSession,
+} from "@/core/utils/session";
 import { useEffect } from "react";
+import { useSessionReload } from "@/store";
 
 const getSession = async () => {
     const response = await axiosInstance.get("api_chatbot/get_session");
@@ -10,9 +14,10 @@ const getSession = async () => {
 };
 
 const AutoSetSession = () => {
+    const { reloadKey } = useSessionReload();
     // prefetch
     const handlePrefetch = async (data: string) => {
-        sessionStorage.setItem("sp_session", data);
+        setSession(data);
     };
 
     useEffect(() => {
@@ -21,7 +26,7 @@ const AutoSetSession = () => {
         }
 
         getSession().then(handlePrefetch);
-    }, []);
+    }, [reloadKey]);
     return null;
 };
 

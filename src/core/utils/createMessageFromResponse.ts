@@ -4,11 +4,24 @@ import { Message } from "@/store/chatBoxStore";
 export const createMessageFromResponse = (
     data: GetActiveRobotDetailResponse
 ): Message => {
+    // show category
+    if (data.data.show_move_event === "select_category") {
+        return {
+            id: Number(data.data.id),
+            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
+            content: data.data.message,
+            sendType: "select-category",
+            options: data.data.options,
+            optionsCategory: data.data.options_category,
+        };
+    }
+
     // show cancel product
+
     if (data.data.event === "cancel_product") {
         return {
             id: Number(data.data.id),
-            sender: data.data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
             content: data.data.message,
             sendType: "cancel-product",
         };
@@ -18,7 +31,7 @@ export const createMessageFromResponse = (
     if (data.data.event === "show_detail_orders" && data.data.data_orders) {
         return {
             id: Number(data.data.id),
-            sender: data.data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
             content: data.data.message,
             sendType: "order-detail",
             orderDetail: data.data.data_orders,
@@ -29,7 +42,7 @@ export const createMessageFromResponse = (
     if (data.data.show_move_event === "show_create_orders") {
         return {
             id: Number(data.data.id),
-            sender: data.data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
             content: data.data.message,
             sendType: "show-create-orders",
             options: data.data.options,
@@ -57,7 +70,7 @@ export const createMessageFromResponse = (
     ) {
         return {
             id: Number(data.data.id),
-            sender: data.data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
             content: data.data.message,
             sendType: "edit-product-code",
             options: data.data.options,
@@ -67,7 +80,7 @@ export const createMessageFromResponse = (
 
     return {
         id: Number(data.data.id),
-        sender: data.data.type_send === "1" ? "user" : "assistant",
+        sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
         content: data.data.message,
         sendType: data.data.event as
             | "select"
@@ -87,11 +100,23 @@ export const createMessageFromHistoryResponse = (
         "3": "good",
     };
 
+    // show category
+    if (data.show_move_event === "select_category") {
+        return {
+            id: Number(data.id),
+            sender: Number(data.type_send) === 1 ? "user" : "assistant",
+            content: data.message,
+            sendType: "select-category",
+            options: data.options,
+            optionsCategory: data.options_category,
+        };
+    }
+
     // show cancel product
     if (data.event === "cancel_product") {
         return {
             id: Number(data.id),
-            sender: data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.type_send) === 1 ? "user" : "assistant",
             content: data.message,
             sendType: "cancel-product",
         };
@@ -101,7 +126,7 @@ export const createMessageFromHistoryResponse = (
     if (data.event === "show_detail_orders" && data.data_orders) {
         return {
             id: Number(data.id),
-            sender: data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.type_send) === 1 ? "user" : "assistant",
             content: data.message,
             sendType: "order-detail",
             orderDetail: data.data_orders,
@@ -111,7 +136,7 @@ export const createMessageFromHistoryResponse = (
     if (data.show_move_event === "tablePrice") {
         return {
             id: Number(data.id),
-            sender: data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.type_send) === 1 ? "user" : "assistant",
             content: data.message,
             sendType: "table-price",
             options: data.options,
@@ -124,7 +149,7 @@ export const createMessageFromHistoryResponse = (
     if (data.show_move_event === "show_create_orders") {
         return {
             id: Number(data.id),
-            sender: data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.type_send) === 1 ? "user" : "assistant",
             content: data.message,
             sendType: "show-create-orders",
             options: data.options,
@@ -136,7 +161,7 @@ export const createMessageFromHistoryResponse = (
     if (data.show_move_event == "view_edit_product") {
         return {
             id: Number(data.id),
-            sender: data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.type_send) === 1 ? "user" : "assistant",
             content: data.message,
             sendType: "edit-product-code",
             products: data.json_item,
@@ -153,7 +178,7 @@ export const createMessageFromHistoryResponse = (
         };
         return {
             id: Number(data.id),
-            sender: data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.type_send) === 1 ? "user" : "assistant",
             content: data.message,
             sendType: "feedback",
             feedback: {
@@ -174,7 +199,7 @@ export const createMessageFromHistoryResponse = (
     ) {
         return {
             id: Number(data.id),
-            sender: data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.type_send) === 1 ? "user" : "assistant",
             content: data.message,
             sendType: "products",
             products: data.json_item,
@@ -185,7 +210,7 @@ export const createMessageFromHistoryResponse = (
     if (data.show_move_event === "not_found_product") {
         return {
             id: Number(data.id),
-            sender: data.type_send === "1" ? "user" : "assistant",
+            sender: Number(data.type_send) === 1 ? "user" : "assistant",
             content: data.message,
             sendType: "not-found-product",
         };
@@ -193,7 +218,7 @@ export const createMessageFromHistoryResponse = (
 
     return {
         id: Number(data.id),
-        sender: data.type_send === "1" ? "user" : "assistant",
+        sender: Number(data.type_send) === 1 ? "user" : "assistant",
         content: data.message,
         sendType: data.event as "select" | "options" | "text",
         options: data.options,

@@ -61,10 +61,7 @@ interface UseNextFlowReturn {
      * @param next - The next URL to call
      * @param payload - Optional payload for POST requests
      */
-    handleNext: (
-        next: string,
-        payload?: RequestPayload
-    ) => Promise<void>;
+    handleNext: (next: string, payload?: RequestPayload) => Promise<void>;
     /**
      * Loading state
      */
@@ -146,9 +143,13 @@ export const useNextFlow = (
                             },
                         });
                     } else {
-                        response = await axiosClient.post(next, requestPayload, {
-                            headers,
-                        });
+                        response = await axiosClient.post(
+                            next,
+                            requestPayload,
+                            {
+                                headers,
+                            }
+                        );
                     }
                 } else {
                     // GET request
@@ -170,7 +171,7 @@ export const useNextFlow = (
                     handleSelectCategory &&
                     responseData.data.show_move_event === "select_category"
                 ) {
-                    setNextLinkNextEvent(responseData.next);
+                    setNextLinkNextEvent(responseData.next as string);
                     addMessage(createMessageFromResponse(responseData));
                     setIsAssistantTyping(false);
                     setIsLoading(false);
@@ -285,4 +286,3 @@ export const useNextFlow = (
         resetLoading,
     };
 };
-

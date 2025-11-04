@@ -143,9 +143,12 @@ const ChatBoxRender = () => {
                     productOptions={message.options as ProductOption[]}
                     orderDetail={message.orderDetail}
                     optionsCategory={message.optionsCategory}
+                    optionsAddressShip={message.optionsAddressShip}
                     disableAction={
                         index !== massages.length - 1 || isAssistantTyping
                     }
+                    nextLink={message.nextLink}
+                    isHistory={message.isHistory}
                 />
             ))}
 

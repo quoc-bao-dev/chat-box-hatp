@@ -25,6 +25,9 @@ const convertApiResponseToProductItems = (jsonItems: any[]): ProductItem[] => {
         quantity: parseInt(item.quantity) || 0,
         price: item.price || "",
         avatar: item.avatar,
+        unit_client: item.unit_client || "",
+        quantity_client: parseInt(item.quantity_client) || 0,
+        price_client: item.price_client || "",
     }));
 };
 

@@ -1,13 +1,13 @@
-import { useState, useCallback } from "react";
 import { botConfig } from "@/core/config/bot";
 import axiosClient, { axiosInstance } from "@/core/http/axiosClient";
 import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
 import { getSession } from "@/core/utils/session";
 import { GetActiveRobotDetailResponse } from "@/services/robot";
 import { useChatBoxActions, useChatBoxState } from "@/store";
-import { useChatInputStore } from "@/store/chatInputStore";
 import { useCartItemEffect } from "@/store/cartItemEffect";
+import { useChatInputStore } from "@/store/chatInputStore";
 import { useNextEventActions } from "@/store/nextEventStore";
+import { useCallback, useState } from "react";
 
 type RequestMethod = "GET" | "POST";
 type RequestPayload = FormData | Record<string, unknown> | null;
@@ -180,12 +180,33 @@ export const useNextFlow = (
                     return;
                 }
 
+                // payload for next request (as FormData)
+                const payloads = new FormData();
+                payloads.append("sp_session", getSession() || "");
+
+                if (responseData.data.show_move_event === "create_order") {
+                    const addressId =
+                        typeof window !== "undefined"
+                            ? sessionStorage.getItem("addressId")
+                            : null;
+                    console.log("addressId", addressId);
+                    if (
+                        typeof addressId !== "undefined" &&
+                        addressId !== null
+                    ) {
+                        payloads.append(
+                            "address_delivery_id",
+                            String(addressId)
+                        );
+                    }
+                }
+
                 // Add message from response
                 addMessage(createMessageFromResponse(responseData));
                 setIsAssistantTyping(false);
 
                 // Extract flow data
-                const nextRes = responseData.next;
+                const nextLink = responseData.next;
                 const nextWait = responseData.next_wait;
                 const sessionRobot = responseData.data.session_robot;
                 const dataPost = responseData.data.data_post;
@@ -198,13 +219,18 @@ export const useNextFlow = (
                 }
 
                 // Handle recursive nextRes flow
-                if (nextRes && handleRecursiveNext) {
+                if (
+                    nextLink &&
+                    handleRecursiveNext &&
+                    typeof nextLink === "string"
+                ) {
                     setIsAssistantTyping(true);
                     await new Promise((resolve) =>
                         setTimeout(resolve, botConfig.typingDelay)
                     );
+
                     // Recursive call
-                    await handleNext(nextRes);
+                    await handleNext(nextLink, payloads);
                     setIsLoading(false);
                     onSuccess?.(responseData);
                     onComplete?.();

@@ -49,6 +49,9 @@ export interface ProductItem {
     quantity: number;
     price: string;
     avatar: string | null;
+    unit_client: string;
+    quantity_client: number;
+    price_client: string;
 }
 
 // Option interface for list products
@@ -163,4 +166,99 @@ export interface SearchProductItem {
 export interface SearchProductResponse {
     result: boolean;
     data: SearchProductItem[];
+}
+
+// Add Address types
+export interface AddAddressRequest {
+    address: string;
+    phone: string;
+    name: string;
+    factory_code?: string;
+    factory_name?: string;
+    number?: string;
+    street_name?: string;
+    ward_name?: string;
+    district_name?: string;
+}
+
+export interface AddAddressData {
+    client: string;
+    address: string;
+    factory_code: string;
+    factory_name: string;
+    phone: string;
+    name: string;
+    number: string;
+    street_name: string;
+    ward_name: string;
+    district_name: string;
+    create_by: number;
+    date_create: string; // ISO-like datetime string
+    id: number | string;
+}
+
+export interface AddressListItem {
+    id: number | string;
+    client: string;
+    address: string;
+    factory_code: string;
+    factory_name: string;
+    phone: string;
+    name: string;
+    number: string;
+    street_name: string;
+    ward_name: string;
+    district_name: string;
+    address_primary: string; // "0" | "1"
+}
+
+export interface AddAddressResponse {
+    result: boolean;
+    data: AddAddressData;
+    all_data: AddressListItem[];
+    message: string;
+}
+
+// Edit Table Item (update quantity)
+export interface EditTableItemParams {
+    id: string; // id chi tiết sản phẩm trong bảng
+    id_chat: string; // id tin nhắn/chat chứa bảng
+}
+
+export interface EditTableItemRequest {
+    quantity_client: string | number; // số lượng muốn cập nhật
+}
+
+export interface EditTableItemData {
+    id: string;
+    id_client: string;
+    is_read: string; // "0" | "1"
+    type_send: string; // e.g. "0" | "1"
+    event: string; // e.g. "select"
+    message: string;
+    file: string | null;
+    suport_items: string;
+    created_at: string; // datetime string
+    updated_at: string; // datetime string
+    id_robot_support: string;
+    id_robot_support_detail: string;
+    json_item: {
+        total_client: number;
+        price_client: number;
+        quantity_client: number | string;
+    }[]; // product items array (server format)
+    data_order_draft: any | null;
+    show_move_event: string;
+    is_function: string;
+    session: string;
+    session_chat: string;
+    session_robot: string;
+    type_object: any | null;
+    id_object: any | null;
+}
+
+export interface EditTableItemResponse {
+    result: boolean;
+    data: EditTableItemData;
+    message: string;
 }

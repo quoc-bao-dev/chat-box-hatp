@@ -6,6 +6,7 @@
  */
 
 import { useNextFlow } from "@/core/hook";
+import { RobotOption } from "@/services/robot";
 import { useState } from "react";
 
 // ============================================

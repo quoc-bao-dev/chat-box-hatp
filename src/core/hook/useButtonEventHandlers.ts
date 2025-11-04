@@ -9,11 +9,20 @@ import {
     UseButtonEventHandlersOptions,
     ButtonEventHandlersReturn,
 } from "@/core/types/buttonEvents";
+import { RobotOption } from "@/services/robot";
+import toast from "react-hot-toast";
+import { useAuth } from "./useAuth";
 
 export const useButtonEventHandlers = (
     options: UseButtonEventHandlersOptions
 ): ButtonEventHandlersReturn => {
-    const { options: productOptions, onSuccess, onError } = options;
+    const { isLoggedIn } = useAuth();
+    const {
+        options: productOptions,
+        onSuccess,
+        onError,
+        messageRequire,
+    } = options;
 
     // Internal state
     const [loadingStates, setLoadingStates] = useState({
@@ -60,6 +69,12 @@ export const useButtonEventHandlers = (
         const option = productOptions.find(
             (opt) => opt.show_move_event === eventType
         );
+        // console.log("option", (option as RobotOption).is_login === 1);
+
+        if ((option as RobotOption).is_login === 1 && !isLoggedIn) {
+            toast.error(messageRequire || "Vui lòng đăng nhập!");
+            return;
+        }
         if (!option?.next) {
             console.warn(`No API endpoint found for event: ${eventType}`);
             return;

@@ -23,6 +23,21 @@ export interface RobotOption {
     is_login: 0 | 1; // 0 -> không cần đăng nhập, 1 -> cần đăng nhập
 }
 
+export interface AddressOption {
+    id: string;
+    client: string;
+    address: string;
+    factory_code: string;
+    factory_name: string;
+    phone: string;
+    name: string;
+    number: string;
+    street_name: string;
+    ward_name: string;
+    district_name: string;
+    address_primary: string;
+}
+
 export interface RobotData {
     id_robot_support: string;
     id_robot_support_detail: string;
@@ -30,6 +45,7 @@ export interface RobotData {
     session: string;
     session_chat: number;
     is_read: number;
+    data_post: any;
     type_send: "0" | "1"; // 0 -> nhân viên, 1 -> khách
     message: string; // nội dung tin nhắn show ra
     event:
@@ -41,7 +57,8 @@ export interface RobotData {
         | "wait_reply"
         | "show_create_orders"
         | "show_detail_orders"
-        | "cancel_product"; // select -> option , text
+        | "cancel_product"
+        | "select_address_ship"; // select -> option , text
     file: string | null; // file đính kèm (hình ảnh)
     suport_items: number;
     json_item: any | null;
@@ -54,6 +71,8 @@ export interface RobotData {
     session_robot: string;
     data_orders?: OrderDetail;
     options_category?: CategoryOption[];
+
+    options_address_ship?: AddressOption[];
 }
 
 export interface GetActiveRobotDetailResponse {

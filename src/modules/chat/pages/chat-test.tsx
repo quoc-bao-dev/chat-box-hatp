@@ -3,7 +3,7 @@ import BottomBar from "../components/BottomBar";
 import BottomBarWrapper from "../components/BottomBarWrapper";
 import ChatBoxController from "../components/ChatBoxController";
 import ChatBoxHeader from "../components/ChatBoxHeader";
-import OrderDetailsPanel from "../components/create-order/OrderDetailsPanel";
+import AddressPanel from "../components/product-price-lookup/AddressPanel";
 
 const ChatTestPage = () => {
     return (
@@ -21,6 +21,25 @@ const ChatTestPage = () => {
                         {/* <Feedback /> */}
 
                         {/* <OrderDetailsPanel /> */}
+
+                        <AddressPanel
+                            title="Địa chỉ giao hàng"
+                            addresses={[
+                                {
+                                    id: "1",
+                                    name: "Nguyễn Văn A",
+                                    phone: "0909090909",
+                                    address: "123 Đường ABC, Quận XYZ, TP. HCM",
+                                },
+                                {
+                                    id: "2",
+                                    name: "Nguyễn Văn A",
+                                    phone: "0909090909",
+                                    address: "123 Đường ABC, Quận XYZ, TP. HCM",
+                                },
+                            ]}
+                            disable={false}
+                        />
                     </ChatBoxContainer>
 
                     {/* === bottom content === */}

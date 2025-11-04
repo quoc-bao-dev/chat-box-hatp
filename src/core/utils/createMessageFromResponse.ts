@@ -1,110 +1,34 @@
 import { GetActiveRobotDetailResponse } from "@/services/robot";
 import { Message } from "@/store/chatBoxStore";
 
-export const createMessageFromResponse = (
-    data: GetActiveRobotDetailResponse
+const mapEvaluate = {
+    "1": "bad",
+    "2": "normal",
+    "3": "good",
+} as const;
+
+/**
+ * Internal function to create message from data object
+ * Handles all message types for both response and history
+ */
+const createMessageFromData = (
+    data: GetActiveRobotDetailResponse["data"],
+    isFromHistory: boolean = false
 ): Message => {
-    // show category
-    if (data.data.show_move_event === "select_category") {
-        return {
-            id: Number(data.data.id),
-            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
-            content: data.data.message,
-            sendType: "select-category",
-            options: data.data.options,
-            optionsCategory: data.data.options_category,
-        };
-    }
-
-    // show cancel product
-
-    if (data.data.event === "cancel_product") {
-        return {
-            id: Number(data.data.id),
-            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
-            content: data.data.message,
-            sendType: "cancel-product",
-        };
-    }
-
-    // show detail table
-    if (data.data.event === "show_detail_orders" && data.data.data_orders) {
-        return {
-            id: Number(data.data.id),
-            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
-            content: data.data.message,
-            sendType: "order-detail",
-            orderDetail: data.data.data_orders,
-        };
-    }
-
-    // show create order
-    if (data.data.show_move_event === "show_create_orders") {
-        return {
-            id: Number(data.data.id),
-            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
-            content: data.data.message,
-            sendType: "show-create-orders",
-            options: data.data.options,
-            products: data.data.json_item,
-        };
-    }
-
-    // show table
-    if (data.data.show_move_event === "tablePrice") {
-        return {
-            id: Number(data.data.id),
-            sender: data.data.type_send === "1" ? "user" : "assistant",
-            content: data.data.message,
-            sendType: "table-price",
-            options: data.data.options,
-            products: data.data.json_item,
-        };
-    }
-
-    // show edit product code
-
-    if (
-        data.data.event_app === "event_order" &&
-        data.data.event_show === "select"
-    ) {
-        return {
-            id: Number(data.data.id),
-            sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
-            content: data.data.message,
-            sendType: "edit-product-code",
-            options: data.data.options,
-            products: data.data.json_item,
-        };
-    }
-
-    return {
-        id: Number(data.data.id),
-        sender: Number(data.data.type_send) === 1 ? "user" : "assistant",
-        content: data.data.message,
-        sendType: data.data.event as
-            | "select"
-            | "options"
-            | "text"
-            | "wait_reply",
-        options: data.data.options,
-    };
-};
-
-export const createMessageFromHistoryResponse = (
-    data: GetActiveRobotDetailResponse["data"]
-): Message => {
-    const mapEvaluate = {
-        "1": "bad",
-        "2": "normal",
-        "3": "good",
+    // Helper to determine sender
+    const getSender = (typeSend: string | number): "user" | "assistant" => {
+        // Handle both string and number comparison for type_send
+        if (typeof typeSend === "string") {
+            return typeSend === "1" ? "user" : "assistant";
+        }
+        return Number(typeSend) === 1 ? "user" : "assistant";
     };
 
     // show category
     if (data.show_move_event === "select_category") {
         return {
             id: Number(data.id),
-            sender: Number(data.type_send) === 1 ? "user" : "assistant",
+            sender: getSender(data.type_send),
             content: data.message,
             sendType: "select-category",
             options: data.options,
@@ -116,7 +40,7 @@ export const createMessageFromHistoryResponse = (
     if (data.event === "cancel_product") {
         return {
             id: Number(data.id),
-            sender: Number(data.type_send) === 1 ? "user" : "assistant",
+            sender: getSender(data.type_send),
             content: data.message,
             sendType: "cancel-product",
         };
@@ -126,22 +50,10 @@ export const createMessageFromHistoryResponse = (
     if (data.event === "show_detail_orders" && data.data_orders) {
         return {
             id: Number(data.id),
-            sender: Number(data.type_send) === 1 ? "user" : "assistant",
+            sender: getSender(data.type_send),
             content: data.message,
             sendType: "order-detail",
             orderDetail: data.data_orders,
-        };
-    }
-    // show table
-    if (data.show_move_event === "tablePrice") {
-        return {
-            id: Number(data.id),
-            sender: Number(data.type_send) === 1 ? "user" : "assistant",
-            content: data.message,
-            sendType: "table-price",
-            options: data.options,
-            products: data.json_item,
-            disableAction: true,
         };
     }
 
@@ -149,7 +61,7 @@ export const createMessageFromHistoryResponse = (
     if (data.show_move_event === "show_create_orders") {
         return {
             id: Number(data.id),
-            sender: Number(data.type_send) === 1 ? "user" : "assistant",
+            sender: getSender(data.type_send),
             content: data.message,
             sendType: "show-create-orders",
             options: data.options,
@@ -157,20 +69,37 @@ export const createMessageFromHistoryResponse = (
         };
     }
 
-    // show edit product code
-    if (data.show_move_event == "view_edit_product") {
+    // show table
+    if (data.show_move_event === "tablePrice") {
         return {
             id: Number(data.id),
-            sender: Number(data.type_send) === 1 ? "user" : "assistant",
+            sender: getSender(data.type_send),
             content: data.message,
-            sendType: "edit-product-code",
-            products: data.json_item,
+            sendType: "table-price",
             options: data.options,
-            disableAction: true,
+            products: data.json_item,
+            ...(isFromHistory && { disableAction: true }),
         };
     }
 
-    // show feedback
+    // show edit product code
+    // Handle both conditions: from response (event_app + event_show) and from history (show_move_event)
+    if (
+        (data.event_app === "event_order" && data.event_show === "select") ||
+        data.show_move_event === "view_edit_product"
+    ) {
+        return {
+            id: Number(data.id),
+            sender: getSender(data.type_send),
+            content: data.message,
+            sendType: "edit-product-code",
+            options: data.options,
+            products: data.json_item,
+            ...(isFromHistory && { disableAction: true }),
+        };
+    }
+
+    // show feedback (only in history)
     if (data.event === "evaluate_support") {
         const jsonItem = data.json_item as {
             evaluate: string;
@@ -178,7 +107,7 @@ export const createMessageFromHistoryResponse = (
         };
         return {
             id: Number(data.id),
-            sender: Number(data.type_send) === 1 ? "user" : "assistant",
+            sender: getSender(data.type_send),
             content: data.message,
             sendType: "feedback",
             feedback: {
@@ -192,14 +121,14 @@ export const createMessageFromHistoryResponse = (
         };
     }
 
-    // show products
+    // show products (only in history)
     if (
         data.show_move_event === "FindInfoProduct" ||
         data.show_move_event === "event_order"
     ) {
         return {
             id: Number(data.id),
-            sender: Number(data.type_send) === 1 ? "user" : "assistant",
+            sender: getSender(data.type_send),
             content: data.message,
             sendType: "products",
             products: data.json_item,
@@ -207,22 +136,36 @@ export const createMessageFromHistoryResponse = (
         };
     }
 
+    // show not found product (only in history)
     if (data.show_move_event === "not_found_product") {
         return {
             id: Number(data.id),
-            sender: Number(data.type_send) === 1 ? "user" : "assistant",
+            sender: getSender(data.type_send),
             content: data.message,
             sendType: "not-found-product",
         };
     }
 
+    // Default message
     return {
         id: Number(data.id),
-        sender: Number(data.type_send) === 1 ? "user" : "assistant",
+        sender: getSender(data.type_send),
         content: data.message,
-        sendType: data.event as "select" | "options" | "text",
+        sendType: data.event as "select" | "options" | "text" | "wait_reply",
         options: data.options,
     };
+};
+
+export const createMessageFromResponse = (
+    data: GetActiveRobotDetailResponse
+): Message => {
+    return createMessageFromData(data.data, false);
+};
+
+export const createMessageFromHistoryResponse = (
+    data: GetActiveRobotDetailResponse["data"]
+): Message => {
+    return createMessageFromData(data, true);
 };
 
 export const createMessage = (payload: Message) => payload;

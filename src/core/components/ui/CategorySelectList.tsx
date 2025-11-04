@@ -38,13 +38,13 @@ const CategorySelectList = ({
             </p>
 
             {/* options */}
-            <div className="pt-3 flex flex-col gap-2 ">
+            <div className="pt-3 flex flex-col ">
                 {optionsCategory?.map((opt) => {
                     const checked = selectedIds.includes(opt.id);
                     return (
                         <label
                             key={opt.id}
-                            className={`px-4 py-3.5 flex items-center gap-3 border-t border-gray-50 group ${
+                            className={`px-4 py-4.5 flex items-center gap-3 border-t border-gray-50 group ${
                                 disable
                                     ? "cursor-not-allowed"
                                     : "cursor-pointer hover:bg-gray-50"

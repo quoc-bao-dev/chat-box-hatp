@@ -3,7 +3,7 @@ import { NoProductFound } from "@/core/components/ui";
 import CancelSuccess from "@/core/components/ui/CancelSuccess";
 import { ProductItem, ProductOption } from "@/services/chatbot";
 import { OrderDetail } from "@/services/order/type";
-import { CategoryOption, RobotOption } from "@/services/robot";
+import { AddressOption, CategoryOption, RobotOption } from "@/services/robot";
 import { SendType } from "@/store/chatBoxStore";
 import AssistantMessage from "./AssistantMessage";
 import OrderDetailsPanel from "./create-order/OrderDetailsPanel";
@@ -15,6 +15,7 @@ import EditProductCodePanel from "./product-price-lookup/EditProductCodePanel";
 import ProductListDisplayPanel from "./product-price-lookup/ProductListDisplayPanel";
 import ProductPanel from "./product-price-lookup/ProductPanel";
 import UserMessage from "./UserMessage";
+import AddressPanel from "./product-price-lookup/AddressPanel";
 
 type ChatItemRenderProps = {
     id: number;
@@ -30,10 +31,14 @@ type ChatItemRenderProps = {
         isEvaluated: boolean;
     };
 
+    nextLink?: string;
+
     time?: string;
     disableAction?: boolean;
     orderDetail?: OrderDetail;
     optionsCategory?: CategoryOption[];
+    optionsAddressShip?: AddressOption[];
+    isHistory?: boolean;
 };
 
 const ChatItemRender = ({
@@ -49,6 +54,9 @@ const ChatItemRender = ({
     time,
     disableAction = false,
     optionsCategory,
+    optionsAddressShip,
+    nextLink,
+    isHistory,
 }: ChatItemRenderProps) => {
     if (sender === "assistant" && sendType === "cancel-product") {
         return (
@@ -83,10 +91,33 @@ const ChatItemRender = ({
         return (
             <AssistantMessage
                 content={
-                    <CategoryPanel
+                    !isHistory || !disableAction ? (
+                        <CategoryPanel
+                            title={content || ""}
+                            optionsCategory={optionsCategory || []}
+                            disable={disableAction}
+                        />
+                    ) : (
+                        content
+                    )
+                }
+            />
+        );
+    }
+
+    if (sender === "assistant" && sendType === "select-address-ship") {
+        const next = nextLink ? nextLink : sessionStorage.getItem("nextLink");
+        return (
+            <AssistantMessage
+                mode="panel"
+                content={
+                    <AddressPanel
                         title={content || ""}
-                        optionsCategory={optionsCategory || []}
+                        addresses={optionsAddressShip || []}
                         disable={disableAction}
+                        nextLink={next!}
+                        messageId={id}
+                        isHistory={isHistory && !optionsAddressShip}
                     />
                 }
             />
@@ -169,6 +200,7 @@ const ChatItemRender = ({
                         items={products || []}
                         options={options || []}
                         disable={disableAction || options?.length == 0}
+                        idChat={id.toString()}
                     />
                 }
             />

@@ -1,6 +1,6 @@
 import { ProductItem } from "@/services/chatbot";
 import { OrderDetail } from "@/services/order/type";
-import { CategoryOption } from "@/services/robot";
+import { AddressOption, CategoryOption } from "@/services/robot";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -20,7 +20,8 @@ export type SendType =
     | "show-create-orders"
     | "order-detail"
     | "cancel-product"
-    | "select-category";
+    | "select-category"
+    | "select-address-ship";
 
 export type Message = {
     id: number;
@@ -42,10 +43,14 @@ export type Message = {
         isEvaluated: boolean;
     };
 
+    nextLink?: string;
+
     orderDetail?: OrderDetail;
     time?: string;
     disableAction?: boolean;
     optionsCategory?: CategoryOption[];
+    optionsAddressShip?: AddressOption[];
+    isHistory?: boolean;
 };
 
 type ChatBoxState = {
@@ -77,6 +82,10 @@ type ChatBoxActions = {
     addTimeMessage: (time: string) => void;
     addTimeToTopMessage: (time: string) => void;
     resetStore: () => void;
+    addAddressOptionToMessage: (
+        messageId: number,
+        option: AddressOption
+    ) => void;
 };
 
 type ChatBoxStore = ChatBoxState & ChatBoxActions;
@@ -189,6 +198,23 @@ const useChatBoxStore = create<ChatBoxStore>()(
                         massages: [timeMessage, ...state.massages],
                     }));
                 };
+
+                const addAddressOptionToMessage = (
+                    messageId: number,
+                    option: AddressOption
+                ) => {
+                    set((state) => ({
+                        massages: state.massages.map((message) => {
+                            if (message.id !== messageId) return message;
+                            const current = message.optionsAddressShip || [];
+                            return {
+                                ...message,
+                                optionsAddressShip: [...current, option],
+                            };
+                        }),
+                    }));
+                };
+
                 const resetStore = () => {
                     set({
                         firstOption: null,
@@ -210,7 +236,6 @@ const useChatBoxStore = create<ChatBoxStore>()(
                     mode: "click",
                     massages: [],
                     sessionRobot: null,
-
                     setFirstOption,
                     setIsAssistantTyping,
                     setIsFeedback,
@@ -225,6 +250,7 @@ const useChatBoxStore = create<ChatBoxStore>()(
                     addTimeMessage,
                     addTimeToTopMessage,
                     resetStore,
+                    addAddressOptionToMessage,
                 };
             },
             {
@@ -268,7 +294,6 @@ export const useChatBoxState = () => {
     const mode = useChatBoxStore((state) => state.mode);
     const massages = useChatBoxStore((state) => state.massages);
     const sessionRobot = useChatBoxStore((state) => state.sessionRobot);
-
     return {
         firstOption,
         isAssistantTyping,
@@ -313,6 +338,9 @@ export const useChatBoxActions = () => {
         startCountdownFeedback();
     };
 
+    const addAddressOptionToMessage = useChatBoxStore(
+        (state) => state.addAddressOptionToMessage
+    );
     const resetStore = useChatBoxStore((state) => state.resetStore);
     return {
         setFirstOption,
@@ -330,5 +358,6 @@ export const useChatBoxActions = () => {
         addTimeToTopMessage,
         resetCountdownFeedback,
         resetStore,
+        addAddressOptionToMessage,
     };
 };

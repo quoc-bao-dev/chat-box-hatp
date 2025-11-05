@@ -32,6 +32,7 @@ export const _Image = {
         icon_product_not_found: "/image/icons/not-found.svg",
         icon_cancel: "/image/icons/iconoir-cancel.svg",
         icon_checked: "/image/icons/icon-success.png",
+        icon_not_found: "/image/icons/icon-not-found.png",
         emoji: {
             emoji_1: "/image/icons/emoji/emoji-1.png",
             emoji_1_at: "/image/icons/emoji/emoji-1-at.png",

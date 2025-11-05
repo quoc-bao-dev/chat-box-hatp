@@ -1,3 +1,5 @@
+import { RobotOption } from "@/services/robot";
+
 // Minimal option shape required by the button event handlers
 export interface MoveOptionLike {
     show_move_event: string | null;
@@ -16,9 +18,10 @@ export interface ButtonEventConfig {
 }
 
 export interface UseButtonEventHandlersOptions {
-    options: MoveOptionLike[];
+    options: MoveOptionLike[] | RobotOption[];
     onSuccess?: (eventType: ButtonEventType) => void;
     onError?: (eventType: ButtonEventType, error: Error) => void;
+    messageRequire?: string;
 }
 
 export interface ButtonEventHandlersReturn {

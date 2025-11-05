@@ -8,6 +8,7 @@ import { envConfig } from "../config";
 
 const TOKEN_KEY = "token_account";
 const SP_SESSION_KEY = "sp_session";
+const TIMEOUT = 100000;
 
 // Utility function to get cookie value
 const getCookie = (name: string): string | null => {
@@ -29,7 +30,7 @@ const BASE_URL = envConfig.apiUrl || "http://localhost:3000/api";
 // Create axios instance
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: BASE_URL,
-    timeout: 10000,
+    timeout: TIMEOUT,
     headers: {
         "Content-Type": "application/json",
     },

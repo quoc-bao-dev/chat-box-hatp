@@ -1,9 +1,12 @@
+"use client";
 import { ChatBoxContainer } from "@/core/components/layouts";
 import BottomBar from "../components/BottomBar";
 import BottomBarWrapper from "../components/BottomBarWrapper";
 import ChatBoxController from "../components/ChatBoxController";
 import ChatBoxHeader from "../components/ChatBoxHeader";
-import OrderDetailsPanel from "../components/create-order/OrderDetailsPanel";
+import AddressPanel from "../components/product-price-lookup/AddressPanel";
+import ProductListDisplay from "@/core/components/ui/ProductListDisplay";
+import { _Image } from "@/core/config";
 
 const ChatTestPage = () => {
     return (
@@ -21,6 +24,49 @@ const ChatTestPage = () => {
                         {/* <Feedback /> */}
 
                         {/* <OrderDetailsPanel /> */}
+                        <div className="flex flex-col gap-4 pt-10" />
+
+                        <ProductListDisplay
+                            title="Địa chỉ giao hàng"
+                            items={[
+                                {
+                                    avatar: _Image.icon.icon_product,
+                                    name: "Địa chỉ giao hàng",
+                                    code: "1234567890",
+                                    price: "100000",
+                                    quantity: 1,
+                                    id_item: "1",
+                                    name_category: "Địa chỉ giao hàng",
+                                    id: 1,
+                                    unit_client: "Đơn vị",
+                                    quantity_client: 1,
+                                    price_client: "100000",
+                                },
+                            ]}
+                        />
+
+                        <div className="flex flex-col gap-4 pt-10" />
+
+                        <AddressPanel
+                            title="Địa chỉ giao hàng"
+                            addresses={
+                                [
+                                    // {
+                                    //     id: "1",
+                                    //     name: "Nguyễn Văn A",
+                                    //     phone: "0909090909",
+                                    //     address: "123 Đường ABC, Quận XYZ, TP. HCM",
+                                    // },
+                                    // {
+                                    //     id: "2",
+                                    //     name: "Nguyễn Văn A",
+                                    //     phone: "0909090909",
+                                    //     address: "123 Đường ABC, Quận XYZ, TP. HCM",
+                                    // },
+                                ]
+                            }
+                            disable={false}
+                        />
                     </ChatBoxContainer>
 
                     {/* === bottom content === */}

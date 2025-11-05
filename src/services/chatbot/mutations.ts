@@ -4,6 +4,9 @@ import {
     EditProductItemParams,
     EditProductItemRequest,
     RemoveItemParams,
+    AddAddressRequest,
+    EditTableItemParams,
+    EditTableItemRequest,
 } from "./type";
 
 export const useEditProductItem = () => {
@@ -21,5 +24,24 @@ export const useEditProductItem = () => {
 export const useRemoveItem = () => {
     return useMutation({
         mutationFn: (params: RemoveItemParams) => chatbotApi.removeItem(params),
+    });
+};
+
+export const useAddAddress = () => {
+    return useMutation({
+        mutationFn: (payload: AddAddressRequest) =>
+            chatbotApi.addAddress(payload),
+    });
+};
+
+export const useEditTableItem = () => {
+    return useMutation({
+        mutationFn: ({
+            params,
+            payload,
+        }: {
+            params: EditTableItemParams;
+            payload: EditTableItemRequest;
+        }) => chatbotApi.editTableItem(params, payload),
     });
 };

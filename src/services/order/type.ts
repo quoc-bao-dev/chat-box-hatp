@@ -19,5 +19,6 @@ export type OrderDetail = {
         price: string;
         amount: string;
         quantity_kg: string;
+        quantity_to: string;
     }>;
 };

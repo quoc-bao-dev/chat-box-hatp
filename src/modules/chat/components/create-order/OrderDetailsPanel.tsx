@@ -41,7 +41,7 @@ const OrderDetailsPanel = ({ orderDetail }: OrderDetailsPanelProps) => {
                 quantity: formatNumber(item.quantity),
                 unitPrice: formatNumber(item.price),
                 amount: formatNumber(item.amount),
-                sheets: formatNumber(item.quantity),
+                sheets: formatNumber(item.quantity_to),
                 weight: formatNumber(item.quantity_kg),
             })),
             totalAmount: formatNumber(orderDetail.grand_total),

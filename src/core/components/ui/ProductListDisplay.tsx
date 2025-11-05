@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import { cn } from "@/core/utils/cn";
 import { _Image } from "@/core/config";
@@ -23,6 +23,7 @@ interface ProductListDisplayProps {
         label: string;
         type: "confirm" | "edit" | "cancel";
     }>;
+    onQuantityChange?: (item: ProductItem, quantity: string) => void;
 }
 
 const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
@@ -38,8 +39,20 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
     onEditClick,
     onCancelClick,
     actionButtonConfigs = [],
+    onQuantityChange,
 }) => {
     const imageProdPlaceholder = _Image.icon.icon_product;
+    const timersRef = useRef<Record<string | number, any>>({});
+
+    const handleQuantityInputChange = (item: ProductItem, value: string) => {
+        const key = item.id;
+        if (timersRef.current[key]) {
+            clearTimeout(timersRef.current[key]);
+        }
+        timersRef.current[key] = setTimeout(() => {
+            onQuantityChange?.(item, value);
+        }, 200);
+    };
 
     // Derive button visibility and labels from actionButtonConfigs
     const confirmConfig = actionButtonConfigs.find((c) => c.type === "confirm");
@@ -91,15 +104,56 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                                     {item.name_category}
                                 </p>
                             </div>
+
                             {/* === price === */}
-                            <div className=" text-right ">
-                                <p className="text-[#F04438] font-bold text-sm">
-                                    {Number(item.price) > 0
-                                        ? Number(item.price).toLocaleString(
-                                              "vi-VN"
-                                          ) + " ₫"
-                                        : "Liên hệ"}
-                                </p>
+                            <div className="flex flex-col gap-1 ">
+                                <div className="flex gap-2 items-center text-sm text-[#5E5E5E]">
+                                    <label
+                                        htmlFor={`quantity-${item.id}`}
+                                        className="flex items-center gap-1 px-1 py-0.5 rounded-md border border-gray-300"
+                                    >
+                                        <input
+                                            id={`quantity-${item.id}`}
+                                            className="w-[60px] h-4 outline-none text-center no-spinner"
+                                            type="number"
+                                            inputMode="numeric"
+                                            disabled={disable}
+                                            min={0}
+                                            step={1}
+                                            defaultValue={item.quantity_client}
+                                            onChange={(e) =>
+                                                handleQuantityInputChange(
+                                                    item,
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+
+                                        <p>{item.unit_client}</p>
+                                    </label>
+
+                                    {Number(item.price_client) > 0 && (
+                                        <p>
+                                            <span className="pr-2">x</span>
+                                            {Number(
+                                                item.price_client
+                                            ).toLocaleString("vi-VN")}{" "}
+                                            đ
+                                        </p>
+                                    )}
+
+                                    {!item.price_client && <p>Giá liên hệ</p>}
+                                </div>
+
+                                <div className=" lg:text-right ">
+                                    <p className="text-[#F04438] font-bold text-sm">
+                                        {Number(item.total) > 0
+                                            ? Number(item.total).toLocaleString(
+                                                  "vi-VN"
+                                              ) + " ₫"
+                                            : "Liên hệ để tư vấn"}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

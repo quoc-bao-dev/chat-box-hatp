@@ -5,6 +5,7 @@ import axios, {
     InternalAxiosRequestConfig,
 } from "axios";
 import { envConfig } from "../config";
+import { getSession } from "../utils/session";
 
 const TOKEN_KEY = "token_account";
 const SP_SESSION_KEY = "sp_session";
@@ -50,14 +51,45 @@ axiosInstance.interceptors.request.use(
             config.headers.Authorization = `Bearer ${token}`;
         }
 
-        // Get session from sessionStorage and add to headers
-        const session =
-            typeof window !== "undefined"
-                ? sessionStorage.getItem(SP_SESSION_KEY)
-                : null;
-
+        // Resolve session and add to headers
+        const session = getSession();
         if (session && config.headers) {
             config.headers["sp_session"] = session;
+        }
+
+        // Always ensure sp_session is present depending on method/body type
+        const method = (config.method || "").toLowerCase();
+
+        // GET → add to query params
+        if (method === "get" && session) {
+            const currentParams = config.params || {};
+            if (!("sp_session" in currentParams)) {
+                config.params = { ...currentParams, [SP_SESSION_KEY]: session };
+            }
+        }
+
+        // POST + FormData → add to form body
+        if (
+            method === "post" &&
+            typeof FormData !== "undefined" &&
+            config.data instanceof FormData &&
+            session
+        ) {
+            let hasSpSession = false;
+            for (const key of config.data.keys()) {
+                if (key === SP_SESSION_KEY) {
+                    hasSpSession = true;
+                    break;
+                }
+            }
+            if (!hasSpSession) {
+                config.data.append(SP_SESSION_KEY, session);
+            }
+
+            // Ensure correct headers for multipart/form-data; let the browser set boundary
+            if (config.headers && "Content-Type" in config.headers) {
+                delete (config.headers as any)["Content-Type"];
+            }
         }
 
         // Inject language into request body for write methods (POST/PUT/PATCH/DELETE)

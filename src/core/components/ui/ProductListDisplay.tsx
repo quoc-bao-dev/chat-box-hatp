@@ -113,7 +113,7 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                                     >
                                         <input
                                             id={`quantity-${item.id}`}
-                                            className="w-[80px] h-4 outline-none text-center"
+                                            className="w-[80px] h-4 outline-none text-center no-spinner"
                                             type="number"
                                             inputMode="numeric"
                                             disabled={disable}
@@ -140,13 +140,13 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                                     )}
                                 </div>
 
-                                <div className=" text-right ">
+                                <div className=" lg:text-right ">
                                     <p className="text-[#F04438] font-bold text-sm">
                                         {Number(item.price) > 0
                                             ? Number(item.price).toLocaleString(
                                                   "vi-VN"
                                               ) + " ₫"
-                                            : "Liên hệ"}
+                                            : "Liên hệ để tư vấn"}
                                     </p>
                                 </div>
                             </div>

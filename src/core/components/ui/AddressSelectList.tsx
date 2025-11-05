@@ -57,7 +57,7 @@ const AddressSelectList = ({
             <div
                 className={`pt-3 flex flex-col  max-h-[50vh] h-fit overflow-y-scroll -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
             >
-                {!addresses || addresses.length === 0 ? (
+                {!addresses || addresses?.length === 0 ? (
                     <div className="px-4 py-2 flex flex-col items-center justify-center text-center">
                         <Image
                             src={_Image.icon.icon_not_found}
@@ -68,10 +68,10 @@ const AddressSelectList = ({
                     </div>
                 ) : (
                     addresses.map((addr) => {
-                        const checked = selectedId === addr.id;
+                        const checked = selectedId === addr?.id;
                         return (
                             <label
-                                key={addr.id}
+                                key={addr?.id}
                                 className={`px-4 py-3.5  flex items-center  gap-3 border-t border-gray-50 group ${
                                     disable || isHistory
                                         ? "cursor-default"
@@ -85,7 +85,7 @@ const AddressSelectList = ({
                                         name="address"
                                         className="peer sr-only hidden"
                                         checked={checked}
-                                        onChange={() => handleSelect(addr.id)}
+                                        onChange={() => handleSelect(addr?.id)}
                                         disabled={disable}
                                     />
                                 )}
@@ -116,17 +116,17 @@ const AddressSelectList = ({
                                 <div className="flex flex-col gap-1 flex-1">
                                     <div className="flex items-center gap-2">
                                         <span className="text-[#0F172A] font-semibold text-[14px]">
-                                            {addr.name}
+                                            {addr?.name}
                                         </span>
                                         <span className="text-[#0F172A]">
                                             |
                                         </span>
                                         <span className="text-[#0F172A] font-medium text-[14px]">
-                                            {addr.phone}
+                                            {addr?.phone}
                                         </span>
                                     </div>
                                     <span className="text-gray-600 font-normal text-[14px]">
-                                        {addr.address}
+                                        {addr?.address}
                                     </span>
                                 </div>
                             </label>

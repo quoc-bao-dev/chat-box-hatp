@@ -73,6 +73,7 @@ export interface RobotData {
     options_category?: CategoryOption[];
 
     options_address_ship?: AddressOption[];
+    info_address_delivery: AddressOption;
 }
 
 export interface GetActiveRobotDetailResponse {

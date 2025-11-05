@@ -50,8 +50,9 @@ const createMessageFromData = (
             sendType: "select-address-ship",
             options: data.options,
             optionsCategory: data.options_category,
-            optionsAddressShip:
-                data.options_address_ship || parseJsonItem(data.json_item),
+            optionsAddressShip: data.options_address_ship || [
+                data.info_address_delivery,
+            ],
             nextLink: nextLink,
             isHistory: isFromHistory,
         };

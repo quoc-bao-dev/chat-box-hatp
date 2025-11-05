@@ -50,7 +50,17 @@ const EditProductCode = ({
                 className={`pt-3 flex flex-col gap-2 max-h-[50vh] overflow-y-auto -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
             >
                 {items.length === 0 && (
-                    <p className="text-gray-500 text-sm">
+                    <div className="px-4 py-2 flex flex-col items-center justify-center text-center">
+                        <Image
+                            src={_Image.icon.icon_not_found}
+                            alt="not-found"
+                            width={140}
+                            height={140}
+                        />
+                    </div>
+                )}
+                {items.length === 0 && (
+                    <p className="text-gray-500 text-sm text-center">
                         Không có sản phẩm nào để chỉnh sửa
                     </p>
                 )}

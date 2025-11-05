@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 /backup
+
+/src/app/(main)/chat-test/page.tsx
+/src/modules/chat/pages/chat-test.tsx

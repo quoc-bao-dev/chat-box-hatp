@@ -104,6 +104,7 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                                     {item.name_category}
                                 </p>
                             </div>
+
                             {/* === price === */}
                             <div className="flex flex-col gap-1 ">
                                 <div className="flex gap-2 items-center text-sm text-[#5E5E5E]">
@@ -113,7 +114,7 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                                     >
                                         <input
                                             id={`quantity-${item.id}`}
-                                            className="w-[80px] h-4 outline-none text-center no-spinner"
+                                            className="w-[60px] h-4 outline-none text-center no-spinner"
                                             type="number"
                                             inputMode="numeric"
                                             disabled={disable}
@@ -127,23 +128,27 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                                                 )
                                             }
                                         />
-                                        x<p>{item.unit_client}</p>
+
+                                        <p>{item.unit_client}</p>
                                     </label>
 
                                     {Number(item.price_client) > 0 && (
                                         <p>
+                                            <span className="pr-2">x</span>
                                             {Number(
                                                 item.price_client
                                             ).toLocaleString("vi-VN")}{" "}
                                             đ
                                         </p>
                                     )}
+
+                                    {!item.price_client && <p>Giá liên hệ</p>}
                                 </div>
 
                                 <div className=" lg:text-right ">
                                     <p className="text-[#F04438] font-bold text-sm">
-                                        {Number(item.price) > 0
-                                            ? Number(item.price).toLocaleString(
+                                        {Number(item.total) > 0
+                                            ? Number(item.total).toLocaleString(
                                                   "vi-VN"
                                               ) + " ₫"
                                             : "Liên hệ để tư vấn"}

@@ -2,6 +2,7 @@
 
 import { Icon } from "@/core/components/common";
 import { _Image } from "@/core/config/image";
+import { useScrollToBottom } from "@/core/hook";
 import { CardItem } from "@/modules/home/components";
 import { useGetChatbotList } from "@/services/chatbot";
 import { useChatBoxActions } from "@/store";
@@ -22,6 +23,8 @@ const FaqToggleList = ({
     const prevIsShowRef = useRef(defaultShow);
     const { setFirstOption, setIsFeedback, stopCountdownFeedback, setMode } =
         useChatBoxActions();
+
+    const { scrollToBottom } = useScrollToBottom();
 
     const { data } = useGetChatbotList();
 
@@ -122,6 +125,7 @@ const FaqToggleList = ({
                                 setIsFeedback(false);
                                 stopCountdownFeedback();
                                 setMode("click");
+                                scrollToBottom();
                             }}
                             disabled={c.disabled}
                         />

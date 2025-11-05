@@ -92,9 +92,7 @@ const ProductListDisplayPanel = ({
                                   price_client: String(
                                       updated.price_client ?? p.price_client
                                   ),
-                                  price: String(
-                                      updated.total_client ?? p.price
-                                  ),
+                                  total: String(updated.total_client),
                               }
                             : p
                     )

@@ -1,11 +1,11 @@
 "use client";
 
+import { _Image } from "@/core/config";
+import styles from "@/core/styles/scrollbar.module.css";
 import { decodeHtmlEntities } from "@/core/utils/decode";
+import Image from "next/image";
 import { useState } from "react";
 import { ActionButtons } from "./ActionButtons";
-import styles from "@/core/styles/scrollbar.module.css";
-import { _Image } from "@/core/config";
-import Image from "next/image";
 
 export type AddressItem = {
     id: string;
@@ -21,6 +21,7 @@ type AddressSelectListProps = {
     onClickAddAddress?: () => void;
     disable?: boolean;
     isHistory?: boolean;
+    loading?: boolean;
 };
 
 const AddressSelectList = ({
@@ -30,6 +31,7 @@ const AddressSelectList = ({
     onClickAddAddress,
     disable = false,
     isHistory = false,
+    loading = false,
 }: AddressSelectListProps) => {
     const [selectedId, setSelectedId] = useState<string>("");
 
@@ -53,7 +55,6 @@ const AddressSelectList = ({
             </p>
 
             {/* address list */}
-
             <div
                 className={`pt-3 flex flex-col  max-h-[50vh] h-fit overflow-y-scroll -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
             >
@@ -73,7 +74,9 @@ const AddressSelectList = ({
                             <label
                                 key={addr?.id}
                                 className={`px-4 py-3.5  flex items-center  gap-3 border-t border-gray-50 group ${
-                                    disable || isHistory
+                                    disable
+                                        ? "cursor-not-allowed"
+                                        : isHistory
                                         ? "cursor-default"
                                         : "cursor-pointer hover:bg-gray-50"
                                 }`}
@@ -118,9 +121,11 @@ const AddressSelectList = ({
                                         <span className="text-[#0F172A] font-semibold text-[14px]">
                                             {addr?.name}
                                         </span>
-                                        <span className="text-[#0F172A]">
-                                            |
-                                        </span>
+                                        {addr?.name && (
+                                            <span className="text-[#0F172A]">
+                                                |
+                                            </span>
+                                        )}
                                         <span className="text-[#0F172A] font-medium text-[14px]">
                                             {addr?.phone}
                                         </span>
@@ -141,10 +146,10 @@ const AddressSelectList = ({
                     type="button"
                     onClick={onClickAddAddress}
                     disabled={disable}
-                    className={`mt-3 -mb-3 text-center w-full py-1.5 font-medium text-[14px] transition-colors duration-150 hover:bg-red-50 rounded-[12px] ${
+                    className={`mt-3 -mb-3 text-center w-full py-1.5 font-medium text-[14px] transition-colors duration-150 rounded-[12px] ${
                         disable
                             ? "text-gray-400 cursor-not-allowed"
-                            : "text-[#FC5050] cursor-pointer hover:text-[#E03E3E]"
+                            : "text-[#FC5050] cursor-pointer hover:bg-red-50 hover:text-[#E03E3E]"
                     }`}
                 >
                     <span className="text-[20px]">+</span> Thêm địa chỉ mới
@@ -158,6 +163,7 @@ const AddressSelectList = ({
                     confirmText="Xác nhận"
                     onConfirmClick={handleConfirm}
                     disable={disable || !selectedId}
+                    isConfirmLoading={loading}
                 />
             )}
         </div>

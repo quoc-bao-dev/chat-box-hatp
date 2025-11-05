@@ -27,7 +27,7 @@ const AddressPanel = ({
     isHistory,
 }: AddressPanelProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { handleNext } = useNextFlow({ method: "POST" });
+    const { handleNext, isLoading } = useNextFlow({ method: "POST" });
 
     const handleAddAddress = () => {
         setIsModalOpen(true);
@@ -38,14 +38,11 @@ const AddressPanel = ({
     };
 
     const handleSubmitAddress = async (data: AddressFormData) => {
-        // TODO: xử lý khi submit form thêm địa chỉ
-        console.log("Address form data:", data);
         // Sau khi xử lý xong, đóng modal
         setIsModalOpen(false);
     };
 
     const handleClick = (id: string) => {
-        console.log("id", id);
         try {
             if (typeof window !== "undefined") {
                 sessionStorage.setItem("addressId", id);
@@ -53,7 +50,6 @@ const AddressPanel = ({
         } catch (e) {
             console.error("Failed to cache addressId in sessionStorage", e);
         }
-        console.log("nextLink", nextLink);
         if (nextLink) {
             handleNext(nextLink);
         }
@@ -68,6 +64,7 @@ const AddressPanel = ({
                 onClickAddAddress={handleAddAddress}
                 disable={disable}
                 isHistory={isHistory}
+                loading={isLoading}
             />
 
             <AddAddressModal

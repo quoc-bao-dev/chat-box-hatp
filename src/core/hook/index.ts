@@ -1,4 +1,6 @@
 export { default as useScrollbar } from "./useScrollbar";
+export { useScrollToBottom } from "./useScrollToBottom";
+export { useRegisterScrollContainer } from "./useRegisterScrollContainer";
 export { default as useLoginModal } from "./useLoginModal";
 export { default as useLoginFlow } from "./useLoginFlow";
 export { default as useDevice } from "./useDevice";

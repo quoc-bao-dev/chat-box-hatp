@@ -91,19 +91,22 @@ const ChatItemRender = ({
         return (
             <AssistantMessage
                 content={
-                    <CategoryPanel
-                        title={content || ""}
-                        optionsCategory={optionsCategory || []}
-                        disable={disableAction}
-                    />
+                    !isHistory || !disableAction ? (
+                        <CategoryPanel
+                            title={content || ""}
+                            optionsCategory={optionsCategory || []}
+                            disable={disableAction}
+                        />
+                    ) : (
+                        content
+                    )
                 }
             />
         );
     }
 
     if (sender === "assistant" && sendType === "select-address-ship") {
-        console.log(optionsAddressShip);
-
+        const next = nextLink ? nextLink : sessionStorage.getItem("nextLink");
         return (
             <AssistantMessage
                 mode="panel"
@@ -112,9 +115,9 @@ const ChatItemRender = ({
                         title={content || ""}
                         addresses={optionsAddressShip || []}
                         disable={disableAction}
-                        nextLink={nextLink}
+                        nextLink={next!}
                         messageId={id}
-                        isHistory={isHistory}
+                        isHistory={isHistory && !optionsAddressShip}
                     />
                 }
             />

@@ -52,6 +52,7 @@ export interface ProductItem {
     unit_client: string;
     quantity_client: number;
     price_client: string;
+    total: string | number;
 }
 
 // Option interface for list products

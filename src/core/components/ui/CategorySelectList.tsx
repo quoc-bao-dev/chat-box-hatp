@@ -5,6 +5,8 @@ import { CategoryOption } from "@/services/robot/type";
 import { useState } from "react";
 import { ActionButtons } from "./ActionButtons";
 import styles from "@/core/styles/scrollbar.module.css";
+import { _Image } from "@/core/config";
+import Image from "next/image";
 
 type CategorySelectListProps = {
     title: string;
@@ -42,6 +44,16 @@ const CategorySelectList = ({
             <div
                 className={`pt-3 flex flex-col max-h-[50vh] overflow-y-auto -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
             >
+                {optionsCategory.length === 0 && (
+                    <div className="px-4 py-2 flex flex-col items-center justify-center text-center">
+                        <Image
+                            src={_Image.icon.icon_not_found}
+                            alt="not-found"
+                            width={140}
+                            height={140}
+                        />
+                    </div>
+                )}
                 {optionsCategory?.map((opt) => {
                     const checked = selectedIds.includes(opt.id);
                     return (

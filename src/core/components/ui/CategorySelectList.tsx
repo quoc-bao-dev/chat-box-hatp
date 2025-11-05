@@ -40,7 +40,7 @@ const CategorySelectList = ({
 
             {/* options */}
             <div
-                className={`pt-3 flex flex-col gap-2 max-h-[50vh] overflow-y-auto -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
+                className={`pt-3 flex flex-col max-h-[50vh] overflow-y-auto -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
             >
                 {optionsCategory?.map((opt) => {
                     const checked = selectedIds.includes(opt.id);
@@ -104,7 +104,7 @@ const CategorySelectList = ({
                 shouldShowConfirmButton
                 confirmText="Xác nhận"
                 onConfirmClick={handleConfirm}
-                disable={disable}
+                disable={disable || selectedIds.length === 0}
             />
         </div>
     );

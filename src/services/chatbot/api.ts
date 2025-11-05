@@ -121,7 +121,7 @@ const chatbotApi = {
         }
 
         const res = await axiosInstance.post<AddAddressResponse>(
-            "/api_chatbot/add_address",
+            "/api_chatbot/add_address--",
             formData,
             {
                 headers: {

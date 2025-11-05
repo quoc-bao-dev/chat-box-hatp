@@ -3,6 +3,7 @@
 import { ProductOption } from "@/services/chatbot";
 import { RobotOption } from "@/services/robot";
 import { useChatBoxActions, useChatBoxState } from "@/store";
+import { useRegisterScrollContainer } from "@/core/hook";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import AssistantTyping from "./AssistantTyping";
 import ChatItemRender from "./ChatItemRender";
@@ -17,16 +18,14 @@ const ChatBoxRender = () => {
     const [canScrollToBottom, setCanScrollToBottom] = useState(true);
     const { startCountdownFeedback, setMode } = useChatBoxActions();
 
-    const [fistRender, setFistRender] = useState(true);
-    useEffect(() => {
-        if (fistRender) {
-            setFistRender(false);
-        }
-    }, [fistRender]);
-
+    const [isFirstMount, setIsFirstMount] = useState(true);
+    const [hasInitialScroll, setHasInitialScroll] = useState(false);
     const [hasCheckShowFeedback, setHasCheckShowFeedback] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
+
+    // Register container vào store để có thể scroll từ bất kỳ đâu
+    useRegisterScrollContainer(containerRef);
 
     const updateScrollButtonVisibility = () => {
         const el = containerRef.current;
@@ -46,9 +45,34 @@ const ChatBoxRender = () => {
         setShowScrollButton(!isAtBottom);
     };
 
+    // Scroll xuống cuối NGAY LẬP TỨC khi vào chat page lần đầu
+    // useLayoutEffect chạy đồng bộ TRƯỚC khi browser paint
+    // -> User không thấy scroll, chỉ thấy kết quả cuối cùng
+    useLayoutEffect(() => {
+        if (isFirstMount && massages.length > 0 && !hasInitialScroll) {
+            const el = containerRef.current;
+            if (!el) return;
+
+            // Scroll instant bằng cách set scrollTop trực tiếp (không animation)
+            el.scrollTop = el.scrollHeight;
+            setHasInitialScroll(true);
+            setCanScrollToBottom(true);
+            setIsFirstMount(false);
+        }
+    }, [isFirstMount, massages.length, hasInitialScroll]);
+
+    // Reset khi messages thay đổi từ có -> 0 hoặc ngược lại
+    useEffect(() => {
+        if (massages.length === 0) {
+            setHasInitialScroll(false);
+            setIsFirstMount(true);
+        }
+    }, [massages.length]);
+
+    // Auto-scroll smooth cho messages mới (sau khi đã scroll initial)
     useLayoutEffect(() => {
         const el = containerRef.current;
-        if (!el) return;
+        if (!el || isFirstMount) return; // Không scroll nếu đang trong initial mount
 
         // Chỉ auto scroll nếu được phép
         if (canScrollToBottom) {
@@ -57,19 +81,10 @@ const ChatBoxRender = () => {
                     el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
                 });
             }, 0);
-            // After auto-scroll, hide the button (we are at bottom)
-        }
-
-        if (fistRender) {
-            setTimeout(() => {
-                requestAnimationFrame(() => {
-                    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-                });
-            }, 800);
         }
 
         setShowScrollButton(false);
-    }, [massages, isAssistantTyping, canScrollToBottom]);
+    }, [massages, isAssistantTyping, canScrollToBottom, isFirstMount]);
 
     useLayoutEffect(() => {
         const el = containerRef.current;

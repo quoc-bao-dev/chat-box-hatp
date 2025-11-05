@@ -28,6 +28,7 @@ const convertApiResponseToProductItems = (jsonItems: any[]): ProductItem[] => {
         unit_client: item.unit_client || "",
         quantity_client: parseInt(item.quantity_client) || 0,
         price_client: item.price_client || "",
+        total: item.total,
     }));
 };
 
@@ -122,6 +123,10 @@ const EditProductCodePanel = ({
 
         stopCountdownFeedback();
         const nextLink = options[0].next;
+
+        console.log(options);
+
+        console.log({ nextLink });
 
         if (nextLink) {
             try {

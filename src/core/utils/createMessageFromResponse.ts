@@ -43,6 +43,8 @@ const createMessageFromData = (
 
     // show select address ship
     if (data.show_move_event === "select_address_ship") {
+        if (nextLink) sessionStorage.setItem("nextLink", nextLink || "");
+
         return {
             id: Number(data.id),
             sender: getSender(data.type_send),
@@ -67,6 +69,7 @@ const createMessageFromData = (
             sendType: "select-category",
             options: data.options,
             optionsCategory: data.options_category,
+            isHistory: isFromHistory,
         };
     }
 

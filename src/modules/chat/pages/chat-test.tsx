@@ -1,12 +1,11 @@
 "use client";
+
 import { ChatBoxContainer } from "@/core/components/layouts";
 import BottomBar from "../components/BottomBar";
 import BottomBarWrapper from "../components/BottomBarWrapper";
 import ChatBoxController from "../components/ChatBoxController";
 import ChatBoxHeader from "../components/ChatBoxHeader";
 import AddressPanel from "../components/product-price-lookup/AddressPanel";
-import ProductListDisplay from "@/core/components/ui/ProductListDisplay";
-import { _Image } from "@/core/config";
 
 const ChatTestPage = () => {
     return (
@@ -26,7 +25,7 @@ const ChatTestPage = () => {
                         {/* <OrderDetailsPanel /> */}
                         <div className="flex flex-col gap-4 pt-10" />
 
-                        <ProductListDisplay
+                        {/* <ProductListDisplay
                             title="Địa chỉ giao hàng"
                             items={[
                                 {
@@ -43,7 +42,7 @@ const ChatTestPage = () => {
                                     price_client: "100000",
                                 },
                             ]}
-                        />
+                        /> */}
 
                         <div className="flex flex-col gap-4 pt-10" />
 

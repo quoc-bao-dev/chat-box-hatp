@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSinglelineSuggestion, useDevice } from "@/core/hook";
+import toast from "react-hot-toast";
 
 export type ProductCodeInputProps = {
     placeholder?: string;
@@ -44,6 +45,9 @@ const ProductCodeInput = ({
     const remainder = getRemainder(value, suggestText);
 
     const handleSubmit = () => {
+        if (!value.trim()) {
+            toast.error("Vui lòng nhập mã sản phẩm!");
+        }
         if (value.trim() && onSubmit && !disable) {
             onSubmit(value.trim());
         }

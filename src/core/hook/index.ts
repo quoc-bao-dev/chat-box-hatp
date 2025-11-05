@@ -1,4 +1,6 @@
 export { default as useScrollbar } from "./useScrollbar";
+export { useScrollToBottom } from "./useScrollToBottom";
+export { useRegisterScrollContainer } from "./useRegisterScrollContainer";
 export { default as useLoginModal } from "./useLoginModal";
 export { default as useLoginFlow } from "./useLoginFlow";
 export { default as useDevice } from "./useDevice";
@@ -7,3 +9,4 @@ export { default as useDebounce } from "./useDebounce";
 export { default as useInlineSuggestion } from "./useInlineSuggestion";
 export { useInlineSuggestion as createInlineSuggestionHook } from "./useInlineSuggestion";
 export { default as useSinglelineSuggestion } from "./useSinglelineSuggestion";
+export { useNextFlow } from "./useNextFlow";

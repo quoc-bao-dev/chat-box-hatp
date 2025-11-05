@@ -13,7 +13,8 @@ const mapEvaluate = {
  */
 const createMessageFromData = (
     data: GetActiveRobotDetailResponse["data"],
-    isFromHistory: boolean = false
+    isFromHistory: boolean = false,
+    nextLink?: string
 ): Message => {
     // Helper to determine sender
     const getSender = (typeSend: string | number): "user" | "assistant" => {
@@ -24,6 +25,41 @@ const createMessageFromData = (
         return Number(typeSend) === 1 ? "user" : "assistant";
     };
 
+    // Helper to parse json_item if it's a string
+    const parseJsonItem = (jsonItem: any): any => {
+        if (jsonItem === null || jsonItem === undefined) {
+            return null;
+        }
+        if (typeof jsonItem === "string") {
+            try {
+                return JSON.parse(jsonItem);
+            } catch (error) {
+                console.error("Failed to parse json_item:", error);
+                return jsonItem; // Return original string if parse fails
+            }
+        }
+        return jsonItem; // Return as-is if already parsed
+    };
+
+    // show select address ship
+    if (data.show_move_event === "select_address_ship") {
+        if (nextLink) sessionStorage.setItem("nextLink", nextLink || "");
+
+        return {
+            id: Number(data.id),
+            sender: getSender(data.type_send),
+            content: data.message,
+            sendType: "select-address-ship",
+            options: data.options,
+            optionsCategory: data.options_category,
+            optionsAddressShip: data.options_address_ship || [
+                data.info_address_delivery,
+            ],
+            nextLink: nextLink,
+            isHistory: isFromHistory,
+        };
+    }
+
     // show category
     if (data.show_move_event === "select_category") {
         return {
@@ -33,6 +69,7 @@ const createMessageFromData = (
             sendType: "select-category",
             options: data.options,
             optionsCategory: data.options_category,
+            isHistory: isFromHistory,
         };
     }
 
@@ -65,7 +102,7 @@ const createMessageFromData = (
             content: data.message,
             sendType: "show-create-orders",
             options: data.options,
-            products: data.json_item,
+            products: parseJsonItem(data.json_item),
         };
     }
 
@@ -77,7 +114,7 @@ const createMessageFromData = (
             content: data.message,
             sendType: "table-price",
             options: data.options,
-            products: data.json_item,
+            products: parseJsonItem(data.json_item),
             ...(isFromHistory && { disableAction: true }),
         };
     }
@@ -94,14 +131,14 @@ const createMessageFromData = (
             content: data.message,
             sendType: "edit-product-code",
             options: data.options,
-            products: data.json_item,
+            products: parseJsonItem(data.json_item),
             ...(isFromHistory && { disableAction: true }),
         };
     }
 
     // show feedback (only in history)
     if (data.event === "evaluate_support") {
-        const jsonItem = data.json_item as {
+        const jsonItem = parseJsonItem(data.json_item) as {
             evaluate: string;
             tag: string[];
         };
@@ -131,7 +168,7 @@ const createMessageFromData = (
             sender: getSender(data.type_send),
             content: data.message,
             sendType: "products",
-            products: data.json_item,
+            products: parseJsonItem(data.json_item),
             options: data.options,
         };
     }
@@ -159,7 +196,7 @@ const createMessageFromData = (
 export const createMessageFromResponse = (
     data: GetActiveRobotDetailResponse
 ): Message => {
-    return createMessageFromData(data.data, false);
+    return createMessageFromData(data.data, false, data.next as string);
 };
 
 export const createMessageFromHistoryResponse = (

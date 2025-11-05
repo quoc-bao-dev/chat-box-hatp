@@ -1,25 +1,33 @@
 "use client";
 
-import { useState } from "react";
-import AddressSelectList, {
-    AddressItem,
-} from "@/core/components/ui/AddressSelectList";
 import AddAddressModal, {
     AddressFormData,
 } from "@/core/components/ui/AddAddressModal";
+import AddressSelectList, {
+    AddressItem,
+} from "@/core/components/ui/AddressSelectList";
+import { useNextFlow } from "@/core/hook";
+import { useState } from "react";
 
 type AddressPanelProps = {
     title: string;
     addresses: AddressItem[];
     disable?: boolean;
+    nextLink?: string;
+    messageId?: number;
+    isHistory?: boolean;
 };
 
 const AddressPanel = ({
     title,
     addresses,
     disable = false,
+    nextLink,
+    messageId,
+    isHistory,
 }: AddressPanelProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { handleNext, isLoading } = useNextFlow({ method: "POST" });
 
     const handleAddAddress = () => {
         setIsModalOpen(true);
@@ -30,15 +38,21 @@ const AddressPanel = ({
     };
 
     const handleSubmitAddress = async (data: AddressFormData) => {
-        // TODO: xử lý khi submit form thêm địa chỉ
-        console.log("Address form data:", data);
         // Sau khi xử lý xong, đóng modal
         setIsModalOpen(false);
     };
 
     const handleClick = (id: string) => {
-        // TODO: xử lý khi xác nhận địa chỉ
-        console.log("Selected address id:", id);
+        try {
+            if (typeof window !== "undefined") {
+                sessionStorage.setItem("addressId", id);
+            }
+        } catch (e) {
+            console.error("Failed to cache addressId in sessionStorage", e);
+        }
+        if (nextLink) {
+            handleNext(nextLink);
+        }
     };
 
     return (
@@ -49,11 +63,15 @@ const AddressPanel = ({
                 onConfirm={handleClick}
                 onClickAddAddress={handleAddAddress}
                 disable={disable}
+                isHistory={isHistory}
+                loading={isLoading}
             />
+
             <AddAddressModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 onSubmit={handleSubmitAddress}
+                messageId={messageId}
             />
         </>
     );

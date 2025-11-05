@@ -4,6 +4,7 @@ import { decodeHtmlEntities } from "@/core/utils/decode";
 import { CategoryOption } from "@/services/robot/type";
 import { useState } from "react";
 import { ActionButtons } from "./ActionButtons";
+import styles from "@/core/styles/scrollbar.module.css";
 
 type CategorySelectListProps = {
     title: string;
@@ -38,7 +39,9 @@ const CategorySelectList = ({
             </p>
 
             {/* options */}
-            <div className="pt-3 flex flex-col ">
+            <div
+                className={`pt-3 flex flex-col max-h-[50vh] overflow-y-auto -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
+            >
                 {optionsCategory?.map((opt) => {
                     const checked = selectedIds.includes(opt.id);
                     return (
@@ -101,7 +104,7 @@ const CategorySelectList = ({
                 shouldShowConfirmButton
                 confirmText="Xác nhận"
                 onConfirmClick={handleConfirm}
-                disable={disable}
+                disable={disable || selectedIds.length === 0}
             />
         </div>
     );

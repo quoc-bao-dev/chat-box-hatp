@@ -1,6 +1,7 @@
 import CategorySelectList from "@/core/components/ui/CategorySelectList";
 import axiosClient from "@/core/http/axiosClient";
 import { createMessageFromResponse } from "@/core/utils/createMessageFromResponse";
+import { getSession } from "@/core/utils/session";
 import { CategoryOption } from "@/services/robot/type";
 import { useChatBoxActions } from "@/store";
 import { useChatInputStore } from "@/store/chatInputStore";
@@ -30,6 +31,7 @@ const CategoryPanel = ({
         try {
             setLoading(true);
             const formData = new FormData();
+            formData.append("sp_session", getSession());
             ids.forEach((id) => formData.append("id_category[]", id));
             const response = await axiosClient.post(nextLink, formData, {
                 headers: { "Content-Type": "multipart/form-data" },

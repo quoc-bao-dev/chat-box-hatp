@@ -132,7 +132,7 @@ const chatbotApi = {
         return res.data;
     },
 
-    // Edit quantity in table item
+    // Edit quantity in table  item
     editTableItem: async (
         params: EditTableItemParams,
         payload: EditTableItemRequest

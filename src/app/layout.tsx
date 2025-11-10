@@ -1,4 +1,5 @@
 import AppProvider from "@/core/provider/AppProvider";
+import ToastPortal from "@/core/components/common/ToastPortal";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -47,6 +48,7 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
             >
                 <AppProvider>{children}</AppProvider>
+                <ToastPortal />
             </body>
         </html>
     );

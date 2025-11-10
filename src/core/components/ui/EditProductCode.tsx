@@ -1,10 +1,11 @@
 "use client";
 
 import { _Image } from "@/core/config";
+import styles from "@/core/styles/scrollbar.module.css";
 import { ProductItem } from "@/services/chatbot";
 import Image from "next/image";
+import { useState } from "react";
 import ProductCodeInput from "./ProductCodeInput";
-import styles from "@/core/styles/scrollbar.module.css";
 
 export type EditProductCodeProps = {
     title: string;
@@ -35,6 +36,23 @@ const EditProductCode = ({
     isLoading = false,
 }: EditProductCodeProps) => {
     const imageProdPlaceholder = _Image.icon.icon_product;
+    const [failedImages, setFailedImages] = useState<Record<number, boolean>>(
+        {}
+    );
+
+    const ensureValidImageSrc = (src?: string) => {
+        if (!src || typeof src !== "string") return imageProdPlaceholder;
+        const trimmed = src.trim();
+        if (
+            trimmed.startsWith("http://") ||
+            trimmed.startsWith("https://") ||
+            trimmed.startsWith("data:")
+        ) {
+            return trimmed;
+        }
+        // Next/Image requires relative paths to start with "/"
+        return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+    };
 
     return (
         <div
@@ -72,13 +90,20 @@ const EditProductCode = ({
                         <div className="flex items-center gap-4 pr-6">
                             {/* === image === */}
                             <Image
-                                src={item.avatar || imageProdPlaceholder}
+                                src={
+                                    failedImages[item.id]
+                                        ? imageProdPlaceholder
+                                        : ensureValidImageSrc(item.avatar!)
+                                }
                                 alt={item.name}
                                 width={40}
                                 height={40}
-                                onError={(e) => {
-                                    e.currentTarget.src = imageProdPlaceholder;
-                                }}
+                                onError={() =>
+                                    setFailedImages((prev) => ({
+                                        ...prev,
+                                        [item.id]: true,
+                                    }))
+                                }
                                 className="size-[37px] object-cover rounded-md"
                             />
 

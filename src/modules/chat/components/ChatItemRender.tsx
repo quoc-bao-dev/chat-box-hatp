@@ -125,6 +125,7 @@ const ChatItemRender = ({
 
     if (sender === "assistant" && sendType === "select-address-ship") {
         const next = nextLink ? nextLink : sessionStorage.getItem("nextLink");
+
         return (
             <AssistantMessage
                 mode="panel"
@@ -143,23 +144,32 @@ const ChatItemRender = ({
     }
 
     if (sender === "assistant" && sendType === "product-filter") {
+        // Persist nextLink for product filter flow:
+        // - If nextLink is provided, save it so a page reload still keeps the flow
+        // - If not provided (e.g., after reload), reuse the last saved value
+        const next =
+            nextLink && nextLink.length > 0
+                ? (() => {
+                      try {
+                          sessionStorage.setItem("nextLink", nextLink);
+                      } catch {}
+                      return nextLink;
+                  })()
+                : sessionStorage.getItem("nextLink") || undefined;
+
         return (
             <AssistantMessage
                 mode="panel"
                 content={
-                    !isHistory || !disableAction ? (
-                        <ProductFilterPanel
-                            title={content || ""}
-                            sizes={productFilterSizes}
-                            quantities={productFilterQuantities}
-                            brands={productFilterBrands}
-                            nextLink={nextLink}
-                            disable={disableAction}
-                            messageId={id}
-                        />
-                    ) : (
-                        content
-                    )
+                    <ProductFilterPanel
+                        title={content || ""}
+                        sizes={productFilterSizes}
+                        quantities={productFilterQuantities}
+                        brands={productFilterBrands}
+                        nextLink={next}
+                        disable={disableAction}
+                        messageId={id}
+                    />
                 }
             />
         );
@@ -276,6 +286,7 @@ const ChatItemRender = ({
                         content={content}
                         products={products}
                         options={productOptions}
+                        disable={disableAction}
                     />
                 }
             />

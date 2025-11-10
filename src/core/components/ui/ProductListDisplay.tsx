@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/core/utils/cn";
 import { _Image } from "@/core/config";
@@ -44,6 +44,27 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
 }) => {
     const imageProdPlaceholder = _Image.icon.icon_product;
     const timersRef = useRef<Record<string | number, any>>({});
+    // Track item images that failed to load to switch to placeholder gracefully
+    const [failedImages, setFailedImages] = useState<Record<number, boolean>>(
+        {}
+    );
+
+    // Normalize image source to satisfy next/image requirements:
+    // - Accept absolute URLs (http/https/data)
+    // - For relative paths, ensure they start with a leading "/"
+    // - Fallback to placeholder when src is empty/invalid
+    const ensureValidImageSrc = (src?: string) => {
+        if (!src || typeof src !== "string") return imageProdPlaceholder;
+        const trimmed = src.trim();
+        if (
+            trimmed.startsWith("http://") ||
+            trimmed.startsWith("https://") ||
+            trimmed.startsWith("data:")
+        ) {
+            return trimmed;
+        }
+        return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+    };
 
     const handleQuantityInputChange = (item: ProductItem, value: string) => {
         const key = item.id;
@@ -100,14 +121,25 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                             >
                                 {/* === image === */}
                                 <Image
-                                    src={item.avatar || imageProdPlaceholder}
-                                    alt={item.name}
+                                    // Use normalized src; if this item's image previously failed, force placeholder
+                                    src={
+                                        failedImages[item.id]
+                                            ? imageProdPlaceholder
+                                            : ensureValidImageSrc(
+                                                  item.avatar ?? undefined
+                                              )
+                                    }
+                                    // Fallback alt to avoid null
+                                    alt={item.name || "product-image"}
                                     width={40}
                                     height={40}
-                                    onError={(e) => {
-                                        e.currentTarget.src =
-                                            imageProdPlaceholder;
-                                    }}
+                                    // When the image fails to load, mark this item as failed to switch to placeholder
+                                    onError={() =>
+                                        setFailedImages((prev) => ({
+                                            ...prev,
+                                            [item.id]: true,
+                                        }))
+                                    }
                                     className="size-[37px] object-cover rounded-md"
                                 />
                                 <div className="flex-1 flex lg:items-center lg:flex-row flex-col items-start gap-2">
@@ -125,11 +157,15 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                                     <div className="flex flex-col gap-1 ">
                                         <div className="flex gap-2 items-center text-sm text-[#5E5E5E]">
                                             <label
-                                                htmlFor={`quantity-${item.id}`}
+                                                htmlFor={`quantity-${String(
+                                                    item.id ?? ""
+                                                )}`}
                                                 className="flex items-center gap-1 px-1 py-0.5 rounded-md border border-gray-300"
                                             >
                                                 <input
-                                                    id={`quantity-${item.id}`}
+                                                    id={`quantity-${String(
+                                                        item.id ?? ""
+                                                    )}`}
                                                     className="w-[60px] h-4 outline-none text-center no-spinner"
                                                     type="number"
                                                     inputMode="numeric"

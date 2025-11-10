@@ -4,6 +4,9 @@ import {
     AddressOption,
     CategoryOption,
     OptionLandscapeAndVertical,
+    ProductBrandOption,
+    ProductQuantityOption,
+    ProductSizeOption,
 } from "@/services/robot";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
@@ -26,7 +29,8 @@ export type SendType =
     | "cancel-product"
     | "select-category"
     | "select-address-ship"
-    | "landscape-and-vertical";
+    | "landscape-and-vertical"
+    | "product-filter";
 
 export type Message = {
     id: number;
@@ -56,6 +60,9 @@ export type Message = {
     optionsCategory?: CategoryOption[];
     optionsAddressShip?: AddressOption[];
     optionsLandscapeAndVertical?: OptionLandscapeAndVertical[];
+    productFilterSizes?: ProductSizeOption[];
+    productFilterQuantities?: ProductQuantityOption[];
+    productFilterBrands?: ProductBrandOption[];
     isHistory?: boolean;
 };
 
@@ -91,6 +98,14 @@ type ChatBoxActions = {
     addAddressOptionToMessage: (
         messageId: number,
         option: AddressOption
+    ) => void;
+    addProductFilterSizeToMessage: (
+        messageId: number,
+        size: ProductSizeOption
+    ) => void;
+    addProductFilterQuantityToMessage: (
+        messageId: number,
+        quantity: ProductQuantityOption
     ) => void;
 };
 
@@ -221,6 +236,31 @@ const useChatBoxStore = create<ChatBoxStore>()(
                     }));
                 };
 
+                const addProductFilterSizeToMessage = (
+                    messageId: number,
+                    size: ProductSizeOption
+                ) => {
+                    set((state) => ({
+                        massages: state.massages.map((message) => {
+                            if (message.id !== messageId) return message;
+
+                            const current = message.productFilterSizes || [];
+                            const exists = current.some(
+                                (item) => item.id === size.id
+                            );
+
+                            if (exists) {
+                                return message;
+                            }
+
+                            return {
+                                ...message,
+                                productFilterSizes: [...current, size],
+                            };
+                        }),
+                    }));
+                };
+
                 const resetStore = () => {
                     set({
                         firstOption: null,
@@ -231,6 +271,32 @@ const useChatBoxStore = create<ChatBoxStore>()(
                         massages: [],
                         sessionRobot: null,
                     });
+                };
+
+                const addProductFilterQuantityToMessage = (
+                    messageId: number,
+                    quantity: ProductQuantityOption
+                ) => {
+                    set((state) => ({
+                        massages: state.massages.map((message) => {
+                            if (message.id !== messageId) return message;
+
+                            const current =
+                                message.productFilterQuantities || [];
+                            const exists = current.some(
+                                (item) => item.id === quantity.id
+                            );
+
+                            if (exists) {
+                                return message;
+                            }
+
+                            return {
+                                ...message,
+                                productFilterQuantities: [...current, quantity],
+                            };
+                        }),
+                    }));
                 };
 
                 return {
@@ -257,6 +323,8 @@ const useChatBoxStore = create<ChatBoxStore>()(
                     addTimeToTopMessage,
                     resetStore,
                     addAddressOptionToMessage,
+                    addProductFilterSizeToMessage,
+                    addProductFilterQuantityToMessage,
                 };
             },
             {
@@ -347,6 +415,12 @@ export const useChatBoxActions = () => {
     const addAddressOptionToMessage = useChatBoxStore(
         (state) => state.addAddressOptionToMessage
     );
+    const addProductFilterSizeToMessage = useChatBoxStore(
+        (state) => state.addProductFilterSizeToMessage
+    );
+    const addProductFilterQuantityToMessage = useChatBoxStore(
+        (state) => state.addProductFilterQuantityToMessage
+    );
     const resetStore = useChatBoxStore((state) => state.resetStore);
     return {
         setFirstOption,
@@ -365,5 +439,7 @@ export const useChatBoxActions = () => {
         resetCountdownFeedback,
         resetStore,
         addAddressOptionToMessage,
+        addProductFilterSizeToMessage,
+        addProductFilterQuantityToMessage,
     };
 };

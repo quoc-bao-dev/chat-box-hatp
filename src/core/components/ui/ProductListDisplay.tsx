@@ -5,6 +5,7 @@ import { _Image } from "@/core/config";
 import { ProductItem } from "@/services/chatbot";
 import { ActionButtons } from "./ActionButtons";
 import styles from "@/core/styles/scrollbar.module.css";
+import { decodeHtmlEntities } from "@/core/utils/decode";
 
 interface ProductListDisplayProps {
     title: string;
@@ -68,96 +69,123 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
             className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] min-w-[300px] ${className}`}
         >
             {/* === title === */}
-            <p className="text-[18px] font-semibold text-gray-900">{title}</p>
+            <p className="text-[18px] font-semibold text-gray-900">
+                {decodeHtmlEntities(title)}
+            </p>
 
             {/* === list items === */}
             <div
                 className={`pt-3 flex flex-col gap-2 max-h-[50vh] overflow-y-auto -ml-2 -mr-2  pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
             >
-                {/* === item === */}
-                {items.map((item) => (
-                    <div
-                        key={item.id}
-                        onClick={() => onItemClick?.(item)}
-                        className={cn(
-                            ` w-full px-4 py-3.5 rounded-xl bg-[#F8F8F8] hover:bg-gray-100 flex items-center gap-4 shadow-xl/4`
-                        )}
-                    >
-                        {/* === image === */}
+                {/* === no data === */}
+                {items.length === 0 ? (
+                    <div className="px-4 py-2 flex flex-col items-center justify-center text-center">
                         <Image
-                            src={item.avatar || imageProdPlaceholder}
-                            alt={item.name}
-                            width={40}
-                            height={40}
-                            onError={(e) => {
-                                e.currentTarget.src = imageProdPlaceholder;
-                            }}
-                            className="size-[37px] object-cover rounded-md"
+                            src={_Image.icon.icon_not_found}
+                            alt="not-found"
+                            width={140}
+                            height={140}
                         />
-                        <div className="flex-1 flex lg:items-center lg:flex-row flex-col items-start gap-2">
-                            {/* === name === */}
-                            <div className="flex flex-col gap-0.5 flex-1">
-                                <p className="text-[#5E5E5E] font-bold text-sm">
-                                    {item.code}
-                                </p>
-                                <p className="text-[#5E5E5E] font-semibold text-xs">
-                                    {item.name_category}
-                                </p>
-                            </div>
-
-                            {/* === price === */}
-                            <div className="flex flex-col gap-1 ">
-                                <div className="flex gap-2 items-center text-sm text-[#5E5E5E]">
-                                    <label
-                                        htmlFor={`quantity-${item.id}`}
-                                        className="flex items-center gap-1 px-1 py-0.5 rounded-md border border-gray-300"
-                                    >
-                                        <input
-                                            id={`quantity-${item.id}`}
-                                            className="w-[60px] h-4 outline-none text-center no-spinner"
-                                            type="number"
-                                            inputMode="numeric"
-                                            disabled={disable}
-                                            min={0}
-                                            step={1}
-                                            defaultValue={item.quantity_client}
-                                            onChange={(e) =>
-                                                handleQuantityInputChange(
-                                                    item,
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-
-                                        <p>{item.unit_client}</p>
-                                    </label>
-
-                                    {Number(item.price_client) > 0 && (
-                                        <p>
-                                            <span className="pr-2">x</span>
-                                            {Number(
-                                                item.price_client
-                                            ).toLocaleString("vi-VN")}{" "}
-                                            đ
-                                        </p>
-                                    )}
-
-                                    {!item.price_client && <p>Giá liên hệ</p>}
-                                </div>
-
-                                <div className=" lg:text-right ">
-                                    <p className="text-[#F04438] font-bold text-sm">
-                                        {Number(item.total) > 0
-                                            ? Number(item.total).toLocaleString(
-                                                  "vi-VN"
-                                              ) + " ₫"
-                                            : "Liên hệ để tư vấn"}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                ))}
+                ) : (
+                    <>
+                        {/* === item === */}
+                        {items.map((item) => (
+                            <div
+                                key={item.id}
+                                onClick={() => onItemClick?.(item)}
+                                className={cn(
+                                    ` w-full px-4 py-3.5 rounded-xl bg-[#F8F8F8] hover:bg-gray-100 flex items-center gap-4 shadow-xl/4`
+                                )}
+                            >
+                                {/* === image === */}
+                                <Image
+                                    src={item.avatar || imageProdPlaceholder}
+                                    alt={item.name}
+                                    width={40}
+                                    height={40}
+                                    onError={(e) => {
+                                        e.currentTarget.src =
+                                            imageProdPlaceholder;
+                                    }}
+                                    className="size-[37px] object-cover rounded-md"
+                                />
+                                <div className="flex-1 flex lg:items-center lg:flex-row flex-col items-start gap-2">
+                                    {/* === name === */}
+                                    <div className="flex flex-col gap-0.5 flex-1">
+                                        <p className="text-[#5E5E5E] font-bold text-sm">
+                                            {item.code}
+                                        </p>
+                                        <p className="text-[#5E5E5E] font-semibold text-xs">
+                                            {item.name_category}
+                                        </p>
+                                    </div>
+
+                                    {/* === price === */}
+                                    <div className="flex flex-col gap-1 ">
+                                        <div className="flex gap-2 items-center text-sm text-[#5E5E5E]">
+                                            <label
+                                                htmlFor={`quantity-${item.id}`}
+                                                className="flex items-center gap-1 px-1 py-0.5 rounded-md border border-gray-300"
+                                            >
+                                                <input
+                                                    id={`quantity-${item.id}`}
+                                                    className="w-[60px] h-4 outline-none text-center no-spinner"
+                                                    type="number"
+                                                    inputMode="numeric"
+                                                    disabled={disable}
+                                                    min={0}
+                                                    step={1}
+                                                    defaultValue={
+                                                        item.quantity_client
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleQuantityInputChange(
+                                                            item,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+
+                                                <p>{item.unit_client}</p>
+                                            </label>
+
+                                            {Number(item.price_client) > 0 && (
+                                                <p>
+                                                    <span className="pr-2">
+                                                        x
+                                                    </span>
+                                                    {Number(
+                                                        item.price_client
+                                                    ).toLocaleString(
+                                                        "vi-VN"
+                                                    )}{" "}
+                                                    đ
+                                                </p>
+                                            )}
+
+                                            {!item.price_client && (
+                                                <p>Giá liên hệ</p>
+                                            )}
+                                        </div>
+
+                                        <div className=" lg:text-right ">
+                                            <p className="text-[#F04438] font-bold text-sm">
+                                                {Number(item.total) > 0
+                                                    ? Number(
+                                                          item.total
+                                                      ).toLocaleString(
+                                                          "vi-VN"
+                                                      ) + " ₫"
+                                                    : "Liên hệ để tư vấn"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </>
+                )}
             </div>
 
             {/* === action button === */}

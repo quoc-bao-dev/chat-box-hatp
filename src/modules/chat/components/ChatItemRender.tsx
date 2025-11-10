@@ -7,6 +7,9 @@ import {
     AddressOption,
     CategoryOption,
     OptionLandscapeAndVertical,
+    ProductBrandOption,
+    ProductQuantityOption,
+    ProductSizeOption,
     RobotOption,
 } from "@/services/robot";
 import { SendType } from "@/store/chatBoxStore";
@@ -22,6 +25,7 @@ import ProductPanel from "./product-price-lookup/ProductPanel";
 import UserMessage from "./UserMessage";
 import AddressPanel from "./product-price-lookup/AddressPanel";
 import LandscapeAndVerticalPanel from "./new-guest/LandscapeAndVerticalPanel";
+import ProductFilterPanel from "./new-guest/ProductFilterPanel";
 
 type ChatItemRenderProps = {
     id: number;
@@ -45,6 +49,9 @@ type ChatItemRenderProps = {
     optionsCategory?: CategoryOption[];
     optionsAddressShip?: AddressOption[];
     optionsLandscapeAndVertical?: OptionLandscapeAndVertical[];
+    productFilterSizes?: ProductSizeOption[];
+    productFilterQuantities?: ProductQuantityOption[];
+    productFilterBrands?: ProductBrandOption[];
     isHistory?: boolean;
 };
 
@@ -63,6 +70,9 @@ const ChatItemRender = ({
     optionsCategory,
     optionsAddressShip,
     optionsLandscapeAndVertical,
+    productFilterSizes,
+    productFilterQuantities,
+    productFilterBrands,
     nextLink,
     isHistory,
 }: ChatItemRenderProps) => {
@@ -127,6 +137,29 @@ const ChatItemRender = ({
                         messageId={id}
                         isHistory={isHistory && !optionsAddressShip}
                     />
+                }
+            />
+        );
+    }
+
+    if (sender === "assistant" && sendType === "product-filter") {
+        return (
+            <AssistantMessage
+                mode="panel"
+                content={
+                    !isHistory || !disableAction ? (
+                        <ProductFilterPanel
+                            title={content || ""}
+                            sizes={productFilterSizes}
+                            quantities={productFilterQuantities}
+                            brands={productFilterBrands}
+                            nextLink={nextLink}
+                            disable={disableAction}
+                            messageId={id}
+                        />
+                    ) : (
+                        content
+                    )
                 }
             />
         );
@@ -228,6 +261,7 @@ const ChatItemRender = ({
                         options={options || []}
                         disable={disableAction || options?.length == 0}
                         idChat={id.toString()}
+                        title={content}
                     />
                 }
             />

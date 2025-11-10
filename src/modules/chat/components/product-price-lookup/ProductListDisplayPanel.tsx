@@ -15,6 +15,7 @@ type ProductListDisplayPanelProps = {
     options: RobotOption[];
     disable: boolean;
     idChat: string;
+    title?: string;
 };
 
 const ProductListDisplayPanel = ({
@@ -22,6 +23,7 @@ const ProductListDisplayPanel = ({
     options,
     disable,
     idChat,
+    title,
 }: ProductListDisplayPanelProps) => {
     const { isLoggedIn } = useAuth();
     const { openFollowUp } = useFollowUpStore();
@@ -121,7 +123,7 @@ const ProductListDisplayPanel = ({
 
     return (
         <ProductListDisplay
-            title="Danh sách sản phẩm"
+            title={title || "Danh sách sản phẩm"}
             items={itemsEdited}
             onItemClick={handleItemClick}
             onQuantityChange={handleEditItem}

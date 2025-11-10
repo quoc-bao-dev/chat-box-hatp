@@ -263,3 +263,32 @@ export interface EditTableItemResponse {
     data: EditTableItemData;
     message: string;
 }
+
+// Add Landscape and Vertical types
+export interface AddLandscapeAndVerticalRequest {
+    landscape: string; // khổ ngang (bắt buộc)
+    vertical: string; // khổ dọc (bắt buộc)
+    name?: string; // tên gọi nếu có (không bắt buộc)
+}
+
+export interface AddLandscapeAndVerticalData {
+    id: string | number;
+    landscape: string;
+    vertical: string;
+    name?: string;
+    client_id?: string | number;
+    created_at?: string;
+    updated_at?: string;
+}
+
+export interface AddLandscapeAndVerticalListItem {
+    id: string | number;
+    name: string;
+}
+
+export interface AddLandscapeAndVerticalResponse {
+    result: boolean;
+    data?: AddLandscapeAndVerticalData;
+    all_data?: AddLandscapeAndVerticalListItem[];
+    message?: string;
+}

@@ -16,6 +16,8 @@ import {
     EditTableItemParams,
     EditTableItemRequest,
     EditTableItemResponse,
+    AddLandscapeAndVerticalRequest,
+    AddLandscapeAndVerticalResponse,
 } from "./type";
 
 const chatbotApi = {
@@ -142,6 +144,29 @@ const chatbotApi = {
 
         const res = await axiosInstance.post<EditTableItemResponse>(
             `/api_chatbot/editTableItem/${params.id}/${params.id_chat}`,
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+        return res.data;
+    },
+
+    // Add Landscape and Vertical
+    addLandscapeAndVertical: async (
+        payload: AddLandscapeAndVerticalRequest
+    ) => {
+        const formData = new FormData();
+        formData.append("landscape", payload.landscape);
+        formData.append("vertical", payload.vertical);
+        if (payload.name) {
+            formData.append("name", payload.name);
+        }
+
+        const res = await axiosInstance.post<AddLandscapeAndVerticalResponse>(
+            "/api_chatbot/add_landscape_and_vertical",
             formData,
             {
                 headers: {

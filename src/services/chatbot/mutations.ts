@@ -7,6 +7,7 @@ import {
     AddAddressRequest,
     EditTableItemParams,
     EditTableItemRequest,
+    AddLandscapeAndVerticalRequest,
 } from "./type";
 
 export const useEditProductItem = () => {
@@ -43,5 +44,12 @@ export const useEditTableItem = () => {
             params: EditTableItemParams;
             payload: EditTableItemRequest;
         }) => chatbotApi.editTableItem(params, payload),
+    });
+};
+
+export const useAddLandscapeAndVertical = () => {
+    return useMutation({
+        mutationFn: (payload: AddLandscapeAndVerticalRequest) =>
+            chatbotApi.addLandscapeAndVertical(payload),
     });
 };

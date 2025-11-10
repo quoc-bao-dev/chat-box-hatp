@@ -7,6 +7,7 @@ import Image from "next/image";
 import { ActionButtons } from "./ActionButtons";
 import NoProductFound from "./NoProductFound";
 import styles from "@/core/styles/scrollbar.module.css";
+import { decodeHtmlEntities } from "@/core/utils/decode";
 
 export type InfoListItem = {
     id: string;
@@ -72,7 +73,9 @@ const InfoList = ({
             className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] min-w-[300px] ${className}`}
         >
             {/* === title === */}
-            <p className="text-[18px] font-semibold text-gray-900">{title}</p>
+            <p className="text-[18px] font-semibold text-gray-900">
+                {decodeHtmlEntities(title)}
+            </p>
 
             {/* === list items === */}
             <div

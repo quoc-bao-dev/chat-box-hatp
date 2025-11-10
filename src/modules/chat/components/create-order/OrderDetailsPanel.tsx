@@ -46,6 +46,10 @@ const OrderDetailsPanel = ({ orderDetail }: OrderDetailsPanelProps) => {
             })),
             totalAmount: formatNumber(orderDetail.grand_total),
             totalWeight: formatNumber(orderDetail.total_kg),
+            discountVouchers: formatNumber(orderDetail.discount_vouchers),
+            radioDiscountVouchers: formatNumber(
+                orderDetail.radio_discount_vouchers
+            ),
         };
     }, [orderDetail]);
 

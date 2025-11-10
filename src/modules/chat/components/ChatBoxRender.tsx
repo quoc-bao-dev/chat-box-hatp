@@ -159,6 +159,12 @@ const ChatBoxRender = () => {
                     orderDetail={message.orderDetail}
                     optionsCategory={message.optionsCategory}
                     optionsAddressShip={message.optionsAddressShip}
+                    optionsLandscapeAndVertical={
+                        message.optionsLandscapeAndVertical
+                    }
+                    productFilterSizes={message.productFilterSizes}
+                    productFilterQuantities={message.productFilterQuantities}
+                    productFilterBrands={message.productFilterBrands}
                     disableAction={
                         index !== massages.length - 1 || isAssistantTyping
                     }

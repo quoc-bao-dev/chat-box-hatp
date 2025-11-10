@@ -37,7 +37,7 @@ const InfoList = ({
                         key={item.id}
                         onClick={() => !disable && onItemClick?.(item)}
                         className={cn(
-                            ` px-4 py-2 rounded-xl bg-gray-50/80 flex items-center justify-between ${
+                            `px-4 py-2 rounded-xl bg-gray-50/80 flex items-center justify-between ${
                                 disable
                                     ? "opacity-50 cursor-not-allowed"
                                     : "cursor-pointer hover:bg-gray-100 "
@@ -57,6 +57,7 @@ const InfoList = ({
                             alt="arrow-right"
                             width={20}
                             height={20}
+                            className="ml-4"
                         />
                     </div>
                 ))}

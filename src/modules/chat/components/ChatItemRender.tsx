@@ -3,7 +3,15 @@ import { NoProductFound } from "@/core/components/ui";
 import CancelSuccess from "@/core/components/ui/CancelSuccess";
 import { ProductItem, ProductOption } from "@/services/chatbot";
 import { OrderDetail } from "@/services/order/type";
-import { AddressOption, CategoryOption, RobotOption } from "@/services/robot";
+import {
+    AddressOption,
+    CategoryOption,
+    OptionLandscapeAndVertical,
+    ProductBrandOption,
+    ProductQuantityOption,
+    ProductSizeOption,
+    RobotOption,
+} from "@/services/robot";
 import { SendType } from "@/store/chatBoxStore";
 import AssistantMessage from "./AssistantMessage";
 import OrderDetailsPanel from "./create-order/OrderDetailsPanel";
@@ -16,6 +24,8 @@ import ProductListDisplayPanel from "./product-price-lookup/ProductListDisplayPa
 import ProductPanel from "./product-price-lookup/ProductPanel";
 import UserMessage from "./UserMessage";
 import AddressPanel from "./product-price-lookup/AddressPanel";
+import LandscapeAndVerticalPanel from "./new-guest/LandscapeAndVerticalPanel";
+import ProductFilterPanel from "./new-guest/ProductFilterPanel";
 
 type ChatItemRenderProps = {
     id: number;
@@ -38,6 +48,10 @@ type ChatItemRenderProps = {
     orderDetail?: OrderDetail;
     optionsCategory?: CategoryOption[];
     optionsAddressShip?: AddressOption[];
+    optionsLandscapeAndVertical?: OptionLandscapeAndVertical[];
+    productFilterSizes?: ProductSizeOption[];
+    productFilterQuantities?: ProductQuantityOption[];
+    productFilterBrands?: ProductBrandOption[];
     isHistory?: boolean;
 };
 
@@ -55,6 +69,10 @@ const ChatItemRender = ({
     disableAction = false,
     optionsCategory,
     optionsAddressShip,
+    optionsLandscapeAndVertical,
+    productFilterSizes,
+    productFilterQuantities,
+    productFilterBrands,
     nextLink,
     isHistory,
 }: ChatItemRenderProps) => {
@@ -119,6 +137,48 @@ const ChatItemRender = ({
                         messageId={id}
                         isHistory={isHistory && !optionsAddressShip}
                     />
+                }
+            />
+        );
+    }
+
+    if (sender === "assistant" && sendType === "product-filter") {
+        return (
+            <AssistantMessage
+                mode="panel"
+                content={
+                    !isHistory || !disableAction ? (
+                        <ProductFilterPanel
+                            title={content || ""}
+                            sizes={productFilterSizes}
+                            quantities={productFilterQuantities}
+                            brands={productFilterBrands}
+                            nextLink={nextLink}
+                            disable={disableAction}
+                            messageId={id}
+                        />
+                    ) : (
+                        content
+                    )
+                }
+            />
+        );
+    }
+
+    if (sender === "assistant" && sendType === "landscape-and-vertical") {
+        return (
+            <AssistantMessage
+                mode="panel"
+                content={
+                    !isHistory || !disableAction ? (
+                        <LandscapeAndVerticalPanel
+                            title={content || ""}
+                            options={optionsLandscapeAndVertical || []}
+                            disable={disableAction}
+                        />
+                    ) : (
+                        content
+                    )
                 }
             />
         );
@@ -201,6 +261,7 @@ const ChatItemRender = ({
                         options={options || []}
                         disable={disableAction || options?.length == 0}
                         idChat={id.toString()}
+                        title={content}
                     />
                 }
             />

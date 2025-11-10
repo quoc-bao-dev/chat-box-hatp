@@ -38,6 +38,26 @@ export interface AddressOption {
     address_primary: string;
 }
 
+export interface OptionLandscapeAndVertical {
+    id: string;
+    name: string;
+}
+
+export interface ProductSizeOption {
+    id: string;
+    name: string; // Ví dụ: "60 x 84"
+}
+
+export interface ProductQuantityOption {
+    id: string;
+    name: string; // Ví dụ: "250", "100", "50"
+}
+
+export interface ProductBrandOption {
+    id: string;
+    name: string; // Ví dụ: "April", "Hainan", "Ningbo", "Morrim"
+}
+
 export interface RobotData {
     id_robot_support: string;
     id_robot_support_detail: string;
@@ -58,7 +78,9 @@ export interface RobotData {
         | "show_create_orders"
         | "show_detail_orders"
         | "cancel_product"
-        | "select_address_ship"; // select -> option , text
+        | "select_address_ship"
+        | "landscape_and_vertical"
+        | "product_filter"; // select -> option , text
     file: string | null; // file đính kèm (hình ảnh)
     suport_items: number;
     json_item: any | null;
@@ -74,6 +96,12 @@ export interface RobotData {
 
     options_address_ship?: AddressOption[];
     info_address_delivery: AddressOption;
+
+    options_landscape_and_vertical?: OptionLandscapeAndVertical[];
+
+    landscape_and_vertical?: ProductSizeOption[];
+    quantitative?: ProductQuantityOption[];
+    item_brand?: ProductBrandOption[];
 }
 
 export interface GetActiveRobotDetailResponse {

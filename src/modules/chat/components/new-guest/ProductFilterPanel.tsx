@@ -139,7 +139,7 @@ const ProductFilterPanel = ({
             if (response?.result) {
                 console.log("Add landscape and vertical response:", response);
 
-                const displayName = `${landscape} x ${vertical}`;
+                const displayName = `${landscape}x${vertical}`;
                 const idValue = String(
                     response?.data?.id ??
                         response?.data?.name ??

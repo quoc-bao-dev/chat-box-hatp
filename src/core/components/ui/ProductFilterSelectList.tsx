@@ -207,7 +207,7 @@ const ProductFilterSelectList = ({
             <p className="text-[18px] mb-4 font-semibold text-[#454F5B]">
                 <HtmlRenderer
                     htmlContent={title}
-                    className="text-xl! font-semibold!"
+                    className="text-lg! font-semibold!"
                 />
             </p>
 

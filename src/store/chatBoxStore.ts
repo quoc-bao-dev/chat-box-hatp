@@ -1,6 +1,10 @@
 import { ProductItem } from "@/services/chatbot";
 import { OrderDetail } from "@/services/order/type";
-import { AddressOption, CategoryOption } from "@/services/robot";
+import {
+    AddressOption,
+    CategoryOption,
+    OptionLandscapeAndVertical,
+} from "@/services/robot";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -21,7 +25,8 @@ export type SendType =
     | "order-detail"
     | "cancel-product"
     | "select-category"
-    | "select-address-ship";
+    | "select-address-ship"
+    | "landscape-and-vertical";
 
 export type Message = {
     id: number;
@@ -50,6 +55,7 @@ export type Message = {
     disableAction?: boolean;
     optionsCategory?: CategoryOption[];
     optionsAddressShip?: AddressOption[];
+    optionsLandscapeAndVertical?: OptionLandscapeAndVertical[];
     isHistory?: boolean;
 };
 

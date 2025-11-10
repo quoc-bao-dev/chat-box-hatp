@@ -41,6 +41,18 @@ const createMessageFromData = (
         return jsonItem; // Return as-is if already parsed
     };
 
+    // show landscape and vertical
+    if (data.show_move_event === "landscape_and_vertical") {
+        return {
+            id: Number(data.id),
+            sender: getSender(data.type_send),
+            content: data.message,
+            sendType: "landscape-and-vertical",
+            optionsLandscapeAndVertical: data.options_landscape_and_vertical,
+            isHistory: isFromHistory,
+        };
+    }
+
     // show select address ship
     if (data.show_move_event === "select_address_ship") {
         if (nextLink) sessionStorage.setItem("nextLink", nextLink || "");

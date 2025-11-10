@@ -187,7 +187,7 @@ const SizeInputInline = ({
                 placeholder={placeholder}
                 disabled={disabled}
                 inputMode="numeric"
-                className={`bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2FB06B] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed ${className} ${
+                className={`bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2FB06B] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed ${className} ${
                     value ? "pr-8" : ""
                 }`}
             />

@@ -8,6 +8,8 @@ export type OrderDetail = {
     total_kg: string;
     grand_total: string;
     address: string | null;
+    radio_discount_vouchers?: string;
+    discount_vouchers?: string;
     items: Array<{
         id: string;
         price_kg: string;

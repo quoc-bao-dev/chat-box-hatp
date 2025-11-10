@@ -25,6 +25,8 @@ export type OrderDetailsData = {
     items: OrderItem[];
     totalAmount: string;
     totalWeight: string;
+    discountVouchers: string;
+    radioDiscountVouchers: string;
 };
 
 interface OrderDetailsModalProps {
@@ -46,6 +48,8 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
         items,
         totalAmount,
         totalWeight,
+        discountVouchers,
+        radioDiscountVouchers,
     } = orderData;
 
     return (
@@ -171,6 +175,23 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                                     colSpan={5}
                                     className="px-3 py-3 text-sm font-semibold text-center text-[#E93838] border border-gray-300 truncate"
                                 >
+                                    Giảm giá
+                                </td>
+                                <td
+                                    colSpan={1}
+                                    className="px-3 py-3 text-sm font-semibold text-center text-[#E93838] border border-gray-300 truncate"
+                                >
+                                    {discountVouchers} VND
+                                </td>
+                                <td className="px-3 py-3 text-sm font-semibold text-center text-[#E93838] border border-gray-300 truncate">
+                                    {radioDiscountVouchers}%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    colSpan={5}
+                                    className="px-3 py-3 text-sm font-semibold text-center text-[#E93838] border border-gray-300 truncate"
+                                >
                                     Tổng Cộng
                                 </td>
                                 <td
@@ -188,6 +209,22 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                 </div>
                 <div className="pt-0  pb-3 lg:hidden">
                     <div className="flex justify-between flex-col md:flex-row gap-1">
+                        <div className="flex items-center gap-2 text-sm">
+                            <span className="font-medium text-gray-700 ">
+                                Giảm giá:
+                            </span>
+                            <span className="text-[#E93838] font-semibold">
+                                {discountVouchers} VND
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                            <span className="font-medium text-gray-700 ">
+                                Phần trăm:
+                            </span>
+                            <span className="text-[#E93838] font-semibold">
+                                {radioDiscountVouchers}%
+                            </span>
+                        </div>
                         <div className="flex items-center gap-2 text-sm">
                             <span className="font-medium text-gray-700 ">
                                 Tổng Cộng:

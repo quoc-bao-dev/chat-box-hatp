@@ -323,14 +323,14 @@ const ProductFilterSelectList = ({
                     </div>
                 ) : (
                     <div
-                        className={`flex flex-col max-h-[23vh] overflow-y-auto -ml-2 -mr-2 pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
+                        className={`grid grid-cols-2 gap-2 max-h-[23vh] overflow-y-auto -ml-2 -mr-2 pl-2 pr-2 -mb-4 pb-4 ${styles.customScrollbar}`}
                     >
                         {brands.map((brand) => {
                             const checked = selectedBrands.includes(brand.id);
                             return (
                                 <label
                                     key={brand.id}
-                                    className={`px-4 py-4.5 flex items-center gap-3 border-t border-gray-50 group ${
+                                    className={`w-full px-4 py-4.5 flex items-center gap-3 border border-gray-100 rounded-lg group ${
                                         disable
                                             ? "cursor-not-allowed"
                                             : "cursor-pointer hover:bg-gray-50"

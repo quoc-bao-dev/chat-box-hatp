@@ -164,7 +164,7 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                                                 </p>
                                             )}
 
-                                            {!item.price_client && (
+                                            {!Number(item.price_client) && (
                                                 <p>Giá liên hệ</p>
                                             )}
                                         </div>

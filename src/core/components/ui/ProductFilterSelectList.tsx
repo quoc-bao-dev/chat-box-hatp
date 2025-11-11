@@ -20,6 +20,7 @@ type ProductFilterSelectListProps = {
     sizes?: ProductSizeOption[];
     quantities?: ProductQuantityOption[];
     brands?: ProductBrandOption[];
+    loading?: boolean;
     onConfirm?: (data: {
         selectedSizes: ProductSizeOption[];
         selectedQuantities: ProductQuantityOption[];
@@ -36,6 +37,7 @@ const ProductFilterSelectList = ({
     sizes = [],
     quantities = [],
     brands = [],
+    loading = false,
     onConfirm,
     onAddSize,
     onAddQuantity,
@@ -388,6 +390,7 @@ const ProductFilterSelectList = ({
                 shouldShowConfirmButton
                 confirmText="Xác nhận"
                 onConfirmClick={handleConfirm}
+                isConfirmLoading={loading}
                 disable={
                     disable ||
                     (selectedSizes.length === 0 &&

@@ -74,6 +74,7 @@ const CategoryPanel = ({
             optionsCategory={optionsCategory}
             onConfrim={handleClick}
             disable={disable || loading}
+            loading={loading}
         />
     );
 };

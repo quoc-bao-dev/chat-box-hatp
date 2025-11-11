@@ -186,6 +186,7 @@ const ProductFilterPanel = ({
             sizes={sizes}
             quantities={quantities}
             brands={brands}
+            loading={loading}
             onConfirm={handleClick}
             onAddSize={handleAddSize}
             onAddQuantity={handleAddQuantity}

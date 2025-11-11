@@ -13,6 +13,7 @@ type CategorySelectListProps = {
     optionsCategory: CategoryOption[];
     onConfrim?: (ids: string[]) => void;
     disable?: boolean;
+    loading?: boolean;
 };
 
 const CategorySelectList = ({
@@ -20,6 +21,7 @@ const CategorySelectList = ({
     optionsCategory,
     onConfrim,
     disable = false,
+    loading = false,
 }: CategorySelectListProps) => {
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -117,6 +119,7 @@ const CategorySelectList = ({
                 confirmText="Xác nhận"
                 onConfirmClick={handleConfirm}
                 disable={disable || selectedIds.length === 0}
+                isConfirmLoading={loading}
             />
         </div>
     );

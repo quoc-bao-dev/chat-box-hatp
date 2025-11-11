@@ -51,6 +51,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
         totalWeight,
         discountVouchers,
         grandTotalItems,
+        radioDiscountVouchers,
     } = orderData;
 
     return (
@@ -190,7 +191,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                                     colSpan={5}
                                     className="px-3 py-3 text-sm font-semibold text-center text-[#ff6f00] border border-gray-300 truncate"
                                 >
-                                    Khuyến Mãi
+                                    Khuyến Mãi ({radioDiscountVouchers}%)
                                 </td>
                                 <td
                                     colSpan={2}
@@ -231,7 +232,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                         </div>
                         <div className="flex items-center gap-2 text-sm">
                             <span className="font-medium text-gray-700 ">
-                                Khuyến mãi:
+                                Khuyến mãi ({radioDiscountVouchers}%):
                             </span>
                             <span className="text-[#ff6f00] font-semibold">
                                 {discountVouchers} VND

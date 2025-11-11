@@ -170,7 +170,7 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
                                                     type="number"
                                                     inputMode="numeric"
                                                     disabled={disable}
-                                                    min={0}
+                                                    min={1}
                                                     step={1}
                                                     defaultValue={
                                                         item.quantity_client

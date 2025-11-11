@@ -186,20 +186,24 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                                     {grandTotalItems} VND
                                 </td>
                             </tr>
-                            <tr>
-                                <td
-                                    colSpan={5}
-                                    className="px-3 py-3 text-sm font-semibold text-center text-[#ff6f00] border border-gray-300 truncate"
-                                >
-                                    Khuyến Mãi ({radioDiscountVouchers}%)
-                                </td>
-                                <td
-                                    colSpan={2}
-                                    className="px-3 py-3 text-sm font-semibold text-center text-[#ff6f00] border border-gray-300 truncate"
-                                >
-                                    {discountVouchers} VND
-                                </td>
-                            </tr>
+                            {Number(radioDiscountVouchers) > 0 &&
+                                Number(discountVouchers) > 0 && (
+                                    <tr>
+                                        <td
+                                            colSpan={5}
+                                            className="px-3 py-3 text-sm font-semibold text-center text-[#ff6f00] border border-gray-300 truncate"
+                                        >
+                                            Khuyến Mãi ({radioDiscountVouchers}
+                                            %)
+                                        </td>
+                                        <td
+                                            colSpan={2}
+                                            className="px-3 py-3 text-sm font-semibold text-center text-[#ff6f00] border border-gray-300 truncate"
+                                        >
+                                            {discountVouchers} VND
+                                        </td>
+                                    </tr>
+                                )}
                             <tr>
                                 <td
                                     colSpan={5}
@@ -230,14 +234,17 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                                 {grandTotalItems} VND
                             </span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm">
-                            <span className="font-medium text-gray-700 ">
-                                Khuyến mãi ({radioDiscountVouchers}%):
-                            </span>
-                            <span className="text-[#ff6f00] font-semibold">
-                                {discountVouchers} VND
-                            </span>
-                        </div>
+                        {Number(radioDiscountVouchers) > 0 &&
+                            Number(discountVouchers) > 0 && (
+                                <div className="flex items-center gap-2 text-sm">
+                                    <span className="font-medium text-gray-700 ">
+                                        Khuyến mãi ({radioDiscountVouchers}%):
+                                    </span>
+                                    <span className="text-[#ff6f00] font-semibold">
+                                        {discountVouchers} VND
+                                    </span>
+                                </div>
+                            )}
                         <div className="flex items-center gap-2 text-sm">
                             <span className="font-medium text-gray-700 ">
                                 Tổng cộng:

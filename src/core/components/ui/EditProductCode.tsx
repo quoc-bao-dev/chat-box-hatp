@@ -61,7 +61,7 @@ const EditProductCode = ({
             onMouseLeave={onLeave}
         >
             {/* === title === */}
-            <p className="text-[18px] font-semibold text-gray-900">{title}</p>
+            <p className="text-[18px] font-semibold text-[#454F5B]">{title}</p>
 
             {/* === list items === */}
             <div

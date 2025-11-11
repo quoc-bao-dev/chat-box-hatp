@@ -20,7 +20,7 @@ const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
             className={`bg-white rounded-2xl px-3.5 py-4 w-full max-w-md flex flex-col items-center text-center shadow-lg/3 ${className}`}
         >
             {/* Header */}
-            <h2 className="text-xl font-bold text-[#333333] mb-2">
+            <h2 className="text-xl font-bold text-[#454F5B] mb-2">
                 Lên đơn thành công!
             </h2>
             <p className="text-sm text-[#454F5B] mb-4">

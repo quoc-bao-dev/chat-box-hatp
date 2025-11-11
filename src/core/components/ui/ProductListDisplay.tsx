@@ -90,7 +90,7 @@ const ProductListDisplay: React.FC<ProductListDisplayProps> = ({
             className={`px-3.5 py-4 rounded-[20px] bg-white max-w-[460px] min-w-[300px] ${className}`}
         >
             {/* === title === */}
-            <p className="text-[18px] font-semibold text-gray-900">
+            <p className="text-[18px] font-semibold text-[#454F5B]">
                 {decodeHtmlEntities(title)}
             </p>
 

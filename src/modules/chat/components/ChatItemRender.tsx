@@ -109,7 +109,7 @@ const ChatItemRender = ({
         return (
             <AssistantMessage
                 content={
-                    !isHistory || !disableAction ? (
+                    !isHistory || !!optionsCategory ? (
                         <CategoryPanel
                             title={content || ""}
                             optionsCategory={optionsCategory || []}

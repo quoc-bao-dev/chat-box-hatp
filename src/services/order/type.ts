@@ -10,6 +10,7 @@ export type OrderDetail = {
     address: string | null;
     radio_discount_vouchers?: string;
     discount_vouchers?: string;
+    grand_total_items?: string;
     items: Array<{
         id: string;
         price_kg: string;

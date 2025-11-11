@@ -50,6 +50,7 @@ const OrderDetailsPanel = ({ orderDetail }: OrderDetailsPanelProps) => {
             radioDiscountVouchers: formatNumber(
                 orderDetail.radio_discount_vouchers
             ),
+            grandTotalItems: formatNumber(orderDetail.grand_total_items),
         };
     }, [orderDetail]);
 

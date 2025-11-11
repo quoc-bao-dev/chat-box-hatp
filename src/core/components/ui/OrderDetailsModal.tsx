@@ -223,9 +223,17 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                     <div className="flex justify-between flex-col md:flex-row gap-1">
                         <div className="flex items-center gap-2 text-sm">
                             <span className="font-medium text-gray-700 ">
+                                Tổng tiền:
+                            </span>
+                            <span className="text-gray-700 font-semibold">
+                                {grandTotalItems} VND
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                            <span className="font-medium text-gray-700 ">
                                 Khuyến mãi:
                             </span>
-                            <span className="text-[#E93838] font-semibold">
+                            <span className="text-[#ff6f00] font-semibold">
                                 {discountVouchers} VND
                             </span>
                         </div>

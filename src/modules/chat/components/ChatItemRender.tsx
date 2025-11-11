@@ -157,19 +157,28 @@ const ChatItemRender = ({
                   })()
                 : sessionStorage.getItem("nextLink") || undefined;
 
+        const isHistoryMode =
+            !isHistory ||
+            (!!productFilterSizes &&
+                !!productFilterQuantities &&
+                !!productFilterBrands);
         return (
             <AssistantMessage
-                mode="panel"
+                mode={disableAction && isHistory ? "content" : "panel"}
                 content={
-                    <ProductFilterPanel
-                        title={content || ""}
-                        sizes={productFilterSizes}
-                        quantities={productFilterQuantities}
-                        brands={productFilterBrands}
-                        nextLink={next}
-                        disable={disableAction}
-                        messageId={id}
-                    />
+                    isHistoryMode ? (
+                        <ProductFilterPanel
+                            title={content || ""}
+                            sizes={productFilterSizes}
+                            quantities={productFilterQuantities}
+                            brands={productFilterBrands}
+                            nextLink={next}
+                            disable={disableAction}
+                            messageId={id}
+                        />
+                    ) : (
+                        content
+                    )
                 }
             />
         );
